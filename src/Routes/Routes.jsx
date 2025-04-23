@@ -4,17 +4,17 @@ import Home from "../Components/pages/Home";
 
 
 
-const router=createBrowserRouter([
+const router = createBrowserRouter([
     {
-        path:'/',
-        element:<Mainlayout></Mainlayout>,
-        children:[
-            {
-                path:'/',
-                element:<Home></Home>
-            },
-            
-        ]
+      path: '/',
+      element: <Mainlayout />,
+      children: [
+        {
+          index: true, // ✅ This makes it the default child route
+          element: <Home />
+        }
+      ]
     }
-]);
+  ]);
+  
 export default router;

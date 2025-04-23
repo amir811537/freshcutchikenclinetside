@@ -6,8 +6,8 @@ const Mainlayout = () => {
     return (
         <div>
             <Navbar></Navbar>
-            <div className="my-4">
-            <Outlet></Outlet>
+            <div className="pt-20"> {/* Add top padding here to push content below the navbar */}
+                <Outlet />
             </div>
             <Footer></Footer>
         </div>
