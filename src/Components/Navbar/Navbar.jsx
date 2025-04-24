@@ -35,7 +35,7 @@ const Navbar = () => {
           </div>
 
           {/* Right Logo */}
-          <div className="text-2xl font-bold">
+          <div className="text-2xl flex justify-center items-center font-bold">
             <img className='rounded-full p-3 w-24 h-24' src={logo} alt="logo" />
           </div>
 
@@ -49,7 +49,7 @@ const Navbar = () => {
 
           {/* Left Login Button */}
           <div className="hidden md:block">
-            <Link to="/login" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            <Link to="/login" className="bg-[#F5BC3B] text-white px-4 py-2 rounded hover:bg-orange-500">
               Login
             </Link>
           </div>

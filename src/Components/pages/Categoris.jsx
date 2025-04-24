@@ -131,7 +131,7 @@ const Categoris = () => {
           {data.map((item, index) => (
           <SwiperSlide key={index}>
           <Link to="/" onClick={() => handleSelectCategory(item.title)}>
-            <div className="flex flex-col items-center justify-center border border-gray-300 rounded-md text-center p-4 h-44 w-28 md:w-44 md:h-44 bg-white shadow-sm hover:shadow-md transition">
+            <div className="flex flex-col items-center justify-center border hover:text-white border-gray-300 rounded-md text-center p-4 h-44 w-28 md:w-44 md:h-44 bg-white hover:bg-[#F5BC3B] shadow-sm hover:shadow-md transition">
               <img src={item.imageurl} alt={item.title} className="w-14 h-14 object-contain mb-2" />
               <h1 className="text-sm font-medium">{item.title}</h1>
             </div>
