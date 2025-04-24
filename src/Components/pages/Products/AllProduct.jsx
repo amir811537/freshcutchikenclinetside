@@ -29,7 +29,7 @@ const AllProduct = () => {
             <div className="flex justify-between items-center">
                 <div>
                     <div className="flex">
-                        <span className="p-2 rounded-sm bg-primary"></span>
+                        <span className="p-2 rounded-sm bg-[#F5BC3B]"></span>
                         <h1 className="text-xl font-medium border-l-[#F5BC3B] border-l pl-4">
                             This Month
                         </h1>

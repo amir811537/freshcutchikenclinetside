@@ -1,5 +1,6 @@
 import Banner from "../Navbar/Banner";
 import Categoris from "./Categoris";
+import Freedelevery from "./Freedelevery";
 import OfferAds from './offers/OfferAds';
 import AllProduct from "./Products/AllProduct";
 
@@ -10,6 +11,7 @@ const Home = () => {
       <Categoris></Categoris>
       <OfferAds></OfferAds>
       <AllProduct></AllProduct>
+      <Freedelevery></Freedelevery>
     </div>
   );
 };
