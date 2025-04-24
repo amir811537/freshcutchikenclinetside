@@ -1,10 +1,11 @@
-// import Banner from "../Navbar/Banner";
+import Banner from "../Navbar/Banner";
+import Categoris from "./Categoris";
 
 const Home = () => {
   return (
-    <div>
-      {/* <Banner /> */}
-      <div>This is all cade section</div>
+    <div className="max-w-7xl mx-auto my-5">
+      <Banner />
+      <Categoris></Categoris>
     </div>
   );
 };
