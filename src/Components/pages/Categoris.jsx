@@ -77,7 +77,6 @@ const Categoris = () => {
       imageurl: category2,
       title: "Meat"
     }
-    // Add more categories if needed
   ];
 
   const handleSelectCategory = (category) => {

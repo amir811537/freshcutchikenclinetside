@@ -1,10 +1,9 @@
-import React from "react";
 import { IoMdSend } from "react-icons/io";
 
 const Footer = () => {
 	return (
 		<footer className="bg-black  mt-10 font-poppins md:px-28 pb-8 pt-20  text-white ">
-			<div className="container text-sm mx-auto  grid grid-cols-2 lg:grid-cols-4 gap-16 px-4">
+			<div className="container text-sm mx-auto  grid grid-cols-1 lg:grid-cols-4 gap-16 px-4">
 				<div className="space-y-4">
 					<h4 className="font-bold text-base">Exclusive</h4>
 					<p>Subscribe</p>
@@ -84,7 +83,7 @@ const Footer = () => {
 				</div>
 			</div>
 			<div className="text-center mt-16 text-gray-500 text-sm ">
-				© Copyright Al-Amin Electronics 2024. All rights reserved
+				© Copyrightfreshcutchickenservice 2025. <br />All rights reserved
 			</div>
 		</footer>
 	);
