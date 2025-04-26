@@ -1,8 +1,11 @@
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const ProductCard = ({ item }) => {
     return (
-        <div className="card bg-base-100 w-auto border  shadow-sm">
+
+        <Link to={"/productdetail"}>
+ <div className="card bg-base-100 w-auto border  shadow-sm">
             <figure>
                 <img
                     src={item.image}
@@ -31,6 +34,9 @@ const ProductCard = ({ item }) => {
                 </div>
             </div>
         </div>
+
+        </Link>
+       
     );
 };
 
