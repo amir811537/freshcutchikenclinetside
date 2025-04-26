@@ -6,8 +6,6 @@ import { useState, useEffect } from "react";
 
 const BestSelling = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const [elements, setElements] = useState([]); // dummy loader array
-
     const bestSellingProduct = [
         { image: image2, title: "chicken" },
         { image: image1, title: "meat" }, // fixed typo here
@@ -48,16 +46,16 @@ const BestSelling = () => {
 
             <div className="relative">
     <div className="overflow-hidden grid grid-cols-2 md:grid-cols-4 gap-5 mt-10">
-        {isLoading ? (
-            elements.map((_, idx) => (
-                <div key={idx} className="w-full">
+        {isLoading ? 
+           
+                <div  className="w-full">
                     <div className="skeleton w-full h-[250px] mt-5 rounded-sm"></div>
                     <div className="skeleton w-full h-[50px] mt-2 rounded-sm bg-black"></div>
                     <div className="skeleton w-full h-[15px] mt-5 rounded-sm"></div>
                     <div className="skeleton w-full h-[20px] mt-8 rounded-sm"></div>
                 </div>
-            ))
-        ) : (
+            
+         : (
             bestSellingProduct.map((item, inx) => (
                 <ProductCard key={inx} item={item} />
             ))

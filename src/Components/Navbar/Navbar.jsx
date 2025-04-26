@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useEffect, useRef, useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import { Link, NavLink } from 'react-router-dom';
+import {  NavLink } from 'react-router-dom';
 import logo from '../../assets/logo-removebg-preview.png';
 
 const Navbar = () => {
@@ -49,7 +49,7 @@ const Navbar = () => {
             <NavLink
               to="/"
               className={({ isActive }) =>
-                isActive ? "text-blue-600 underline font-semibold" : "hover:text-blue-600"
+                isActive ? "text-[#F5BC3B] underline font-semibold" : "hover:text-[#F5BC3B]"
               }
             >
               Home
@@ -57,15 +57,15 @@ const Navbar = () => {
             <NavLink
               to="/allProducts"
               className={({ isActive }) =>
-                isActive ? "text-blue-600 underline font-semibold" : "hover:text-blue-600"
+                isActive ? "text-[#F5BC3B] underline font-semibold" : "hover:text-[#F5BC3B]"
               }
             >
               Products
             </NavLink>
             <NavLink
-              to="/services"
+              to="/service"
               className={({ isActive }) =>
-                isActive ? "text-blue-600 underline font-semibold" : "hover:text-blue-600"
+                isActive ? "text-[#F5BC3B] underline font-semibold" : "hover:text-[#F5BC3B]"
               }
             >
               Services
@@ -73,7 +73,7 @@ const Navbar = () => {
             <NavLink
               to="/contact"
               className={({ isActive }) =>
-                isActive ? "text-blue-600 underline font-semibold" : "hover:text-blue-600"
+                isActive ? "text-[#F5BC3B] underline font-semibold" : "hover:text-[#F5BC3B]"
               }
             >
               Contact
@@ -102,7 +102,7 @@ const Navbar = () => {
             to="/"
             onClick={toggleSidebar}
             className={({ isActive }) =>
-              isActive ? "block text-blue-600 underline font-semibold" : "block hover:text-blue-600"
+              isActive ? "block text-[#F5BC3B] underline font-semibold" : "block hover:text-[#F5BC3B]"
             }
           >
             Home
@@ -111,16 +111,16 @@ const Navbar = () => {
             to="/allProducts"
             onClick={toggleSidebar}
             className={({ isActive }) =>
-              isActive ? "block text-blue-600 underline font-semibold" : "block hover:text-blue-600"
+              isActive ? "block text-[#F5BC3B] underline font-semibold" : "block hover:text-[#F5BC3B]"
             }
           >
             Products
           </NavLink>
           <NavLink
-            to="/services"
+            to="/service"
             onClick={toggleSidebar}
             className={({ isActive }) =>
-              isActive ? "block text-blue-600 underline font-semibold" : "block hover:text-blue-600"
+              isActive ? "block text-[#F5BC3B] underline font-semibold" : "block hover:text-[#F5BC3B]"
             }
           >
             Services
@@ -129,12 +129,12 @@ const Navbar = () => {
             to="/contact"
             onClick={toggleSidebar}
             className={({ isActive }) =>
-              isActive ? "block text-blue-600 underline font-semibold" : "block hover:text-blue-600"
+              isActive ? "block text-[#F5BC3B] underline font-semibold" : "block hover:text-[#F5BC3B]"
             }
           >
             Contact
           </NavLink>
-          <button onClick={() => { toggleSidebar(); toggleModal(); }} className="block hover:text-blue-600">
+          <button onClick={() => { toggleSidebar(); toggleModal(); }} className="block hover:text-[#F5BC3B]">
             Login
           </button>
         </div>
@@ -186,14 +186,14 @@ const Navbar = () => {
               {isSignUp ? (
                 <span>
                   Already have an account?{' '}
-                  <button onClick={switchAuthMode} className="text-blue-600 hover:underline">
+                  <button onClick={switchAuthMode} className="text-[#F5BC3B] hover:underline">
                     Login
                   </button>
                 </span>
               ) : (
                 <span>
                   Don't have an account?{' '}
-                  <button onClick={switchAuthMode} className="text-blue-600 hover:underline">
+                  <button onClick={switchAuthMode} className="text-[#F5BC3B] hover:underline">
                     Sign Up
                   </button>
                 </span>
