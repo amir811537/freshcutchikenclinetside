@@ -2,24 +2,10 @@ import { useState, useEffect } from "react";
 import ProductCard from "./ProductCard";
 import image1 from "../../../assets/icon/meat-removebg-preview.png";
 import image2 from "../../../assets/icon/icon-chicken-removebg-preview.png";
-
+import data from '../../../../public/data/data.json'
 const AllProduct = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const bestSellingProduct = [
-    { image: image2, title: "chicken" },
-    { image: image1, title: "meat" },
-    { image: image2, title: "chicken" },
-    { image: image1, title: "meat" },
-    { image: image2, title: "chicken" },
-    { image: image1, title: "meat" },
-    { image: image2, title: "chicken" },
-    { image: image1, title: "meat" },
-    { image: image2, title: "chicken" },
-    { image: image1, title: "meat" },
-    { image: image2, title: "chicken" },
-    { image: image1, title: "meat" },
-  ];
 
   useEffect(() => {
     setIsLoading(true);
@@ -38,7 +24,7 @@ const AllProduct = () => {
           </div>
         ) : (
           <div className="overflow-hidden grid grid-cols-2 md:grid-cols-4 gap-5 mt-10">
-            {bestSellingProduct.map((item, index) => (
+            {data.map((item, index) => (
               <ProductCard key={index} item={item} />
             ))}
           </div>

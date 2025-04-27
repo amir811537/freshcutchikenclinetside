@@ -1,0 +1,98 @@
+[
+    {
+        "name": "Broiler",
+        "price": "100",
+        "discount":5,
+        "image": "../../src/assets/productImage/boiler chieken carry cut .jpg",
+        "quantity": 12,
+        "description": "প্রসেস এর পর মেশিনে কেটে ১কেজি ওজন করে তারপর প্যাকেট করা হয়। সুস্থ ও ফ্রেশ চিকেন, হালাল প্রসেসিং, প্রিমিয়াম কোয়ালিটি।"
+    },
+    {
+        "name": "Layer",
+        "price": "180",
+        "discount":18,
+
+        "image": "../../src/assets/productImage/boiler chieken carry cut .jpg",
+        "quantity": 10,
+        "description": "সুস্থ ও মানসম্পন্ন লেয়ার মুরগি, হালাল প্রসেসিং এর মাধ্যমে পরিষ্কার করা হয়। রান্নার জন্য উপযুক্ত।"
+    },
+    {
+        "name": "Cock",
+        "price": "220",
+        "discount":5,
+
+        "image": "../../src/assets/productImage/Broiler-Chicken-Curry-Cut-Skinless.jpeg",
+        "quantity": 8,
+        "description": "প্রাকৃতিক খাদ্য খাওয়া দেশি মোরগ, সুস্বাদু ও স্বাস্থ্যসম্মত। হালালভাবে জবাই করা।"
+    },
+    {
+        "name": "Chicken (Skinless)",
+        "price": "240",
+        "image": "../../src/assets/productImage/whole-layer-chicken-skin-off-net-weight-50-gm-800-gm.webp",
+        "quantity": 15,
+        "description": "চামড়া ছাড়া চিকেন, রান্নার জন্য প্রস্তুত, ফুডগ্রেড প্যাকেজিং করা।"
+    },
+    {
+        "name": "Chicken (With Skin)",
+        "price": "230",
+        "image": "../../src/assets/productImage/boiler chieken carry cut .jpg",
+        "quantity": 10,
+        "description": "চামড়া সহ সম্পূর্ণ চিকেন, পরিষ্কার ও হালাল প্রসেসিং করা।"
+    },
+    {
+        "name": "Boneless",
+        "price": "280",
+        "image": "../../src/assets/productImage/Drumstick .jpg",
+        "quantity": 20,
+        "description": "হাড় ছাড়া চিকেন পিস, কাবাব, ফ্রাই বা কারি রেসিপির জন্য উপযুক্ত।"
+    },
+    {
+        "name": "Chicken Breast",
+        "price": "300",
+        "image": "../../src/assets/productImage/boiler chieken carry cut .jpg",
+        "quantity": 18,
+        "description": "চিকেন ব্রেস্ট ফিলেট, প্রোটিন সমৃদ্ধ ও ফ্যাট কম, হেলদি ডায়েটের জন্য উপযুক্ত।"
+    },
+    {
+        "name": "Tandoori Chicken",
+        "price": "250",
+        "image": "https://example.com/images/tandoori_chicken.jpg",
+        "quantity": 14,
+        "description": "টানডুরি রেসিপির জন্য বিশেষভাবে প্রসেস করা মুরগি। রেস্টুরেন্ট স্টাইল রান্নার জন্য।"
+    },
+    {
+        "name": "Full Leg",
+        "price": "260",
+        "image": "https://example.com/images/full_leg.jpg",
+        "quantity": 16,
+        "description": "চিকেন ফুল লেগ পিস, রোস্ট বা ফ্রাই করার জন্য পারফেক্ট।"
+    },
+    {
+        "name": "Drumstick",
+        "price": "270",
+        "image": "https://example.com/images/drumstick.jpg",
+        "quantity": 20,
+        "description": "চিকেন ড্রামস্টিক, ফ্রাই বা গ্রিল আইটেমের জন্য জনপ্রিয়।"
+    },
+    {
+        "name": "Wings",
+        "price": "220",
+        "image": "https://example.com/images/wings.jpg",
+        "quantity": 25,
+        "description": "চিকেন উইংস, পার্টি স্ন্যাকস বা ফ্রাইড আইটেমের জন্য পারফেক্ট।"
+    },
+    {
+        "name": "Chicken Mince (Keema)",
+        "price": "300",
+        "image": "https://example.com/images/chicken_mince.jpg",
+        "quantity": 12,
+        "description": "চিকেন কিমা, মিষ্টি বা ঝাল আইটেমের জন্য ব্যবহারযোগ্য।"
+    },
+    {
+        "name": "Beef Boneless",
+        "price": "600",
+        "image": "https://example.com/images/beef_boneless.jpg",
+        "quantity": 10,
+        "description": "হাড় ছাড়া গরুর মাংস, সঠিকভাবে প্রসেস ও প্যাকেট করা। কোরমা বা রোস্ট রেসিপির জন্য আদর্শ।"
+    }
+]
