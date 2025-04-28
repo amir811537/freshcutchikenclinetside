@@ -217,7 +217,7 @@ const Navbar = () => {
           <FaTimes size={20} />
         </button>
         <div className="p-4 pt-12 space-y-6 text-lg">
-          {['/', '/allProducts', '/service', '/contact'].map((path, idx) => (
+          {['/', '/Products', '/service', '/contact'].map((path, idx) => (
             <NavLink
               key={idx}
               to={path}
