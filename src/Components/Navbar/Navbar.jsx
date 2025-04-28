@@ -187,7 +187,7 @@ const Navbar = () => {
             ))}
           </div>
 {/* text for only mobile nav */}
-<div className='lg:hidden block mr-7'> 
+<div className='lg:hidden block mr-9'> 
   <p className='font-extrabold text-2xl'>Fresh Cut</p>
 </div>
 {/* cart icon for mobile nav */}
@@ -261,28 +261,31 @@ const Navbar = () => {
         <button onClick={toggleSidebar} className="absolute top-4 right-4">
           <FaTimes size={20} />
         </button>
-        <div className="p-4 pt-5 space-y-6 text-lg">
+        <div className="p-4 pt-12 text-center space-y-6 text-lg">
           {['/', '/Products', '/service', '/contact'].map((path, idx) => (
             <NavLink
               key={idx}
               to={path}
               onClick={toggleSidebar}
               className={({ isActive }) =>
-                isActive ? "block text-[#F5BC3B] underline font-semibold" : "block hover:text-[#F5BC3B]"
+                isActive ? "block text-black bg-[#f5bc3b] border  font-semibold" : "block hover:text-[#F5BC3B]"
               }
             >
               {path === '/' ? 'Home' : path.replace('/', '')}
             </NavLink>
           ))}
-          {user ? (
-            <button onClick={() => { toggleSidebar(); handelsingout(); }} className="block hover:text-red-500">
+  <div className='flex justify-center items-center w-full'>
+    
+  {user ? (
+            <button onClick={() => { toggleSidebar(); handelsingout(); }} className="block hover:text-red-500 btn bg-red-500 text-white">
               Sign Out
             </button>
           ) : (
-            <button onClick={() => { toggleSidebar(); toggleModal(); }} className="block hover:text-[#F5BC3B]">
+            <button onClick={() => { toggleSidebar(); toggleModal(); }} className="block hover:text-[#F5BC3B] bg-green-500 text-white btn">
               Login
             </button>
           )}
+  </div>
         </div>
     
       </div>
