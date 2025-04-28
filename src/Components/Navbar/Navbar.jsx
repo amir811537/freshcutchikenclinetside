@@ -1,18 +1,147 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useEffect, useRef, useState } from 'react';
-import { FaBars, FaTimes } from 'react-icons/fa';
-import {  NavLink } from 'react-router-dom';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { FaBars, FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo-removebg-preview.png';
+import { AuthContext } from '../../AuthProvider/AuthProvider';
+import Swal from 'sweetalert2';
 
 const Navbar = () => {
   const [sidebar, setSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const sidebarRef = useRef();
 
   const toggleSidebar = () => setSidebar(!sidebar);
   const toggleModal = () => setShowModal(!showModal);
   const switchAuthMode = () => setIsSignUp(!isSignUp);
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
+
+  const { signuprg, createUser, googleSignin, logOut, user } = useContext(AuthContext);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Register Handler
+  const handelRegister = (e) => {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    // const name = form.get("name");
+    const email = form.get("email");
+    const password = form.get("password");
+    const confirmPassword = form.get("confirmPassword");
+
+    if (password !== confirmPassword) {
+      Swal.fire({
+        icon: "error",
+        title: "Passwords do not match",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+      return;
+    }
+
+    createUser(email, password)
+      .then((result) => {
+        console.log('Registered:', result);
+        Swal.fire({
+          icon: "success",
+          title: "Registration successful",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+        setShowModal(false);
+        navigate(location?.state ? location.state : "/");
+      })
+      .catch((error) => {
+        console.error(error);
+        Swal.fire({
+          icon: "error",
+          title: "Something went wrong!",
+          text: error.message,
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      });
+  };
+
+  // Login Handler
+  const handelLogin = (e) => {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    const email = form.get("email");
+    const password = form.get("password");
+
+    signuprg(email, password)
+      .then((result) => {
+        console.log('Logged in:', result);
+        Swal.fire({
+          icon: "success",
+          title: "Login successful",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+        setShowModal(false);
+        navigate(location?.state ? location.state : "/");
+      })
+      .catch((error) => {
+        console.error(error);
+        Swal.fire({
+          icon: "error",
+          title: "Email or password incorrect",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      });
+  };
+
+  // Google login
+  const handelGoogle = () => {
+    googleSignin()
+      .then((result) => {
+        console.log('Google login:', result);
+        Swal.fire({
+          icon: "success",
+          title: "Login successful",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+        setShowModal(false);
+        navigate(location?.state ? location.state : "/");
+      })
+      .catch((error) => {
+        console.error(error);
+        Swal.fire({
+          icon: "error",
+          title: "Google login failed",
+          text: error.message,
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      });
+  };
+
+  // Logout Handler
+  const handelsingout = () => {
+    logOut()
+      .then((result) => {
+        console.log(result);
+        Swal.fire({
+          icon: "success",
+          title: "Sign out successful",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -46,45 +175,36 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8 text-lg">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                isActive ? "text-[#F5BC3B] underline font-semibold" : "hover:text-[#F5BC3B]"
-              }
-            >
-              Home
-            </NavLink>
-            <NavLink
-              to="/allProducts"
-              className={({ isActive }) =>
-                isActive ? "text-[#F5BC3B] underline font-semibold" : "hover:text-[#F5BC3B]"
-              }
-            >
-              Products
-            </NavLink>
-            <NavLink
-              to="/service"
-              className={({ isActive }) =>
-                isActive ? "text-[#F5BC3B] underline font-semibold" : "hover:text-[#F5BC3B]"
-              }
-            >
-              Services
-            </NavLink>
-            <NavLink
-              to="/contact"
-              className={({ isActive }) =>
-                isActive ? "text-[#F5BC3B] underline font-semibold" : "hover:text-[#F5BC3B]"
-              }
-            >
-              Contact
-            </NavLink>
+            {['/', '/Products', '/Service', '/Contact'].map((path, idx) => (
+              <NavLink
+                key={idx}
+                to={path}
+                className={({ isActive }) =>
+                  isActive ? "text-[#F5BC3B] underline font-semibold" : "hover:text-[#F5BC3B]"
+                }
+              >
+                {path === '/' ? 'Home' : path.replace('/', '')}
+              </NavLink>
+            ))}
           </div>
 
-          {/* Desktop Login Button */}
+          {/* Desktop Login/Logout Button */}
           <div className="hidden md:block">
-            <button onClick={toggleModal} className="bg-[#F5BC3B] text-white px-4 py-2 rounded hover:bg-orange-500">
-              Login
-            </button>
+            {user ? (
+              <button
+                onClick={handelsingout}
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <button
+                onClick={toggleModal}
+                className="bg-[#F5BC3B] text-white px-4 py-2 rounded hover:bg-orange-500"
+              >
+                Login
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -98,45 +218,27 @@ const Navbar = () => {
           <FaTimes size={20} />
         </button>
         <div className="p-4 pt-12 space-y-6 text-lg">
-          <NavLink
-            to="/"
-            onClick={toggleSidebar}
-            className={({ isActive }) =>
-              isActive ? "block text-[#F5BC3B] underline font-semibold" : "block hover:text-[#F5BC3B]"
-            }
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/allProducts"
-            onClick={toggleSidebar}
-            className={({ isActive }) =>
-              isActive ? "block text-[#F5BC3B] underline font-semibold" : "block hover:text-[#F5BC3B]"
-            }
-          >
-            Products
-          </NavLink>
-          <NavLink
-            to="/service"
-            onClick={toggleSidebar}
-            className={({ isActive }) =>
-              isActive ? "block text-[#F5BC3B] underline font-semibold" : "block hover:text-[#F5BC3B]"
-            }
-          >
-            Services
-          </NavLink>
-          <NavLink
-            to="/contact"
-            onClick={toggleSidebar}
-            className={({ isActive }) =>
-              isActive ? "block text-[#F5BC3B] underline font-semibold" : "block hover:text-[#F5BC3B]"
-            }
-          >
-            Contact
-          </NavLink>
-          <button onClick={() => { toggleSidebar(); toggleModal(); }} className="block hover:text-[#F5BC3B]">
-            Login
-          </button>
+          {['/', '/allProducts', '/service', '/contact'].map((path, idx) => (
+            <NavLink
+              key={idx}
+              to={path}
+              onClick={toggleSidebar}
+              className={({ isActive }) =>
+                isActive ? "block text-[#F5BC3B] underline font-semibold" : "block hover:text-[#F5BC3B]"
+              }
+            >
+              {path === '/' ? 'Home' : path.replace('/', '')}
+            </NavLink>
+          ))}
+          {user ? (
+            <button onClick={() => { toggleSidebar(); handelsingout(); }} className="block hover:text-red-500">
+              Sign Out
+            </button>
+          ) : (
+            <button onClick={() => { toggleSidebar(); toggleModal(); }} className="block hover:text-[#F5BC3B]">
+              Login
+            </button>
+          )}
         </div>
       </div>
 
@@ -148,39 +250,73 @@ const Navbar = () => {
               <FaTimes />
             </button>
 
-            <h2 className="text-2xl font-bold mb-4">
+            <h2 className="text-2xl font-bold mb-4 text-center">
               {isSignUp ? 'Create Account' : 'Login'}
             </h2>
 
-            <form>
+            <form onSubmit={isSignUp ? handelRegister : handelLogin}>
               {isSignUp && (
                 <input
                   type="text"
+                  name="name"
                   placeholder="Full Name"
                   className="w-full p-2 mb-4 border rounded"
                 />
               )}
               <input
                 type="email"
+                name="email"
                 placeholder="Email"
                 className="w-full p-2 mb-4 border rounded"
               />
-              <input
-                type="password"
-                placeholder="Password"
-                className="w-full p-2 mb-4 border rounded"
-              />
-              {isSignUp && (
+
+              {/* Password Field */}
+              <div className="relative mb-4">
                 <input
-                  type="password"
-                  placeholder="Confirm Password"
-                  className="w-full p-2 mb-4 border rounded"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Password"
+                  className="w-full p-2 border rounded pr-10"
                 />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+
+              {/* Confirm Password Field */}
+              {isSignUp && (
+                <div className="relative mb-4">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    name="confirmPassword"
+                    placeholder="Confirm Password"
+                    className="w-full p-2 border rounded pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={toggleConfirmPasswordVisibility}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
+                  >
+                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
               )}
+
               <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
                 {isSignUp ? 'Sign Up' : 'Login'}
               </button>
             </form>
+
+            <button
+              onClick={handelGoogle}
+              className="w-full bg-red-500 text-white py-2 rounded mt-4 hover:bg-red-600"
+            >
+              Sign in with Google
+            </button>
 
             <div className="text-sm mt-4 text-center">
               {isSignUp ? (
