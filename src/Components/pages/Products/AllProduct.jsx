@@ -1,11 +1,25 @@
 import { useState, useEffect } from "react";
 import ProductCard from "./ProductCard";
-import image1 from "../../../assets/icon/meat-removebg-preview.png";
-import image2 from "../../../assets/icon/icon-chicken-removebg-preview.png";
-import data from '../../../../public/data/data.json'
-const AllProduct = () => {
-  const [isLoading, setIsLoading] = useState(false);
+import FilterSection from "./FilterSection";
+import data from "../../../../public/data/data.json"; // (keep it if static, or move to src/data if dynamic)
 
+const AllProduct = () => {
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(false); // <-- Added isLoading state
+
+  const uniqueCategories = [...new Set(data.map(item => item.category))];
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategories(prev =>
+      prev.includes(category)
+        ? prev.filter((cat) => cat !== category)
+        : [...prev, category]
+    );
+  };
+
+  const filteredProducts = selectedCategories.length
+    ? data.filter(item => selectedCategories.includes(item.category))
+    : data;
 
   useEffect(() => {
     setIsLoading(true);
@@ -16,20 +30,26 @@ const AllProduct = () => {
   }, []);
 
   return (
-    <div className="lg:my-20 max-w-7xl mx-auto my-10 px-5 lg:px-0">
-      <div className="relative min-h-[300px]">
-        {isLoading ? (
-          <div className="flex justify-center items-center h-[300px]">
-            <div className="w-16 h-16 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
-          </div>
-        ) : (
-          <div className="overflow-hidden grid grid-cols-2 md:grid-cols-4 gap-5 mt-10">
-            {data.map((item, index) => (
-              <ProductCard key={index} item={item} />
-            ))}
-          </div>
-        )}
-      </div>
+    <div className="p-4 max-w-7xl mx-auto">
+      {/* Filter Section */}
+      <FilterSection
+        categories={uniqueCategories}
+        selectedCategories={selectedCategories}
+        onCategoryChange={handleCategoryChange}
+      />
+
+      {/* Loading Spinner */}
+      {isLoading ? (
+        <div className="text-center my-10">
+          <span className="loading loading-spinner loading-lg text-[#F5BC3B]"></span>
+        </div>
+      ) : (
+        <div className="overflow-hidden grid grid-cols-2 md:grid-cols-4 gap-5 mt-10">
+          {filteredProducts.map((item) => (
+            <ProductCard key={item.id} item={item} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
