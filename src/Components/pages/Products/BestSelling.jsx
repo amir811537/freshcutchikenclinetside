@@ -1,19 +1,13 @@
 import { Link } from "react-router-dom";
 import ProductCard from "./ProductCard";
-import image1 from "../../../assets/icon/meat-removebg-preview.png";
-import image2 from "../../../assets/icon/icon-chicken-removebg-preview.png";
 import { useState, useEffect } from "react";
+import data from '../../../../public/data/data.json';
 
 const BestSelling = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const bestSellingProduct = [
-        { image: image2, title: "chicken" },
-        { image: image1, title: "meat" }, // fixed typo here
-        { image: image2, title: "chicken" },
-        { image: image1, title: "meat" }, // fixed typo here
-    ];
+    const bestSellingProduct = data;
 
-    // You can set loading timeout or fetch here
+    // Simulate loading
     useEffect(() => {
         setIsLoading(true);
         const timer = setTimeout(() => {
@@ -37,7 +31,7 @@ const BestSelling = () => {
                     </h1>
                 </div>
                 <Link
-                    to="/allProduct"
+                    to="/products"
                     className="btn btn-error px-8 text-white bg-[#F5BC3B] rounded-sm"
                 >
                     View All
@@ -45,24 +39,25 @@ const BestSelling = () => {
             </div>
 
             <div className="relative">
-    <div className="overflow-hidden grid grid-cols-2 md:grid-cols-4 gap-5 mt-10">
-        {isLoading ? 
-           
-                <div  className="w-full">
-                    <div className="skeleton w-full h-[250px] mt-5 rounded-sm"></div>
-                    <div className="skeleton w-full h-[50px] mt-2 rounded-sm bg-black"></div>
-                    <div className="skeleton w-full h-[15px] mt-5 rounded-sm"></div>
-                    <div className="skeleton w-full h-[20px] mt-8 rounded-sm"></div>
+                <div className="overflow-hidden grid grid-cols-2 md:grid-cols-4 gap-5 mt-10">
+                    {isLoading ? (
+                     <div>
+                           <div className="w-full">
+                            <div className="skeleton w-full h-[250px] mt-5 rounded-sm"></div>
+                            <div className="skeleton w-full h-[50px] mt-2 rounded-sm bg-yellow-300"></div>
+                            <div className="skeleton w-full h-[15px] mt-5 rounded-sm"></div>
+                            <div className="skeleton w-full h-[20px] mt-8 rounded-sm"></div>
+                        </div>
+                     </div>
+                    ) : (
+                        bestSellingProduct
+                            .filter((item) => item.sellCount >= 5) // Filter products with sellCount >= 5
+                            .map((item, index) => (
+                                <ProductCard key={index} item={item} />
+                            ))
+                    )}
                 </div>
-            
-         : (
-            bestSellingProduct.map((item, inx) => (
-                <ProductCard key={inx} item={item} />
-            ))
-        )}
-    </div>
-</div>
-
+            </div>
         </div>
     );
 };

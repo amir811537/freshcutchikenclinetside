@@ -5,7 +5,7 @@ import data from "../../../../public/data/data.json"; // (keep it if static, or 
 
 const AllProduct = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(false); // <-- Added isLoading state
+  const [isLoading, setIsLoading] = useState(false);
 
   const uniqueCategories = [...new Set(data.map(item => item.category))];
 
@@ -17,6 +17,11 @@ const AllProduct = () => {
     );
   };
 
+  
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [location.pathname]);
+  
   const filteredProducts = selectedCategories.length
     ? data.filter(item => selectedCategories.includes(item.category))
     : data;
@@ -38,18 +43,20 @@ const AllProduct = () => {
         onCategoryChange={handleCategoryChange}
       />
 
-      {/* Loading Spinner */}
-      {isLoading ? (
-        <div className="text-center my-10">
-          <span className="loading loading-spinner loading-lg text-[#F5BC3B]"></span>
-        </div>
-      ) : (
-        <div className="overflow-hidden grid grid-cols-2 md:grid-cols-4 gap-5 mt-10">
-          {filteredProducts.map((item) => (
+      {/* Product Grid */}
+      <div className="overflow-hidden grid grid-cols-2 md:grid-cols-4 gap-5 mt-10">
+        {isLoading ? (
+          // Show loading skeletons
+          [...Array(8)].map((_, index) => (
+            <ProductCard key={index} isLoading={true} />
+          ))
+        ) : (
+          // Show actual products
+          filteredProducts.map((item) => (
             <ProductCard key={item.id} item={item} />
-          ))}
-        </div>
-      )}
+          ))
+        )}
+      </div>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaArrowRightLong, FaArrowLeftLong } from "react-icons/fa6";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -9,6 +9,16 @@ import data from '../../../public/data/data.json';
 
 const Categoris = () => {
   const swiperRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Simulate loading effect
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); // simulate 1s loading
+    return () => clearTimeout(timer);
+  }, []);
 
   // Extract unique categories
   const uniqueCategories = Array.from(
@@ -53,32 +63,44 @@ const Categoris = () => {
       </div>
 
       <div className="relative">
-        <Swiper
-          modules={[Navigation]}
-          ref={swiperRef}
-          spaceBetween={20}
-          breakpoints={{
-            300: { slidesPerView: 3 },
-            640: { slidesPerView: 3 },
-            768: { slidesPerView: 3 },
-            1024: { slidesPerView: 6 }
-          }}
-        >
-          {uniqueCategories.map((item, index) => (
-            <SwiperSlide key={index}>
-              <Link to="/" onClick={() => handleSelectCategory(item.category)}>
-                <div className="flex flex-col items-center justify-center border hover:text-white border-gray-300 rounded-md text-center p-2 lg:p-0 h-44 w-28 md:w-44 md:h-44 bg-white hover:bg-[#F5BC3B] shadow-sm hover:shadow-md transition">
-                  <img 
-                    src={item.categoryImage} 
-                    alt={item.category} 
-                    className="lg:w-28 lg:h-28 w-14 h-14 object-contain mb-2" 
-                  />
-                  <h1 className="text-sm font-medium">{item.category}</h1>
-                </div>
-              </Link>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        {isLoading ? (
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+            {/* Skeleton loading for categories */}
+            {[...Array(6)].map((_, index) => (
+              <div key={index} className="flex flex-col items-center justify-center border border-gray-300 rounded-md text-center p-2 h-44 w-28 md:w-44 md:h-44 bg-gray-100 animate-pulse">
+                <div className="w-14 h-14 md:w-28 md:h-28 bg-gray-300 rounded-full mb-2"></div>
+                <div className="h-4 w-20 bg-gray-300 rounded"></div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <Swiper
+            modules={[Navigation]}
+            ref={swiperRef}
+            spaceBetween={20}
+            breakpoints={{
+              300: { slidesPerView: 3 },
+              640: { slidesPerView: 3 },
+              768: { slidesPerView: 3 },
+              1024: { slidesPerView: 6 }
+            }}
+          >
+            {uniqueCategories.map((item, index) => (
+              <SwiperSlide key={index}>
+                <Link to="/" onClick={() => handleSelectCategory(item.category)}>
+                  <div className="flex flex-col items-center justify-center border hover:text-white border-gray-300 rounded-md text-center p-2 lg:p-0 h-44 w-28 md:w-44 md:h-44 bg-white hover:bg-[#F5BC3B] shadow-sm hover:shadow-md transition">
+                    <img
+                      src={item.categoryImage}
+                      alt={item.category}
+                      className="lg:w-28 lg:h-28 w-14 h-14 object-contain mb-2"
+                    />
+                    <h1 className="text-sm font-medium">{item.category}</h1>
+                  </div>
+                </Link>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
       </div>
     </div>
   );

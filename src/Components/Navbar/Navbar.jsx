@@ -2,7 +2,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { FaBars, FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import logo from '../../assets/logo-removebg-preview.png';
 import { AuthContext } from '../../AuthProvider/AuthProvider';
 import Swal from 'sweetalert2';
 
@@ -169,7 +168,7 @@ const Navbar = () => {
           {/* Logo */}
           <a href="/">
             <div className="text-2xl flex justify-center items-center font-bold">
-              <img className="rounded-full lg:p-3 p-0 w-24 h-24" src={logo} alt="logo" />
+              <img className="rounded-full lg:p-3 p-0 w-24 h-24" src="https://i.ibb.co.com/HT4zS4SM/logo-removebg-preview.png" alt="logo" />
             </div>
           </a>
 
