@@ -168,7 +168,7 @@ const Navbar = () => {
           {/* Logo */}
           <a href="/">
             <div className="text-2xl flex justify-center items-center font-bold">
-              <img className="rounded-full lg:p-3 p-0 w-24 h-24" src="https://i.ibb.co.com/HT4zS4SM/logo-removebg-preview.png" alt="logo" />
+              <img className="rounded-full lg:p-3 hidden lg:block p-0 lw-24 h-24" src="https://i.ibb.co.com/HT4zS4SM/logo-removebg-preview.png" alt="logo" />
             </div>
           </a>
 
@@ -186,10 +186,45 @@ const Navbar = () => {
               </NavLink>
             ))}
           </div>
-
+{/* text for only mobile nav */}
+<div className='lg:hidden block mr-7'> 
+  <p className='font-extrabold text-2xl'>Fresh Cut</p>
+</div>
+{/* cart icon for mobile nav */}
+<div className='lg:hidden block'>
+<div className='flex justify-start items-center gap-3'>
+    <div className="text-lg">
+    <div className="relative">
+  <div className="t-0 absolute left-3">
+    <p className="flex h-1 w-1 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">10</p>
+  </div>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="file: h-6 w-6">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+  </svg>
+</div>
+</div>
+    </div>
+</div>
           {/* Desktop Login/Logout Button */}
+      
           <div className="hidden md:block">
-            {user ? (
+
+           <div className='flex justify-center items-center gap-7'>
+            
+           <div className='flex justify-start items-center gap-3'>
+    <div className="text-lg">
+    <div className="relative">
+  <div className="t-0 absolute left-3">
+    <p className="flex h-1 w-1 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">10</p>
+  </div>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="file: h-6 w-6">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+  </svg>
+</div>
+</div>
+    </div>
+
+    {user ? (
               <button
                 onClick={handelsingout}
                 className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
@@ -204,9 +239,19 @@ const Navbar = () => {
                 Login
               </button>
             )}
+            
+            </div> 
+            
           </div>
         </div>
       </div>
+
+
+
+
+
+
+
 
       {/* Mobile Sidebar */}
       <div
@@ -238,19 +283,6 @@ const Navbar = () => {
               Login
             </button>
           )}
-    <div className='flex justify-start items-center gap-3'>
-      <p>My Cart</p>
-    <div className="text-lg">
-    <div className="relative">
-  <div className="t-0 absolute left-3">
-    <p className="flex h-1 w-1 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">10</p>
-  </div>
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="file: h-6 w-6">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-  </svg>
-</div>
-</div>
-    </div>
         </div>
     
       </div>
