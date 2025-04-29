@@ -5,6 +5,9 @@ import AllProduct from "../Components/pages/Products/AllProduct";
 import Contact from "../Components/pages/Contact/Contact";
 import Service from "../Components/pages/Service/Service";
 import Productdetail from "../Components/pages/Products/Productdetail";
+import PrivateRoute from "./PrivateRoute";
+import LoginRegister from "../Components/pages/Auth/LoninRegister";
+import NotLoginRegisterUser from "../Components/pages/Auth/NotLoginRegisterUser";
 
 
 
@@ -27,11 +30,15 @@ const router = createBrowserRouter([
         },
         {
           path:"/service",
-          element:<Service></Service>
+          element:<PrivateRoute><Service></Service></PrivateRoute>
         },
         {
           path:'/productdetail',
           element:<Productdetail></Productdetail>
+        },
+        {
+          path:'/notloginRegister',
+          element:<NotLoginRegisterUser></NotLoginRegisterUser>
         }
       ]
     }
