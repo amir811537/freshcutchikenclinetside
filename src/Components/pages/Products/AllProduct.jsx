@@ -1,13 +1,30 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import ProductCard from "./ProductCard";
 import FilterSection from "./FilterSection";
-import data from "../../../../public/data/data.json"; // (keep it if static, or move to src/data if dynamic)
 
 const AllProduct = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation(); // fix for location
 
-  const uniqueCategories = [...new Set(data.map(item => item.category))];
+  // Fetch products using React Query
+  const { isPending, data: products, isError } = useQuery({
+    queryKey: ['products'],
+    queryFn: async () => {
+      const res = await fetch('http://localhost:5000/products');
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return res.json();
+    }
+  });
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  const uniqueCategories = [...new Set(products?.map(item => item.category))];
 
   const handleCategoryChange = (category) => {
     setSelectedCategories(prev =>
@@ -17,22 +34,29 @@ const AllProduct = () => {
     );
   };
 
-  
-	useEffect(() => {
-		window.scrollTo(0, 0);
-	}, [location.pathname]);
-  
   const filteredProducts = selectedCategories.length
-    ? data.filter(item => selectedCategories.includes(item.category))
-    : data;
+    ? products?.filter(item => selectedCategories.includes(item.category))
+    : products;
 
-  useEffect(() => {
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+  if (isPending) {
+    return (
+      <div className="p-4 max-w-7xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mt-10">
+          {[...Array(8)].map((_, index) => (
+            <ProductCard key={index} isLoading={true} />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="p-4 max-w-7xl mx-auto text-center">
+        <p className="text-red-500">Failed to load products. Please try again later.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 max-w-7xl mx-auto">
@@ -44,17 +68,15 @@ const AllProduct = () => {
       />
 
       {/* Product Grid */}
-      <div className="overflow-hidden grid grid-cols-2 md:grid-cols-4 gap-5 mt-10">
-        {isLoading ? (
-          // Show loading skeletons
-          [...Array(8)].map((_, index) => (
-            <ProductCard key={index} isLoading={true} />
-          ))
-        ) : (
-          // Show actual products
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mt-10">
+        {filteredProducts?.length > 0 ? (
           filteredProducts.map((item) => (
             <ProductCard key={item.id} item={item} />
           ))
+        ) : (
+          <div className="col-span-full text-center text-gray-500">
+            No products found.
+          </div>
         )}
       </div>
     </div>
