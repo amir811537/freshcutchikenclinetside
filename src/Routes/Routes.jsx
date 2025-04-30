@@ -6,8 +6,8 @@ import Contact from "../Components/pages/Contact/Contact";
 import Service from "../Components/pages/Service/Service";
 import Productdetail from "../Components/pages/Products/Productdetail";
 import PrivateRoute from "./PrivateRoute";
-import LoginRegister from "../Components/pages/Auth/LoninRegister";
 import NotLoginRegisterUser from "../Components/pages/Auth/NotLoginRegisterUser";
+import Checkout from "../Components/pages/Checkout/Checkout";
 
 
 
@@ -33,8 +33,14 @@ const router = createBrowserRouter([
           element:<PrivateRoute><Service></Service></PrivateRoute>
         },
         {
-          path:'/productdetail',
-          element:<Productdetail></Productdetail>
+          path:'/productdetail/:id',
+          element:<Productdetail></Productdetail>,
+          loader:({params})=> fetch(`http://localhost:5000/products/${params.id}`)
+        },
+        {
+          path:'/checkout',
+          element:<Checkout></Checkout>,
+      
         },
         {
           path:'/notloginRegister',

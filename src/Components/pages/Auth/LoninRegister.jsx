@@ -1,28 +1,30 @@
 /* eslint-disable react/prop-types */
 // src/components/LoginRegister/LoginRegister.jsx
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { FaEye, FaEyeSlash, FaTimes } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useContext } from "react";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
+import axios from "axios";
 
 const LoginRegister = ({ showModal, setShowModal }) => {
+  const { signuprg, createUser, googleSignin } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
-  const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
+  const toggleConfirmPasswordVisibility = () =>
+    setShowConfirmPassword(!showConfirmPassword);
   const switchAuthMode = () => setIsSignUp(!isSignUp);
-
-  const { signuprg, createUser, googleSignin } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const handleRegister = (e) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
+    const name = form.get("name");
     const email = form.get("email");
     const password = form.get("password");
     const confirmPassword = form.get("confirmPassword");
@@ -38,6 +40,15 @@ const LoginRegister = ({ showModal, setShowModal }) => {
 
     createUser(email, password)
       .then(() => {
+        const userData = {
+          name,
+          email,
+          method: "email",
+        };
+
+        return axios.post("http://localhost:5000/users", userData);
+      })
+      .then(() => {
         Swal.fire({
           icon: "success",
           title: "Registration successful",
@@ -48,6 +59,7 @@ const LoginRegister = ({ showModal, setShowModal }) => {
         navigate(location?.state || "/");
       })
       .catch((error) => {
+        // console.log(error)
         Swal.fire({
           icon: "error",
           title: "Registration failed",
@@ -88,6 +100,15 @@ const LoginRegister = ({ showModal, setShowModal }) => {
 
   const handleGoogle = () => {
     googleSignin()
+      .then((result) => {
+        const googleUser = {
+          name: result.user.displayName,
+          email: result.user.email,
+          method: "google",
+        };
+
+        return axios.post("http://localhost:5000/users", googleUser);
+      })
       .then(() => {
         Swal.fire({
           icon: "success",
@@ -140,6 +161,7 @@ const LoginRegister = ({ showModal, setShowModal }) => {
             name="email"
             placeholder="Email"
             className="w-full p-2 mb-4 border rounded"
+            required
           />
 
           {/* Password */}
@@ -149,6 +171,7 @@ const LoginRegister = ({ showModal, setShowModal }) => {
               name="password"
               placeholder="Password"
               className="w-full p-2 border rounded pr-10"
+              required
             />
             <button
               type="button"
@@ -166,6 +189,7 @@ const LoginRegister = ({ showModal, setShowModal }) => {
                 name="confirmPassword"
                 placeholder="Confirm Password"
                 className="w-full p-2 border rounded pr-10"
+                required
               />
               <button
                 type="button"

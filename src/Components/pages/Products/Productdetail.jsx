@@ -1,144 +1,100 @@
-import { useEffect, useRef, useState } from "react";
-import { GoHeart } from "react-icons/go";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/pagination";
-import image from "../../../assets/chickendetail.jpg";
+import { useContext, useEffect } from "react";
+import InnerImageZoom from "react-inner-image-zoom";
+import 'react-inner-image-zoom/lib/styles.min.css';
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../AuthProvider/AuthProvider";
+import axios from "axios";
 
-const dummyProduct = {
-  title: "Fresh Chicken Meat",
-  price: 300,
-  discountedPrice: 250,
-  description: "This is a delicious and fresh chicken meat product. <br/>Perfect for all your recipes!",
-};
 
-const images = [
-  { src: image },
-  { src: image },
-  { src: image },
-];
 
-const Productdetail = () => {
-  const [loading, setLoading] = useState(false);
-  const swiperRef = useRef(null);
+const ProductDetail = () => {
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+const product=useLoaderData()
+// console.log("=========>",product)
 
-  const handleThumbnailClick = (index) => {
-    if (swiperRef.current) {
-      swiperRef.current.swiper.slideTo(index);
-    }
-  };
+const { user } = useContext(AuthContext);
+const navigate = useNavigate();
 
-  const addToWishList = () => {
-    alert("Added to wishlist!");
-  };
-
-  const addToCart = () => {
-    alert("Added to cart!");
-  };
-
-  const buyNow = () => {
-    alert("Proceeding to buy now!");
-  };
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-[80vh]">
-        <h1>Loading...</h1>
-      </div>
-    );
+const handleAddToCart = async () => {
+  if (!user) {
+    navigate("/notloginRegister");
+    return;
   }
 
+  const cartData = {
+    name: product.name,
+    image: product.image,
+    price: product.price,
+    email: user.email,
+  };
+
+  try {
+    const response = await axios.post("http://localhost:5000/cart", cartData);
+    console.log("product added to cart:", response.data);
+  } catch (error) {
+    console.error("Failed to add to cart:", error);
+  }
+};
+const buyNow = () => alert("Buying now!");
+
+
+
+    // Scroll to top when the component is rendered
+    useEffect(() => {
+      window.scrollTo(0, 0);
+      }, []);
+
   return (
-   <div className="max-w-7xl mx-auto">
-     <div className="mx-5 lg:mx-auto flex flex-col lg:flex-row gap-12 my-5 lg:my-10">
-      {/* Image Section */}
-      <div className="max-w-[400px] w-full lg:w-1/3">
-        {/* Swiper for Main Image */}
-        <div className="bg-[#F5F5F5] flex justify-center items-center h-[400px] mx-auto overflow-hidden">
-          <Swiper
-            pagination={{ dynamicBullets: true }}
-            modules={[Pagination]}
-            className="w-full mySwiper h-full"
-            onSwiper={(swiper) => (swiperRef.current = swiper)}
-          >
-            {images.map((img, index) => (
-              <SwiperSlide key={index}>
-                <img
-                  src={img.src}
-                  alt={`Product ${index}`}
-                  className="object-contain w-full h-full"
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
+    <div className="max-w-7xl mx-auto px-4 my-10">
+      <div className="flex flex-col lg:flex-row gap-10">
+        {/* Image */}
+        <div className="w-full lg:w-[60%] lg:bg-[#f5f5f5] flex products-center justify-center h-[400px] lg:h-[600px] lg:shadow-md rounded-xl">
+        <div className="w-full h-full flex products-center justify-center">
+  <InnerImageZoom
+    src={product.image}
+    zoomSrc={product.image}
+    zoomPreload={true}
+    className="max-h-full max-w-full object-contain"
+  />
+</div>
 
-        {/* Thumbnails */}
-        <div className="flex gap-2 mt-3 justify-center">
-          {images.map((img, index) => (
-            <img
-              key={index}
-              src={img.src}
-              alt={`Thumbnail ${index}`}
-              className="w-16 h-16 object-cover border border-gray-300 cursor-pointer hover:border-black"
-              onClick={() => handleThumbnailClick(index)}
-            />
-          ))}
-        </div>
-      </div>
+</div>
 
-      {/* Product Details Section */}
-      <div className="w-full lg:w-2/3 space-y-5">
-        <h1 className="text-xl text-primary font-medium">{dummyProduct.title}</h1>
-        <h1 className="text-3xl font-medium">
-          BDT {dummyProduct.discountedPrice || dummyProduct.price}
-          {dummyProduct.discountedPrice && (
-            <span className="text-[#00000090] line-through ml-4">
-              BDT {dummyProduct.price}
+
+        {/* Product Info */}
+        <div className="w-full lg:w-[40%] space-y-4">
+          <h1 className="text-2xl font-semibold text-[#FC8934]">{product.name}</h1>
+          <p className="text-3xl font-bold text-red-500">
+            BDT {product.price}
+            <span className="text-gray-500 line-through text-xl ml-4">
+              BDT {product.oldPrice}
             </span>
-          )}
-        </h1>
+          </p>
 
-        <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 w-full">
-          {/* Wishlist Button */}
-          <button
-            onClick={addToWishList}
-            className="bg-[#F5F5F5] p-2 px-3 flex items-center justify-center rounded-none border w-full md:w-auto text-black hover:bg-gray-200 transition"
-          >
-            <p className="px-2">Add to Wishlist</p>
-            <GoHeart className="text-2xl" />
-          </button>
+          <div className="flex flex-col sm:flex-row gap-3">
+         
+            <button
+              onClick={handleAddToCart}
+              className="bg-black text-white px-6 py-2 hover:bg-gray-800"
+            >
+              Add to Cart
+            </button>
+            <button
+              onClick={buyNow}
+              className="bg-red-600 text-white px-6 py-2 hover:bg-red-700"
+            >
+              Buy Now
+            </button>
+          </div>
 
-          {/* Add to Cart Button */}
-          <button
-            onClick={addToCart}
-            className="flex justify-center items-center w-full md:w-auto text-white bg-black py-2 md:py-3 rounded-none btn hover:bg-gray-800 transition"
-          >
-            Add to Cart
-          </button>
-
-          {/* Buy Now Button */}
-          <button
-            onClick={buyNow}
-            className="flex justify-center items-center w-full md:w-auto text-white bg-primary py-2 md:py-3 rounded-none btn btn-error hover:bg-red-700 transition"
-          >
-            Buy Now
-          </button>
+          <p
+            className="text-gray-700 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: product.description }}
+          ></p>
         </div>
-
-        <p
-          className="text-gray-700"
-          dangerouslySetInnerHTML={{ __html: dummyProduct.description }}
-        ></p>
       </div>
     </div>
-   </div>
   );
 };
 
-export default Productdetail;
+export default ProductDetail;

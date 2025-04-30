@@ -1,14 +1,40 @@
 /* eslint-disable react/prop-types */
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../AuthProvider/AuthProvider";
+import axios from "axios";
 
 const ProductCard = ({ item, isLoading }) => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleAddToCart = async () => {
+    if (!user) {
+      navigate("/notloginRegister");
+      return;
+    }
+
+    const cartData = {
+      name: item.name,
+      image: item.image,
+      price: item.price,
+      email: user.email,
+    };
+
+    try {
+      const response = await axios.post("http://localhost:5000/cart", cartData);
+      console.log("Item added to cart:", response.data);
+    } catch (error) {
+      console.error("Failed to add to cart:", error);
+    }
+  };
+
   const shortDescription = item?.description
-    ? item.description.split(' ').slice(0, 10).join(' ') + '...'
-    : '';
+    ? item.description.split(" ").slice(0, 10).join(" ") + "..."
+    : "";
 
   if (isLoading) {
-    // Loading Skeleton
     return (
       <div className="card bg-base-100 w-auto border shadow-sm animate-pulse">
         <figure>
@@ -35,10 +61,9 @@ const ProductCard = ({ item, isLoading }) => {
     );
   }
 
-  // Normal Product Card
   return (
-    <Link to=''>
-      <div className="card bg-base-100 w-auto border shadow-sm">
+    <div className="card bg-base-100 w-auto border shadow-sm">
+      <Link to={`/productdetail/${item._id}`}>
         <figure>
           <img
             className="lg:w-[303px] lg:h-[227px] w-40 h-40 object-cover"
@@ -46,33 +71,33 @@ const ProductCard = ({ item, isLoading }) => {
             alt={item.title || "Product Image"}
           />
         </figure>
-        <div className="card-body">
-          <div>
-            <h2 className="card-title">{item.name}</h2>
-          </div>
-          <div className="flex justify-between items-center">
-            <div className="space-x-2">
-              <span className="text-xl font-bold text-red-600">
-                ৳{item.price}
-              </span>
-              <span className="line-through text-gray-500 text-sm">
-                ৳{item.oldPrice}
-              </span>
-            </div>
-          </div>
-
-          {/* Description: Hidden on small, show 10 words on large screens */}
-          <p className="hidden lg:block">
-            {shortDescription}
-          </p>
-
-          <div className="flex lg:flex-row flex-col gap-5 justify-between items-center w-full">
-            <button className="btn bg-[#F5BC3B] text-white w-full lg:w-auto">Add to cart</button>
-            <button className="btn bg-[#F5BC3B] text-white w-full lg:w-auto">Buy Now</button>
+      </Link>
+      <div className="card-body">
+        <Link to={`/productdetail/${item._id}`}>
+          <h2 className="card-title">{item.name}</h2>
+        </Link>
+        <div className="flex justify-between items-center">
+          <div className="space-x-2">
+            <span className="text-xl font-bold text-red-600">৳{item.price}</span>
+            <span className="line-through text-gray-500 text-sm">৳{item.oldPrice}</span>
           </div>
         </div>
+        <p className="hidden lg:block">{shortDescription}</p>
+        <div className="flex lg:flex-row flex-col gap-5 justify-between items-center w-full">
+          <button
+            onClick={handleAddToCart}
+            className="btn bg-[#F5BC3B] text-white w-full lg:w-auto"
+          >
+            Add to cart
+          </button>
+         <Link to="/checkout">
+         <button className="btn bg-[#F5BC3B] text-white w-full lg:w-auto">
+            Buy Now
+          </button>
+         </Link>
+        </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
@@ -85,6 +110,7 @@ ProductCard.propTypes = {
     oldPrice: PropTypes.number,
     discount: PropTypes.number,
     description: PropTypes.string,
+    _id: PropTypes.string,
   }),
   isLoading: PropTypes.bool,
 };
