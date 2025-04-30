@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const ProductCard = ({ item, isLoading }) => {
   const { user } = useContext(AuthContext);
@@ -20,13 +21,28 @@ const ProductCard = ({ item, isLoading }) => {
       image: item.image,
       price: item.price,
       email: user.email,
+      quantity:1,
     };
 
     try {
       const response = await axios.post("http://localhost:5000/cart", cartData);
+      Swal.fire({
+                icon: "success",
+                title: "Product is added to cart ",
+                timer: 3000,
+                showConfirmButton: false,
+              });
       console.log("Item added to cart:", response.data);
     } catch (error) {
-      console.error("Failed to add to cart:", error);
+      
+  Swal.fire({
+          icon: "error",
+          title: "Product added failed",
+          text: error.message,
+          timer: 3000,
+          showConfirmButton: false,})
+
+
     }
   };
 

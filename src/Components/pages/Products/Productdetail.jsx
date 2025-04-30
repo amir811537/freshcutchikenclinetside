@@ -30,7 +30,7 @@ const handleAddToCart = async () => {
 
   try {
     const response = await axios.post("http://localhost:5000/cart", cartData);
-    console.log("product added to cart:", response.data);
+  alert("product added to cart:", response.data);
   } catch (error) {
     console.error("Failed to add to cart:", error);
   }
