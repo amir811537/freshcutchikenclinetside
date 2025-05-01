@@ -1,24 +1,15 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import useProducts from "../../../hooks/useProducts";
 import ProductCard from "./ProductCard";
 import FilterSection from "./FilterSection";
 
+
 const AllProduct = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const location = useLocation(); // fix for location
+  const location = useLocation();
 
-  // Fetch products using React Query
-  const { isPending, data: products, isError } = useQuery({
-    queryKey: ['products'],
-    queryFn: async () => {
-      const res = await fetch('http://localhost:5000/products');
-      if (!res.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return res.json();
-    }
-  });
+  const { isPending, data: products, isError } = useProducts();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -37,6 +28,9 @@ const AllProduct = () => {
   const filteredProducts = selectedCategories.length
     ? products?.filter(item => selectedCategories.includes(item.category))
     : products;
+
+  // ...rest remains the same
+
 
   if (isPending) {
     return (

@@ -5,10 +5,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
 import axios from "axios";
 import Swal from "sweetalert2";
+import useCart from "../../../hooks/useCart"; // ✅ import the hook
 
 const ProductCard = ({ item, isLoading }) => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { refetchCart } = useCart(user?.email); // ✅ use the hook
 
   const handleAddToCart = async () => {
     if (!user) {
@@ -21,28 +23,55 @@ const ProductCard = ({ item, isLoading }) => {
       image: item.image,
       price: item.price,
       email: user.email,
-      quantity:1,
+      quantity: 1,
     };
 
     try {
       const response = await axios.post("http://localhost:5000/cart", cartData);
+      refetchCart(); // ✅ refetch cart data
       Swal.fire({
-                icon: "success",
-                title: "Product is added to cart ",
-                timer: 3000,
-                showConfirmButton: false,
-              });
-      console.log("Item added to cart:", response.data);
+        icon: "success",
+        title: "Product is added to cart",
+        timer: 3000,
+        showConfirmButton: false,
+      });
     } catch (error) {
-      
-  Swal.fire({
-          icon: "error",
-          title: "Product added failed",
-          text: error.message,
-          timer: 3000,
-          showConfirmButton: false,})
+      Swal.fire({
+        icon: "error",
+        title: "Product add failed",
+        text: error.message,
+        timer: 3000,
+        showConfirmButton: false,
+      });
+    }
+  };
 
+  const handleBuyNow = async () => {
+    if (!user) {
+      navigate("/notloginRegister");
+      return;
+    }
 
+    const cartData = {
+      name: item.name,
+      image: item.image,
+      price: item.price,
+      email: user.email,
+      quantity: 1,
+    };
+
+    try {
+      const response = await axios.post("http://localhost:5000/cart", cartData);
+      refetchCart(); // ✅ refetch cart data
+      navigate("/checkout");
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Product add failed",
+        text: error.message,
+        timer: 3000,
+        showConfirmButton: false,
+      });
     }
   };
 
@@ -106,11 +135,12 @@ const ProductCard = ({ item, isLoading }) => {
           >
             Add to cart
           </button>
-         <Link to="/checkout">
-         <button className="btn bg-[#F5BC3B] text-white w-full lg:w-auto">
+          <button
+            onClick={handleBuyNow}
+            className="btn bg-[#F5BC3B] text-white w-full lg:w-auto"
+          >
             Buy Now
           </button>
-         </Link>
         </div>
       </div>
     </div>

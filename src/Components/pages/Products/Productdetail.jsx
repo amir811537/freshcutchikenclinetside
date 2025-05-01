@@ -3,63 +3,58 @@ import InnerImageZoom from "react-inner-image-zoom";
 import 'react-inner-image-zoom/lib/styles.min.css';
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
+import useCart from "../../../hooks/useCart";
 import axios from "axios";
 
-
-
 const ProductDetail = () => {
+  const product = useLoaderData();
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const { refetchCart } = useCart(user?.email);
 
-const product=useLoaderData()
-// console.log("=========>",product)
+  const handleAddToCart = async () => {
+    if (!user) {
+      navigate("/notloginRegister");
+      return;
+    }
 
-const { user } = useContext(AuthContext);
-const navigate = useNavigate();
+    const cartData = {
+      name: product.name,
+      image: product.image,
+      price: product.price,
+      quantity: 1,
+      email: user.email,
+    };
 
-const handleAddToCart = async () => {
-  if (!user) {
-    navigate("/notloginRegister");
-    return;
-  }
-
-  const cartData = {
-    name: product.name,
-    image: product.image,
-    price: product.price,
-    email: user.email,
+    try {
+      const response = await axios.post("http://localhost:5000/cart", cartData);
+      refetchCart(); // ✅ Refresh cart count/data
+      alert("Product added to cart!");
+    } catch (error) {
+      console.error("Failed to add to cart:", error);
+    }
   };
 
-  try {
-    const response = await axios.post("http://localhost:5000/cart", cartData);
-  alert("product added to cart:", response.data);
-  } catch (error) {
-    console.error("Failed to add to cart:", error);
-  }
-};
-const buyNow = () => alert("Buying now!");
+  const buyNow = () => alert("Buying now!");
 
-
-
-    // Scroll to top when the component is rendered
-    useEffect(() => {
-      window.scrollTo(0, 0);
-      }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto px-4 my-10">
       <div className="flex flex-col lg:flex-row gap-10">
         {/* Image */}
-        <div className="w-full lg:w-[60%] lg:bg-[#f5f5f5] flex products-center justify-center h-[400px] lg:h-[600px] lg:shadow-md rounded-xl">
-        <div className="w-full h-full flex products-center justify-center">
-  <InnerImageZoom
-    src={product.image}
-    zoomSrc={product.image}
-    zoomPreload={true}
-    className="max-h-full max-w-full object-contain"
-  />
-</div>
-
-</div>
-
+        <div className="w-full lg:w-[60%] lg:bg-[#f5f5f5] flex items-center justify-center h-[400px] lg:h-[600px] lg:shadow-md rounded-xl">
+          <div className="w-full h-full flex items-center justify-center">
+            <InnerImageZoom
+              src={product.image}
+              zoomSrc={product.image}
+              zoomPreload={true}
+              className="max-h-full max-w-full object-contain"
+            />
+          </div>
+        </div>
 
         {/* Product Info */}
         <div className="w-full lg:w-[40%] space-y-4">
@@ -72,7 +67,6 @@ const buyNow = () => alert("Buying now!");
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3">
-         
             <button
               onClick={handleAddToCart}
               className="bg-black text-white px-6 py-2 hover:bg-gray-800"

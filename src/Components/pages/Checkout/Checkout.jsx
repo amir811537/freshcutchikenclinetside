@@ -1,69 +1,53 @@
-import { useEffect, useState, useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../../AuthProvider/AuthProvider';
 import { MdDelete } from "react-icons/md";
+import useCart from '../../../hooks/useCart';
 import axios from 'axios';
-import Swal from 'sweetalert2';
-import 'sweetalert2/dist/sweetalert2.min.css';
+
 const Checkout = () => {
   const { user } = useContext(AuthContext);
-  const [cartData, setCartData] = useState([]);
+  const { data: cartData = [], refetchCart, isLoading } = useCart(user?.email);
   const [paymentMethod, setPaymentMethod] = useState("COD");
+  const [showModal, setShowModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
-  // Fetch cart data by user email
   useEffect(() => {
-    if (user?.email) {
-      axios.get(`http://localhost:5000/cart?email=${user.email}`)
-        .then(res => setCartData(res.data))
-        .catch(err => console.error("Error fetching cart:", err));
-    }
-  }, [user]);
+    window.scrollTo(0, 0);
+  }, []);
 
-  // Update quantity
   const handleQuantityChange = (id, newQuantity) => {
     const quantity = parseFloat(newQuantity) || 1;
 
-    setCartData(prev =>
-      prev.map(item =>
-        item._id === id ? { ...item, quantity } : item
-      )
-    );
-
     axios.patch(`http://localhost:5000/cart/${id}`, { quantity })
+      .then(() => {
+        refetchCart();
+      })
       .catch(err => console.error("Failed to update quantity:", err));
   };
 
-  // Delete product with Swal confirmation
   const handleDelete = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    })
-    .then((result) => {
-      if (result.isConfirmed) {
-        axios.delete(`http://localhost:5000/cart/${id}`)
-          .then(() => {
-            setCartData(prev => prev.filter(item => item._id !== id));
-            Swal.fire({
-              title: "Removed!",
-              text: "This product has been removed.",
-              icon: "success"
-            });
-          })
-          .catch(err => console.error("Failed to delete item:", err));
-      }
-    });
+    setDeleteId(id);
+    setShowModal(true);
   };
 
-  // Totals
+  const confirmDelete = () => {
+    axios.delete(`http://localhost:5000/cart/${deleteId}`)
+      .then(() => {
+        refetchCart();
+        setShowModal(false);
+      })
+      .catch(err => {
+        console.error("Failed to delete item:", err);
+        setShowModal(false);
+      });
+  };
+
   const cartTotal = cartData.reduce((acc, item) => acc + parseInt(item.price) * item.quantity, 0);
   const shipping = 0;
   const discount = 0;
   const discountedCartTotal = Math.round((cartTotal + shipping) * (1 - discount / 100));
+
+  if (isLoading) return <p className="text-center mt-10">Loading cart...</p>;
 
   return (
     <div className='px-5 lg:px-0 my-10 max-w-7xl mx-auto'>
@@ -183,6 +167,30 @@ const Checkout = () => {
           </button>
         </div>
       </form>
+
+      {/* Confirmation Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-md">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Are you sure?</h2>
+            <p className="text-gray-600 mb-6">You won't be able to revert this action.</p>
+            <div className="flex justify-end gap-4">
+              <button
+                className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 text-gray-800"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 rounded bg-red-500 hover:bg-red-600 text-white"
+                onClick={confirmDelete}
+              >
+                Yes, delete it
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

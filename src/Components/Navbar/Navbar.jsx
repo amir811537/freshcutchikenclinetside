@@ -1,10 +1,11 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useContext, useEffect, useRef, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import Swal from "sweetalert2";
 import LoginRegister from "../pages/Auth/LoninRegister";
+import useCart from "../../hooks/useCart";
 
 const Navbar = () => {
   const [sidebar, setSidebar] = useState(false);
@@ -20,7 +21,8 @@ const Navbar = () => {
   const { logOut, user } =useContext(AuthContext);
 
 
-
+  const { data: cartData = [], refetch } = useCart(user?.email);
+  
 
 
   // Logout Handler
@@ -102,10 +104,11 @@ const Navbar = () => {
           <div className="lg:hidden block">
             <div className="flex justify-start items-center gap-3">
               <div className="text-lg">
+                <Link to="/checkout">
                 <div className="relative">
                   <div className="t-0 absolute left-3">
                     <p className="flex h-1 w-1 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
-                      10
+                      {cartData.length}
                     </p>
                   </div>
                   <svg
@@ -123,6 +126,7 @@ const Navbar = () => {
                     />
                   </svg>
                 </div>
+                </Link>
               </div>
             </div>
           </div>
@@ -132,11 +136,11 @@ const Navbar = () => {
             <div className="flex justify-center items-center gap-7">
               <div className="flex justify-start items-center gap-3">
                 <div className="text-lg">
+                  <Link  to="/checkout">
                   <div className="relative">
                     <div className="t-0 absolute left-3">
                       <p className="flex h-1 w-1 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
-                        10
-                      </p>
+{cartData.length}                      </p>
                     </div>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -153,6 +157,7 @@ const Navbar = () => {
                       />
                     </svg>
                   </div>
+                  </Link>
                 </div>
               </div>
 
