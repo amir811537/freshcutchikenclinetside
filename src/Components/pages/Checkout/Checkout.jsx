@@ -1,29 +1,28 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../../AuthProvider/AuthProvider';
 import { MdDelete } from "react-icons/md";
 import useCart from '../../../hooks/useCart';
 import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const { data: cartData = [], refetchCart, isLoading } = useCart(user?.email);
+
   const [paymentMethod, setPaymentMethod] = useState("COD");
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
+  const [name, setName] = useState('');
+  const [address, setAddress] = useState('');
+  const [apartment, setApartment] = useState('');
+  const [phone, setPhone] = useState('');
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const handleQuantityChange = (id, newQuantity) => {
-    const quantity = parseFloat(newQuantity) || 1;
-
-    axios.patch(`http://localhost:5000/cart/${id}`, { quantity })
-      .then(() => {
-        refetchCart();
-      })
-      .catch(err => console.error("Failed to update quantity:", err));
-  };
 
   const handleDelete = (id) => {
     setDeleteId(id);
@@ -42,7 +41,46 @@ const Checkout = () => {
       });
   };
 
-  const cartTotal = cartData.reduce((acc, item) => acc + parseInt(item.price) * item.quantity, 0);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const fullOrder = {
+        customer: {
+          name,
+          address,
+          apartment,
+          phone,
+          email: user?.email,
+        },
+        items: cartData.map(item => ({
+          productId: item._id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity || 1,
+          image: item.image,
+        })),
+        totalAmount: discountedCartTotal,
+        paymentMethod,
+        orderDate: new Date().toISOString()
+      };
+
+      await axios.post("http://localhost:5000/order", fullOrder);
+
+      await axios.delete(`http://localhost:5000/cart?email=${user.email}`);
+
+      navigate("/dashboard/order-success");
+    } catch (error) {
+      console.error("Order failed:", error);
+      alert("Failed to place order.");
+    }
+  };
+
+  const cartTotal = cartData.reduce((acc, item) => {
+    const qty = item.quantity || 1;
+    return acc + parseFloat(item.price) * qty;
+  }, 0);
+
   const shipping = 0;
   const discount = 0;
   const discountedCartTotal = Math.round((cartTotal + shipping) * (1 - discount / 100));
@@ -52,25 +90,24 @@ const Checkout = () => {
   return (
     <div className='px-5 lg:px-0 my-10 max-w-7xl mx-auto'>
       <h1 className='text-2xl font-semibold font-inter mb-6'>Billing Details</h1>
-      <form className='flex flex-col lg:flex-row justify-between gap-10'>
-
+      <form className='flex flex-col lg:flex-row justify-between gap-10' onSubmit={handleSubmit}>
         {/* Billing Info */}
         <div className='flex-1 space-y-6'>
           <div>
             <label className='text-[#00000090]'>Name<sup className='text-red-500'>*</sup></label>
-            <input type="text" required className="input w-full bg-[#F5F5F5] mt-2" />
+            <input type="text" required className="input w-full bg-[#F5F5F5] mt-2" value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div>
             <label className='text-[#00000090]'>Address<sup className='text-red-500'>*</sup></label>
-            <input type="text" required className="input w-full bg-[#F5F5F5] mt-2" />
+            <input type="text" required className="input w-full bg-[#F5F5F5] mt-2" value={address} onChange={(e) => setAddress(e.target.value)} />
           </div>
           <div>
             <label className='text-[#00000090]'>Apartment, Road, Floor (Optional)</label>
-            <input type="text" className="input w-full bg-[#F5F5F5] mt-2" />
+            <input type="text" className="input w-full bg-[#F5F5F5] mt-2" value={apartment} onChange={(e) => setApartment(e.target.value)} />
           </div>
           <div>
             <label className='text-[#00000090]'>Phone Number<sup className='text-red-500'>*</sup></label>
-            <input type="tel" required className="input w-full bg-[#F5F5F5] mt-2" />
+            <input type="tel" required className="input w-full bg-[#F5F5F5] mt-2" value={phone} onChange={(e) => setPhone(e.target.value)} />
           </div>
           <div>
             <label className='text-[#00000090]'>Email<sup className='text-red-500'>*</sup></label>
@@ -90,8 +127,10 @@ const Checkout = () => {
                     <p className='text-sm text-gray-500'>৳{item.price} per kg</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  <p className='font-semibold'>৳{item.price * item.quantity}</p>
+                <div className="flex flex-col items-end">
+                  <p className='font-semibold'>
+                    ৳{item.price} × {item.quantity || 1} kg = ৳{(item.price * (item.quantity || 1)).toFixed(2)}
+                  </p>
                   <button
                     className="text-red-500 text-2xl font-bold hover:text-red-700"
                     type="button"
@@ -101,24 +140,13 @@ const Checkout = () => {
                   </button>
                 </div>
               </div>
-              <div className='flex items-center gap-3'>
-                <label className='text-sm text-gray-600'>Quantity (kg):</label>
-                <input
-                  type="number"
-                  min="0.5"
-                  step="0.5"
-                  value={item.quantity}
-                  onChange={(e) => handleQuantityChange(item._id, e.target.value)}
-                  className="input input-bordered w-24"
-                />
-              </div>
             </div>
           ))}
 
           <div className="pt-6 space-y-4 border-t">
             <div className="flex justify-between">
               <span>Subtotal:</span>
-              <span>৳{cartTotal}</span>
+              <span>৳{cartTotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span>Shipping:</span>
@@ -130,7 +158,7 @@ const Checkout = () => {
             </div>
             <div className="flex justify-between font-bold text-lg">
               <span>Total:</span>
-              <span>৳{discountedCartTotal}</span>
+              <span>৳{discountedCartTotal.toFixed(2)}</span>
             </div>
           </div>
 
@@ -168,7 +196,7 @@ const Checkout = () => {
         </div>
       </form>
 
-      {/* Confirmation Modal */}
+      {/* Delete Confirmation Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-md">

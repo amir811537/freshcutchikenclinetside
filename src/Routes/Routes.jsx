@@ -8,46 +8,60 @@ import Productdetail from "../Components/pages/Products/Productdetail";
 import PrivateRoute from "./PrivateRoute";
 import NotLoginRegisterUser from "../Components/pages/Auth/NotLoginRegisterUser";
 import Checkout from "../Components/pages/Checkout/Checkout";
-
-
+import DashoardLayout from "../Layouts/DashoardLayout";
+import Cart from "../Components/DashBoard/Cart";
+import SuccessOrder from "../Components/DashBoard/Order/SuccessOrder";
 
 const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Mainlayout />,
+    children: [
+      {
+        index: true,
+        element: <Home />
+      },
+      {
+        path: "/Products",
+        element: <AllProduct />
+      },
+      {
+        path: "/contact",
+        element: <Contact />
+      },
+      {
+        path: "/service",
+        element: <PrivateRoute><Service /></PrivateRoute>
+      },
+      {
+        path: '/productdetail/:id',
+        element: <Productdetail />,
+        loader: ({ params }) => fetch(`http://localhost:5000/products/${params.id}`)
+      },
+      {
+        path: '/checkout',
+        element: <PrivateRoute><Checkout /></PrivateRoute>
+      },
+      {
+        path: '/notloginRegister',
+        element: <NotLoginRegisterUser />
+      }
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <PrivateRoute><DashoardLayout /></PrivateRoute>,
+    children: [
     {
-      path: '/',
-      element: <Mainlayout />,
-      children: [
-        {
-          index: true, // ✅ This makes it the default child route
-          element: <Home />
-        },
-        { 
-          path:"/Products",
-          element:<AllProduct></AllProduct>
-        },
-        {
-          path:"/contact",
-          element:<Contact></Contact>
-        },
-        {
-          path:"/service",
-          element:<PrivateRoute><Service></Service></PrivateRoute>
-        },
-        {
-          path:'/productdetail/:id',
-          element:<Productdetail></Productdetail>,
-          loader:({params})=> fetch(`http://localhost:5000/products/${params.id}`)
-        },
-        {
-          path:'/checkout',
-          element:<Checkout></Checkout>,
-      
-        },
-        {
-          path:'/notloginRegister',
-          element:<NotLoginRegisterUser></NotLoginRegisterUser>
-        }
-      ]
+      path:'cart',
+      element:<Cart></Cart>
+    },
+    {
+      path:'order-success',
+      element:<SuccessOrder></SuccessOrder>
     }
-  ]);
-  
+    ]
+  }
+]);
+
 export default router;

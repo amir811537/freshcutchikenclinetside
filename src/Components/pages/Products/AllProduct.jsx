@@ -1,36 +1,38 @@
+// src/pages/Products/AllProduct.jsx
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import {  useSearchParams } from "react-router-dom";
 import useProducts from "../../../hooks/useProducts";
 import ProductCard from "./ProductCard";
 import FilterSection from "./FilterSection";
 
-
 const AllProduct = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const initialCategory = searchParams.get("category");
 
-  const { isPending, data: products, isError } = useProducts();
+  const { isPending, data: products = [], isError } = useProducts();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [location.pathname]);
 
-  const uniqueCategories = [...new Set(products?.map(item => item.category))];
+    if (initialCategory) {
+      setSelectedCategories([initialCategory]);
+    }
+  }, [initialCategory]);
+
+  const uniqueCategories = [...new Set(products.map(item => item.category))];
 
   const handleCategoryChange = (category) => {
     setSelectedCategories(prev =>
       prev.includes(category)
-        ? prev.filter((cat) => cat !== category)
+        ? prev.filter(cat => cat !== category)
         : [...prev, category]
     );
   };
 
   const filteredProducts = selectedCategories.length
-    ? products?.filter(item => selectedCategories.includes(item.category))
+    ? products.filter(item => selectedCategories.includes(item.category))
     : products;
-
-  // ...rest remains the same
-
 
   if (isPending) {
     return (
@@ -63,9 +65,9 @@ const AllProduct = () => {
 
       {/* Product Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mt-10">
-        {filteredProducts?.length > 0 ? (
+        {filteredProducts.length > 0 ? (
           filteredProducts.map((item) => (
-            <ProductCard key={item.id} item={item} />
+            <ProductCard key={item._id} item={item} />
           ))
         ) : (
           <div className="col-span-full text-center text-gray-500">

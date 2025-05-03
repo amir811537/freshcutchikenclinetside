@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import PropTypes from "prop-types";
 import { useContext } from "react";
@@ -63,7 +64,7 @@ const ProductCard = ({ item, isLoading }) => {
     try {
       const response = await axios.post("http://localhost:5000/cart", cartData);
       refetchCart(); // ✅ refetch cart data
-      navigate("/checkout");
+      navigate("/dashboard/cart");
     } catch (error) {
       Swal.fire({
         icon: "error",

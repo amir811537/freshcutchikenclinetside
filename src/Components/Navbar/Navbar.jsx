@@ -21,7 +21,7 @@ const Navbar = () => {
   const { logOut, user } =useContext(AuthContext);
 
 
-  const { data: cartData = [], refetch } = useCart(user?.email);
+  const { data: cartData = [] } = useCart(user?.email);
   
 
 
@@ -104,7 +104,7 @@ const Navbar = () => {
           <div className="lg:hidden block">
             <div className="flex justify-start items-center gap-3">
               <div className="text-lg">
-                <Link to="/checkout">
+                <Link to="/dashboard/cart">
                 <div className="relative">
                   <div className="t-0 absolute left-3">
                     <p className="flex h-1 w-1 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
@@ -136,7 +136,7 @@ const Navbar = () => {
             <div className="flex justify-center items-center gap-7">
               <div className="flex justify-start items-center gap-3">
                 <div className="text-lg">
-                  <Link  to="/checkout">
+                  <Link  to="/dashboard/cart">
                   <div className="relative">
                     <div className="t-0 absolute left-3">
                       <p className="flex h-1 w-1 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
@@ -204,6 +204,9 @@ const Navbar = () => {
               }
             >
               {path === "/" ? "Home" : path.replace("/", "")}
+
+
+              
             </NavLink>
           ))}
           <div className="flex justify-center items-center w-full">
