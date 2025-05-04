@@ -128,7 +128,11 @@ const ProductCard = ({ item, isLoading }) => {
             <span className="line-through text-gray-500 text-sm">৳{item.oldPrice}</span>
           </div>
         </div>
-        <p className="hidden lg:block">{shortDescription}</p>
+        <div
+  className="hidden lg:block text-sm text-gray-600"
+  dangerouslySetInnerHTML={{ __html: shortDescription }}
+></div>
+
         <div className="flex lg:flex-row flex-col gap-5 justify-between items-center w-full">
           <button
             onClick={handleAddToCart}

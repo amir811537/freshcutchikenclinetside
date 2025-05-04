@@ -44,6 +44,7 @@ const LoginRegister = ({ showModal, setShowModal }) => {
           name,
           email,
           method: "email",
+          role:"user"
         };
 
         return axios.post("http://localhost:5000/users", userData);
@@ -105,6 +106,7 @@ const LoginRegister = ({ showModal, setShowModal }) => {
           name: result.user.displayName,
           email: result.user.email,
           method: "google",
+          role:"user"
         };
 
         return axios.post("http://localhost:5000/users", googleUser);

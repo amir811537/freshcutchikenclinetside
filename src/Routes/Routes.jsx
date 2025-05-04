@@ -11,6 +11,9 @@ import Checkout from "../Components/pages/Checkout/Checkout";
 import DashoardLayout from "../Layouts/DashoardLayout";
 import Cart from "../Components/DashBoard/Cart";
 import SuccessOrder from "../Components/DashBoard/Order/SuccessOrder";
+import MyOrder from "../Components/DashBoard/Order/MyOrder/MyOrder";
+import UserHome from "../Components/DashBoard/UserHome";
+import AddProduct from "../Components/DashBoard/ProductManagement/AddProduct";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +62,19 @@ const router = createBrowserRouter([
     {
       path:'order-success',
       element:<SuccessOrder></SuccessOrder>
+    },
+    {
+
+      path:"myOrders",
+      element:<MyOrder></MyOrder>
+    },
+    {
+      path:"userHome",
+      element:<UserHome></UserHome>
+    },
+    {
+      path: 'addProduct',
+      element: <AddProduct></AddProduct>
     }
     ]
   }

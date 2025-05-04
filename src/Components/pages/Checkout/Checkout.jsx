@@ -60,6 +60,7 @@ const Checkout = () => {
           quantity: item.quantity || 1,
           image: item.image,
         })),
+        status:"pending",
         totalAmount: discountedCartTotal,
         paymentMethod,
         orderDate: new Date().toISOString()
@@ -127,7 +128,7 @@ const Checkout = () => {
                     <p className='text-sm text-gray-500'>৳{item.price} per kg</p>
                   </div>
                 </div>
-                <div className="flex flex-col items-end">
+                <div className="flex justify-center  items-end">
                   <p className='font-semibold'>
                     ৳{item.price} × {item.quantity || 1} kg = ৳{(item.price * (item.quantity || 1)).toFixed(2)}
                   </p>
