@@ -4,7 +4,6 @@ import {
   FaList,
   FaBars,
   FaSignOutAlt,
-  FaUser,
 } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
@@ -92,17 +91,6 @@ const Dashboard = () => {
                     onClick={() => setIsSidebarOpen(false)}
                   >
                     <FaList /> All Products
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/dashboard/allUser"
-                    className={({ isActive }) =>
-                      isActive ? activeLink : normalLink
-                    }
-                    onClick={() => setIsSidebarOpen(false)}
-                  >
-                    <FaUser /> User Management 
                   </NavLink>
                 </li>
               </>

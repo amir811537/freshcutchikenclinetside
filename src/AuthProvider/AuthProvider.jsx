@@ -52,8 +52,10 @@ const AuthProvider = ({ children }) => {
 
       if (currentUser?.email) {
         try {
-          const res = await axios.get(`http://localhost:5000/users/${currentUser.email}`);
+          const res = await axios.get(`https://freshcutserverside.vercel.app/users/${currentUser.email}`);
           setRole(res.data?.role || "user"); // default to "user" if no role
+        
+        // console.log("====>",{role})
         } catch (error) {
           console.error("Failed to fetch user role", error);
           setRole("user");
