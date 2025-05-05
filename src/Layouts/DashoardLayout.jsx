@@ -5,6 +5,8 @@ import {
   FaBars,
   FaSignOutAlt,
 } from "react-icons/fa";
+import { IoMdAddCircle } from "react-icons/io";
+
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../AuthProvider/AuthProvider";
@@ -76,7 +78,8 @@ const Dashboard = () => {
                 className={({ isActive }) => (isActive ? activeLink : normalLink)}
                 onClick={() => setIsSidebarOpen(false)}
               >
-                <FaList /> Add Product
+                <IoMdAddCircle />
+                Add Product
               </NavLink>
             </li>
             <div className="divider my-2" />
