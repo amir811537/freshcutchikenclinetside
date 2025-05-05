@@ -39,7 +39,7 @@ const router = createBrowserRouter([
       {
         path: '/productdetail/:id',
         element: <Productdetail />,
-        loader: ({ params }) => fetch(`http://localhost:5000/products/${params.id}`)
+        loader: ({ params }) => fetch(`https://freshcutserverside.vercel.app/products/${params.id}`)
       },
       {
         path: '/checkout',

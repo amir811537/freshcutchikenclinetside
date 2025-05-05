@@ -2,7 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 const fetchProducts = async () => {
-  const res = await fetch('http://localhost:5000/products');
+  const res = await fetch('https://freshcutserverside.vercel.app/products');
   if (!res.ok) {
     throw new Error('Failed to fetch products');
   }

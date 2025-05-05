@@ -30,7 +30,7 @@ const Checkout = () => {
   };
 
   const confirmDelete = () => {
-    axios.delete(`http://localhost:5000/cart/${deleteId}`)
+    axios.delete(`https://freshcutserverside.vercel.app/cart/${deleteId}`)
       .then(() => {
         refetchCart();
         setShowModal(false);
@@ -66,9 +66,9 @@ const Checkout = () => {
         orderDate: new Date().toISOString()
       };
 
-      await axios.post("http://localhost:5000/order", fullOrder);
+      await axios.post("https://freshcutserverside.vercel.app/order", fullOrder);
 
-      await axios.delete(`http://localhost:5000/cart?email=${user.email}`);
+      await axios.delete(`https://freshcutserverside.vercel.app/cart?email=${user.email}`);
 
       navigate("/dashboard/order-success");
     } catch (error) {

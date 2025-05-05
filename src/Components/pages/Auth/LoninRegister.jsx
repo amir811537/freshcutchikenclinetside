@@ -47,7 +47,7 @@ const LoginRegister = ({ showModal, setShowModal }) => {
           role:"user"
         };
 
-        return axios.post("http://localhost:5000/users", userData);
+        return axios.post("https://freshcutserverside.vercel.app/users", userData);
       })
       .then(() => {
         Swal.fire({
@@ -109,7 +109,7 @@ const LoginRegister = ({ showModal, setShowModal }) => {
           role:"user"
         };
 
-        return axios.post("http://localhost:5000/users", googleUser);
+        return axios.post("https://freshcutserverside.vercel.app/users", googleUser);
       })
       .then(() => {
         Swal.fire({

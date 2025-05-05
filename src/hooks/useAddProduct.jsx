@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 
 const postProduct = async (product) => {
-  const res = await fetch("http://localhost:5000/products", {
+  const res = await fetch("https://freshcutserverside.vercel.app/products", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

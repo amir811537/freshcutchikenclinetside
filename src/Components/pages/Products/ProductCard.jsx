@@ -28,7 +28,7 @@ const ProductCard = ({ item, isLoading }) => {
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/cart", cartData);
+      const response = await axios.post("https://freshcutserverside.vercel.app/cart", cartData);
       refetchCart(); // ✅ refetch cart data
       Swal.fire({
         icon: "success",
@@ -62,7 +62,7 @@ const ProductCard = ({ item, isLoading }) => {
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/cart", cartData);
+      const response = await axios.post("https://freshcutserverside.vercel.app/cart", cartData);
       refetchCart(); // ✅ refetch cart data
       navigate("/dashboard/cart");
     } catch (error) {
