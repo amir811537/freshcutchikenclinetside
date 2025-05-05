@@ -4,16 +4,16 @@ import {
   FaList,
   FaBars,
   FaSignOutAlt,
+  FaUser,
 } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
-
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { logOut } = useContext(AuthContext);
+  const { logOut, role } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -25,12 +25,13 @@ const Dashboard = () => {
     }
   };
 
-  const activeLink = "flex items-center gap-2 font-semibold text-white bg-orange-600 px-3 py-2 rounded";
-  const normalLink = "flex items-center gap-2 text-white px-3 py-2 hover:bg-orange-500 rounded";
+  const activeLink =
+    "flex items-center gap-2 font-semibold text-white bg-orange-600 px-3 py-2 rounded";
+  const normalLink =
+    "flex items-center gap-2 text-white px-3 py-2 hover:bg-orange-500 rounded";
 
   return (
     <div className="flex min-h-screen relative">
-      {/* Overlay for mobile */}
       {isSidebarOpen && (
         <div
           onClick={() => setIsSidebarOpen(false)}
@@ -47,42 +48,104 @@ const Dashboard = () => {
         <div>
           <h2 className="text-2xl font-bold text-white p-4">Dashboard</h2>
           <ul className="menu px-4 space-y-2">
-            <li>
-              <NavLink
-                to="/dashboard/userHome"
-                className={({ isActive }) => (isActive ? activeLink : normalLink)}
-                onClick={() => setIsSidebarOpen(false)}
-              >
-                <FaHome /> User Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/dashboard/cart"
-                className={({ isActive }) => (isActive ? activeLink : normalLink)}
-                onClick={() => setIsSidebarOpen(false)}
-              >
-                <FaShoppingCart /> My Cart
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/dashboard/myOrders"
-                className={({ isActive }) => (isActive ? activeLink : normalLink)}
-                onClick={() => setIsSidebarOpen(false)}
-              >
-                <FaList /> My Orders
-              </NavLink>
-              <NavLink
-                to="/dashboard/addProduct"
-                className={({ isActive }) => (isActive ? activeLink : normalLink)}
-                onClick={() => setIsSidebarOpen(false)}
-              >
-                <IoMdAddCircle />
-                Add Product
-              </NavLink>
-            </li>
+            {role === "admin" ? (
+              <>
+                <li>
+                  <NavLink
+                    to="/dashboard/adminHome"
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                    <FaHome /> Admin Home
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/dashboard/manageOrders"
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                    <FaList /> Manage Orders
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/dashboard/addProduct"
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                    <IoMdAddCircle /> Add Product
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/dashboard/allProduct"
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                    <FaList /> All Products
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/dashboard/allUser"
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                    <FaUser /> User Management 
+                  </NavLink>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <NavLink
+                    to="/dashboard/userHome"
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                    <FaHome /> User Home
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/dashboard/cart"
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                    <FaShoppingCart /> My Cart
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/dashboard/myOrders"
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                    <FaList /> My Orders
+                  </NavLink>
+                </li>
+              </>
+            )}
+
             <div className="divider my-2" />
+
             <li>
               <NavLink
                 to="/"
@@ -108,7 +171,6 @@ const Dashboard = () => {
 
       {/* Main Content */}
       <div className="flex-1 md:ml-64">
-        {/* Mobile header */}
         <div className="md:hidden bg-orange-300 p-2 shadow flex justify-between items-center z-20 relative">
           <button
             onClick={() => setIsSidebarOpen(true)}

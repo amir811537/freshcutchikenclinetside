@@ -1,66 +1,84 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { createContext, useEffect, useState } from "react";
-
-import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 import { app } from "../firebase/firebase.config";
+import axios from "axios";
 
- export const AuthContext=createContext(null);
- 
+export const AuthContext = createContext(null);
+
 const auth = getAuth(app);
 
+const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [role, setRole] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  const googleProvider = new GoogleAuthProvider();
 
-const AuthProvider = ({children}) => {
+  const googleSignin = () => {
+    setLoading(true);
+    return signInWithPopup(auth, googleProvider);
+  };
 
-    const googleProvider= new GoogleAuthProvider();
-    const googleSignin=(value)=>{
-        setloading(true);
-        return signInWithPopup(auth,googleProvider);
-       }
+  const signuprg = (email, password) => {
+    setLoading(true);
+    return signInWithEmailAndPassword(auth, email, password);
+  };
 
-    const [user,setuser]=useState(null);
-    const [loading,setloading]=useState(true);
+  const createUser = (email, password) => {
+    setLoading(true);
+    return createUserWithEmailAndPassword(auth, email, password);
+  };
 
-
-
-    const signuprg =(email,password)=>{
-        setloading(true);
-        return signInWithEmailAndPassword(auth,email,password);
-      }
-
-const createUser =(email,password)=>{
-    setloading(true)
-    return createUserWithEmailAndPassword(auth,email,password);
-}
-
-const logOut =()=>{
+  const logOut = () => {
+    setLoading(true);
     return signOut(auth);
-}
+  };
 
+  // Fetch user role when auth state changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
 
-
-useEffect(()=>{
- const unsubcribe=   onAuthStateChanged(auth,currentuser =>{
-        console.log('user in the auth state changed', currentuser);
-        setuser(currentuser);
-        setloading(false);
+      if (currentUser?.email) {
+        try {
+          const res = await axios.get(`http://localhost:5000/users/${currentUser.email}`);
+          setRole(res.data?.role || "user"); // default to "user" if no role
+        } catch (error) {
+          console.error("Failed to fetch user role", error);
+          setRole("user");
+        }
+      } else {
+        setRole(null);
+      }
     });
-    return ()=>{
-        unsubcribe();
-    }
-},[])
 
-const authinfo ={
-    user,createUser,logOut,signuprg,googleSignin,loading
-}
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
-    return (
-       <AuthContext.Provider value={authinfo}>
+  const authinfo = {
+    user,
+    role,
+    createUser,
+    logOut,
+    signuprg,
+    googleSignin,
+    loading,
+  };
 
-{children}
-       </AuthContext.Provider>
-    );
+  return <AuthContext.Provider value={authinfo}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

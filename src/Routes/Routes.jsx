@@ -14,6 +14,9 @@ import SuccessOrder from "../Components/DashBoard/Order/SuccessOrder";
 import MyOrder from "../Components/DashBoard/Order/MyOrder/MyOrder";
 import UserHome from "../Components/DashBoard/UserHome";
 import AddProduct from "../Components/DashBoard/ProductManagement/AddProduct";
+import ProductList from "../Components/DashBoard/ProductManagement/ProductLIst";
+import AdminHome from "../Components/DashBoard/AdminHome";
+import ManageOrder from "../Components/DashBoard/Order/ManageOrder/ManageOrder";
 
 const router = createBrowserRouter([
   {
@@ -69,12 +72,25 @@ const router = createBrowserRouter([
       element:<MyOrder></MyOrder>
     },
     {
+
+      path:"manageOrders",
+      element:<ManageOrder></ManageOrder>
+    },
+    {
       path:"userHome",
       element:<UserHome></UserHome>
     },
     {
+      path:"adminHome",
+      element:<AdminHome></AdminHome>
+    },
+    {
       path: 'addProduct',
       element: <AddProduct></AddProduct>
+    },
+    {
+      path:"allProduct",
+      element:<ProductList></ProductList>
     }
     ]
   }
