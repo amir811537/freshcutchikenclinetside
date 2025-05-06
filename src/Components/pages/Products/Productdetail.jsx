@@ -29,7 +29,7 @@ const ProductDetail = () => {
 
     try {
       // eslint-disable-next-line no-unused-vars
-      const response = await axios.post("https://freshcutserverside.vercel.app/cart", cartData);
+      const response = await axios.post("https://serversidefreshcut.vercel.app/cart", cartData);
       refetchCart(); // ✅ Refresh cart count/data
       Swal.fire({
         icon: "success",
@@ -66,7 +66,7 @@ const ProductDetail = () => {
 
     try {
       // eslint-disable-next-line no-unused-vars
-      const response = await axios.post("https://freshcutserverside.vercel.app/cart", cartData);
+      const response = await axios.post("https://serversidefreshcut.vercel.app/cart", cartData);
       refetchCart(); // ✅ refetch cart data
       navigate("/dashboard/cart");
     } catch (error) {

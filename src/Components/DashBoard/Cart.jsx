@@ -31,7 +31,7 @@ const Cart = () => {
       [id]: qty
     }));
     try {
-      await axios.patch(`https://freshcutserverside.vercel.app/cart/${id}`, { quantity: qty });
+      await axios.patch(`https://serversidefreshcut.vercel.app/cart/${id}`, { quantity: qty });
       refetchCart();
     } catch (error) {
       console.error("Failed to update quantity:", error);
@@ -44,7 +44,7 @@ const Cart = () => {
   };
 
   const confirmDelete = () => {
-    axios.delete(`https://freshcutserverside.vercel.app/cart/${deleteId}`)
+    axios.delete(`https://serversidefreshcut.vercel.app/cart/${deleteId}`)
       .then(() => {
         refetchCart();
         setShowModal(false);

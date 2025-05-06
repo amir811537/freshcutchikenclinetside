@@ -47,7 +47,7 @@ const LoginRegister = ({ showModal, setShowModal }) => {
           role:"user"
         };
 
-        return axios.post("https://freshcutserverside.vercel.app/users", userData);
+        return axios.post("https://serversidefreshcut.vercel.app/users", userData);
       })
       .then(() => {
         Swal.fire({
@@ -109,7 +109,7 @@ const LoginRegister = ({ showModal, setShowModal }) => {
           role:"user"
         };
 
-        return axios.post("https://freshcutserverside.vercel.app/users", googleUser);
+        return axios.post("https://serversidefreshcut.vercel.app/users", googleUser);
       })
       .then(() => {
         Swal.fire({

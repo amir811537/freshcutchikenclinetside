@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 const fetchCart = async (email) => {
-  const res = await axios.get(`https://freshcutserverside.vercel.app/cart?email=${email}`);
+  const res = await axios.get(`https://serversidefreshcut.vercel.app/cart?email=${email}`);
   return res.data;
 };
 

@@ -8,7 +8,7 @@ const ProductList = () => {
 
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
-      const res = await fetch(`https://freshcutserverside.vercel.app/products/${id}`, {
+      const res = await fetch(`https://serversidefreshcut.vercel.app/products/${id}`, {
         method: "DELETE",
       });
       if (!res.ok) {

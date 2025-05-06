@@ -3,7 +3,7 @@
 import axios from "axios";
 
 const axiosSecure = axios.create({
-  baseURL: "https://freshcutserverside.vercel.app", // adjust as needed
+  baseURL: "https://serversidefreshcut.vercel.app", // adjust as needed
 });
 
 export default axiosSecure;
