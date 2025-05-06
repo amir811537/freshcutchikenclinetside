@@ -1,8 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { useState } from 'react';
 
 const ManageOrder = () => {
+  const [selectedStatuses, setSelectedStatuses] = useState([
+    'pending',
+    'confirmed',
+    'shipping',
+    'delivered',
+  ]);
+
   const {
     data: orders = [],
     isLoading,
@@ -18,11 +26,13 @@ const ManageOrder = () => {
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      const res = await axios.patch(`https://serversidefreshcut.vercel.app/order/${orderId}`, {
-        status: newStatus,
-      });
+      const res = await axios.patch(
+        `https://serversidefreshcut.vercel.app/order/${orderId}`,
+        { status: newStatus },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
 
-      if (res.data.modifiedCount > 0 || res.data.success) {
+      if (res.data.success) {
         Swal.fire('Success', 'Order status updated!', 'success');
         refetch();
       } else {
@@ -34,18 +44,62 @@ const ManageOrder = () => {
     }
   };
 
+  const toggleStatusFilter = (status) => {
+    setSelectedStatuses((prev) =>
+      prev.includes(status)
+        ? prev.filter((s) => s !== status)
+        : [...prev, status]
+    );
+  };
+
+  const filteredOrders = orders.filter((order) =>
+    selectedStatuses.includes(order.status)
+  );
+
+  const statusColor = (status) => {
+    switch (status) {
+      case 'pending':
+        return 'bg-yellow-500';
+      case 'confirmed':
+        return 'bg-blue-500';
+      case 'shipping':
+        return 'bg-purple-500';
+      case 'delivered':
+        return 'bg-green-600';
+      default:
+        return 'bg-gray-500';
+    }
+  };
+
   if (isLoading) return <p>Loading orders...</p>;
   if (isError) return <p>Failed to load orders.</p>;
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-6">Manage Orders</h2>
+      <h2 className="text-2xl font-bold mb-4">Manage Orders</h2>
 
-      {orders.length === 0 ? (
-        <p>No orders found.</p>
+      <div className="mb-6">
+        <h4 className="font-semibold mb-2">Filter by Status:</h4>
+        {['pending', 'confirmed', 'shipping', 'delivered'].map((status) => (
+          <label key={status} className="mr-4 inline-flex items-center space-x-1">
+            <input
+              type="checkbox"
+              checked={selectedStatuses.includes(status)}
+              onChange={() => toggleStatusFilter(status)}
+              className="mr-1"
+            />
+            <span className={`px-2 py-1 rounded text-white text-sm ${statusColor(status)}`}>
+              {status}
+            </span>
+          </label>
+        ))}
+      </div>
+
+      {filteredOrders.length === 0 ? (
+        <p>No orders found for selected status.</p>
       ) : (
         <div className="space-y-6">
-          {orders.map((order) => (
+          {filteredOrders.map((order) => (
             <div
               key={order._id}
               className="border rounded-lg p-4 shadow-sm bg-white"
@@ -64,8 +118,17 @@ const ManageOrder = () => {
                   Order Date:{' '}
                   {new Date(order.orderDate).toLocaleString('en-BD')}
                 </p>
-                <div className="mt-2">
-                  <label className="font-medium mr-2">Status:</label>
+                <div className="mt-2 flex items-center gap-4">
+                  <p>
+                    <span className="font-medium mr-2">Status:</span>
+                    <span
+                      className={`px-2 py-1 rounded text-white text-sm ${statusColor(
+                        order.status
+                      )}`}
+                    >
+                      {order.status}
+                    </span>
+                  </p>
                   <select
                     className="border px-2 py-1 rounded"
                     value={order.status}
