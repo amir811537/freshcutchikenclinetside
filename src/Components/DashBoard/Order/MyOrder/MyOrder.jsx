@@ -46,15 +46,23 @@ const MyOrder = () => {
             <div className="flex flex-wrap justify-between items-center">
               <p><strong>Order Date:</strong> {new Date(order.orderDate).toLocaleString()}</p>
               <p>
-                <strong>Status:</strong>
-                <span className={`ml-2 px-2 py-1 rounded text-white text-sm ${
-                  order.status === 'pending' ? 'bg-yellow-500' :
-                  order.status === 'confirmed' ? 'bg-green-500' :
-                  'bg-gray-500'
-                }`}>
-                  {order.status}
-                </span>
-              </p>
+    <strong>Status:</strong>
+    <span
+      className={`ml-2 px-2 py-1 rounded text-white text-sm ${
+        order.status === 'pending'
+          ? 'bg-yellow-500'
+          : order.status === 'confirmed'
+          ? 'bg-blue-500'
+          : order.status === 'shipping'
+          ? 'bg-purple-500'
+          : order.status === 'delivered'
+          ? 'bg-green-600'
+          : 'bg-gray-500'
+      }`}
+    >
+      {order.status}
+    </span>
+  </p>
               <p><strong>Total:</strong> ৳{order.totalAmount}</p>
               <p><strong>Payment:</strong> {order.paymentMethod}</p>
             </div>

@@ -49,10 +49,22 @@ const UserHome = () => {
             {recentOrders.map((order) => (
               <li key={order._id} className="border rounded p-3 shadow-sm bg-white">
                 <p><strong>Date:</strong> {new Date(order.orderDate).toLocaleDateString()}</p>
-                <p><strong>Status:</strong> <span className={`font-semibold ${
-                  order.status === 'pending' ? 'text-yellow-500' :
-                  order.status === 'confirmed' ? 'text-green-600' : 'text-gray-500'
-                }`}>{order.status}</span></p>
+                <p>
+                  <strong>Status:</strong>
+                  <span className={`ml-2 px-2 py-1 rounded text-white text-sm ${
+                    order.status === 'pending'
+                      ? 'bg-yellow-500'
+                      : order.status === 'confirmed'
+                      ? 'bg-blue-500'
+                      : order.status === 'shipping'
+                      ? 'bg-purple-500'
+                      : order.status === 'delivered'
+                      ? 'bg-green-600'
+                      : 'bg-gray-500'
+                  }`}>
+                    {order.status}
+                  </span>
+                </p>
                 <p><strong>Total:</strong> ৳{order.totalAmount}</p>
               </li>
             ))}

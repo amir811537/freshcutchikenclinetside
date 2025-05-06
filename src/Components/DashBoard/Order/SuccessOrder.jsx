@@ -19,7 +19,7 @@ const SuccessOrder = () => {
                 Thank you for your purchase.
             </p>
 
-    
+
             {/* <!-- Contact Information --> */}
             <div className="pt-8 mt-8 border-t border-gray-100">
                 <p className="text-lg text-gray-700">
@@ -33,7 +33,7 @@ const SuccessOrder = () => {
     
             {/* <!-- Back to Home Button --> */}
             <div className="mt-12">
-                <a href="/"
+                <a href="/dashboard/userHome"
                     className="inline-block px-8 py-4 text-lg font-semibold text-white transition-colors duration-200 bg-green-600 rounded-lg hover:bg-green-700">
                     Return to Dashboard
                 </a>
