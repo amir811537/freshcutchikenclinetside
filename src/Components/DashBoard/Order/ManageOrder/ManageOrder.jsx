@@ -19,7 +19,7 @@ const ManageOrder = () => {
   } = useQuery({
     queryKey: ['orders'],
     queryFn: async () => {
-      const res = await axios.get('https://serversidefreshcut.vercel.app/order');
+      const res = await axios.get('https://freshcutserverside.vercel.app/order');
       return res.data;
     },
   });
@@ -27,7 +27,7 @@ const ManageOrder = () => {
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       const res = await axios.patch(
-        `https://serversidefreshcut.vercel.app/order/${orderId}`,
+        `https://freshcutserverside.vercel.app/order/${orderId}`,
         { status: newStatus },
         { headers: { 'Content-Type': 'application/json' } }
       );
