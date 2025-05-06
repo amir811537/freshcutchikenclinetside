@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const SuccessOrder = () => {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
@@ -33,10 +35,10 @@ const SuccessOrder = () => {
     
             {/* <!-- Back to Home Button --> */}
             <div className="mt-12">
-                <a href="/dashboard/userHome"
+                <Link to="/dashboard/userHome"
                     className="inline-block px-8 py-4 text-lg font-semibold text-white transition-colors duration-200 bg-green-600 rounded-lg hover:bg-green-700">
                     Return to Dashboard
-                </a>
+                </Link>
             </div>
         </div>
     </div>
