@@ -1,10 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useProducts from "../../../hooks/useProducts";
+import { useNavigate } from "react-router-dom";
 
 const ProductList = () => {
-  const { data: products = [], isLoading, isError, refetch } = useProducts();
+  const { data: products = [], isLoading, isError } = useProducts();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
@@ -75,12 +77,12 @@ const ProductList = () => {
               <td>{product.category}</td>
               <td>{product.sellCount}</td>
               <td className="space-x-2">
-                <button
-                  onClick={() => console.log("Update", product._id)}
-                  className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
-                >
-                  Update
-                </button>
+              <button
+  onClick={() => navigate(`/dashboard/updateProduct/${product._id}`)}
+  className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+>
+  Update
+</button>
                 <button
                   onClick={() => handleDelete(product._id)}
                   className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"

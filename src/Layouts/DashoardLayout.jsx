@@ -9,6 +9,7 @@ import { IoMdAddCircle } from "react-icons/io";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../AuthProvider/AuthProvider";
+import { FaUser } from "react-icons/fa6";
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -91,6 +92,17 @@ const Dashboard = () => {
                     onClick={() => setIsSidebarOpen(false)}
                   >
                     <FaList /> All Products
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/dashboard/manageUser"
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                    <FaUser/> User Mangement
                   </NavLink>
                 </li>
               </>
