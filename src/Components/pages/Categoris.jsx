@@ -70,9 +70,9 @@ const Categoris = () => {
         {isLoading ? (
           <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
             {[...Array(6)].map((_, index) => (
-              <div key={index} className="flex flex-col items-center justify-center border border-gray-300 rounded-md text-center p-2 h-44 w-28 md:w-44 md:h-44 bg-gray-100 animate-pulse">
-                <div className="w-14 h-14 md:w-28 md:h-28 bg-gray-300 rounded-full mb-2"></div>
-                <div className="h-4 w-20 bg-gray-300 rounded"></div>
+              <div key={index} className="flex flex-col items-center justify-center border border-gray-300 dark:bg-black rounded-md text-center p-2 h-44 w-28 md:w-44 md:h-44 bg-gray-100 animate-pulse">
+                <div className="w-14 h-14 md:w-28 md:h-28 bg-gray-300 dark:bg-black rounded-full mb-2"></div>
+                <div className="h-4 w-20 bg-gray-300 dark:bg-black rounded"></div>
               </div>
             ))}
           </div>
@@ -94,7 +94,7 @@ const Categoris = () => {
                   onClick={() => handleSelectCategory(item.category)}
                   className="w-full"
                 >
-                  <div className="flex flex-col items-center justify-center border hover:text-white border-gray-300 rounded-md text-center p-2 lg:p-0 h-44 w-28 md:w-44 md:h-44 bg-white hover:bg-[#F5BC3B] shadow-sm hover:shadow-md transition">
+                  <div className="flex flex-col items-center justify-center border hover:text-white dark:bg-black border-gray-300 rounded-md text-center p-2 lg:p-0 h-44 w-28 md:w-44 md:h-44 bg-white hover:bg-[#F5BC3B] shadow-sm hover:shadow-md transition">
                     <img
                       src={item.categoryImage}
                       alt={item.category}

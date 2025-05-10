@@ -125,24 +125,24 @@ const ProductCard = ({ item, isLoading }) => {
         <div className="flex justify-between items-center">
           <div className="space-x-2">
             <span className="text-xl font-bold text-red-600">৳{item.price}</span>
-            <span className="line-through text-gray-500 text-sm">৳{item.oldPrice}</span>
+            <span className="line-through text-gray-500 dark:text-white text-sm">৳{item.oldPrice}</span>
           </div>
         </div>
         <div
-  className="hidden lg:block text-sm text-gray-600"
+  className="hidden lg:block text-sm text-gray-600 dark:text-white"
   dangerouslySetInnerHTML={{ __html: shortDescription }}
 ></div>
 
         <div className="flex lg:flex-row flex-col gap-5 justify-between items-center w-full">
           <button
             onClick={handleAddToCart}
-            className="btn bg-[#F5BC3B] text-white w-full lg:w-auto"
+            className="btn bg-[#F5BC3B] hover:bg-green-400 text-white w-full lg:w-auto"
           >
             Add to cart
           </button>
           <button
             onClick={handleBuyNow}
-            className="btn bg-[#F5BC3B] text-white w-full lg:w-auto"
+            className="btn bg-[#F5BC3B] hover:bg-green-400 text-white w-full lg:w-auto"
           >
             Buy Now
           </button>

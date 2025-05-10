@@ -1,6 +1,10 @@
+import { useEffect } from "react";
 import { IoCallOutline, IoMailOutline } from "react-icons/io5";
 
 const Contact = () => {
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
   return (
    <div className="max-w-7xl mx-auto">
      <div className="flex flex-col lg:flex-row px-5 lg:px-0 gap-10 lg:gap-20 mx-auto my-10 lg:my-20">

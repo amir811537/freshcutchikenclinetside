@@ -10,6 +10,8 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 import { FaUser } from "react-icons/fa6";
+import { FaHistory } from "react-icons/fa";
+
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -103,6 +105,17 @@ const Dashboard = () => {
                     onClick={() => setIsSidebarOpen(false)}
                   >
                     <FaUser/> User Mangement
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/dashboard/order-history"
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                    <FaHistory/> Delivered Order
                   </NavLink>
                 </li>
               </>

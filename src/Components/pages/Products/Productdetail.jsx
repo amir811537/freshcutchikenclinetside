@@ -37,9 +37,6 @@ const ProductDetail = () => {
         timer: 3000,
         showConfirmButton: false,
       });
-
-
-
     } catch (error) {
  Swal.fire({
         icon: "error",
@@ -67,7 +64,7 @@ const ProductDetail = () => {
     try {
       // eslint-disable-next-line no-unused-vars
       const response = await axios.post("https://freshcutserverside.vercel.app/cart", cartData);
-      refetchCart(); // ✅ refetch cart data
+      refetchCart(); 
       navigate("/dashboard/cart");
     } catch (error) {
       Swal.fire({
@@ -103,7 +100,7 @@ const ProductDetail = () => {
           <h1 className="text-2xl font-semibold text-[#FC8934]">{product.name}</h1>
           <p className="text-3xl font-bold text-red-500">
             BDT {product.price}
-            <span className="text-gray-500 line-through text-xl ml-4">
+            <span className="text-gray-500 dark:text-white line-through text-xl ml-4">
               BDT {product.oldPrice}
             </span>
           </p>
@@ -111,7 +108,7 @@ const ProductDetail = () => {
           <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={handleAddToCart}
-              className="bg-black text-white px-6 py-2 hover:bg-gray-800"
+              className="bg-black dark:bg-white dark:text-black  text-white px-6 py-2 hover:bg-gray-800 dark:hover:bg-green-400 dark:hover:text-white "
             >
               Add to Cart
             </button>
@@ -124,7 +121,7 @@ const ProductDetail = () => {
           </div>
 
           <p
-            className="text-gray-700 leading-relaxed"
+            className="text-gray-700 dark:text-white leading-relaxed"
             dangerouslySetInnerHTML={{ __html: product.description }}
           ></p>
         </div>

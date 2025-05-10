@@ -37,7 +37,7 @@ const UpdateProduct = () => {
   const { data: product, isLoading } = useQuery({
     queryKey: ["product", id],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5000/products/${id}`);
+      const res = await fetch(`https://freshcutserverside.vercel.app/products/${id}`);
       if (!res.ok) throw new Error("Failed to fetch product");
       return res.json();
     },
@@ -74,7 +74,7 @@ const UpdateProduct = () => {
   // Update product mutation
   const updateMutation = useMutation({
     mutationFn: async (updatedProduct) => {
-      const res = await fetch(`http://localhost:5000/products/${id}`, {
+      const res = await fetch(`https://freshcutserverside.vercel.app/products/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

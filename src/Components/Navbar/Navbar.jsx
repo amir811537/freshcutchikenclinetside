@@ -18,7 +18,7 @@ const Navbar = () => {
   const toggleModal = () => setShowModal(!showModal);
 
 
-  const { logOut, user } =useContext(AuthContext);
+  const { logOut, user, role} =useContext(AuthContext);
 
 
   const { data: cartData = [] } = useCart(user?.email);
@@ -59,7 +59,7 @@ const Navbar = () => {
   }, [sidebar]);
 
   return (
-    <nav className="w-full bg-white shadow-md fixed top-0 left-0 z-50">
+    <nav className="w-full bg-white dark:bg-black shadow-md fixed top-0 left-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Mobile Sidebar Toggle */}
@@ -104,8 +104,8 @@ const Navbar = () => {
           <div className="lg:hidden block">
             <div className="flex justify-start items-center gap-3">
               <div className="text-lg">
-                <Link to="/dashboard/cart">
-                <div className="relative">
+              <Link to={role === 'admin' ? '/dashboard/adminHome' : role === 'user' ? '/dashboard/cart' : '/dashboard'}>
+              <div className="relative">
                   <div className="t-0 absolute left-3">
                     <p className="flex h-1 w-1 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
                       {cartData.length}
@@ -136,8 +136,8 @@ const Navbar = () => {
             <div className="flex justify-center items-center gap-7">
               <div className="flex justify-start items-center gap-3">
                 <div className="text-lg">
-                  <Link  to="/dashboard/cart">
-                  <div className="relative">
+                <Link to={role === 'admin' ? '/dashboard/adminHome' : role === 'user' ? '/dashboard/cart' : '/dashboard'}>
+                <div className="relative">
                     <div className="t-0 absolute left-3">
                       <p className="flex h-1 w-1 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
 {cartData.length}                      </p>
@@ -184,7 +184,7 @@ const Navbar = () => {
       {/* Mobile Sidebar */}
       <div
         ref={sidebarRef}
-        className={`fixed top-0 left-0 w-64 h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 ${
+        className={`fixed top-0 left-0 w-64 h-full bg-white dark:bg-black shadow-lg transform transition-transform duration-300 ease-in-out z-50 ${
           sidebar ? "translate-x-0" : "-translate-x-full"
         }`}
       >

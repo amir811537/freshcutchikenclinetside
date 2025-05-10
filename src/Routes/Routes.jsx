@@ -19,6 +19,7 @@ import AdminHome from "../Components/DashBoard/AdminHome";
 import ManageOrder from "../Components/DashBoard/Order/ManageOrder/ManageOrder";
 import UpdateProduct from "../Components/DashBoard/ProductManagement/UpdateProduct";
 import Usermanagement from "../Components/DashBoard/Usermanagement/Usermangemet";
+import OrderHistory from "../Components/DashBoard/Order/OrderHistory/OrderHistory";
 
 const router = createBrowserRouter([
   {
@@ -77,6 +78,9 @@ const router = createBrowserRouter([
 
       path:"manageOrders",
       element:<ManageOrder></ManageOrder>
+    },{
+path:"order-history",
+element:<OrderHistory></OrderHistory>
     },
     {
       path:"userHome",
@@ -97,7 +101,7 @@ const router = createBrowserRouter([
     {
       path: "updateProduct/:id", // ✅ FIXED
       element: <UpdateProduct />,
-      loader: ({ params }) => fetch(`http://localhost:5000/products/${params.id}`)
+      loader: ({ params }) => fetch(`https://freshcutserverside.vercel.app/products/${params.id}`)
     },
     {
       path:"manageUser",

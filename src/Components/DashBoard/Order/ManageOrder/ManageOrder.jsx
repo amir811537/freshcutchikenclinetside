@@ -24,7 +24,7 @@ const ManageOrder = () => {
     },
   });
 
-  const handleStatusChange = async (orderId, newStatus) => {
+  const handleStatusChange = async (orderId, newStatus, fullOrder) => {
     try {
       const res = await axios.patch(
         `https://freshcutserverside.vercel.app/order/${orderId}`,
@@ -33,7 +33,21 @@ const ManageOrder = () => {
       );
 
       if (res.data.success) {
-        Swal.fire('Success', 'Order status updated!', 'success');
+        if (newStatus === 'delivered') {
+          try {
+            await axios.post('https://freshcutserverside.vercel.app/orderhistory', fullOrder);
+            Swal.fire(
+              'Delivered',
+              'Order marked as delivered and logged in order history.',
+              'success'
+            );
+          } catch (error) {
+            console.error('Failed to log delivered order to history:', error);
+            Swal.fire('Error', 'Failed to log to order history.', 'error');
+          }
+        } else {
+          Swal.fire('Success', 'Order status updated!', 'success');
+        }
         refetch();
       } else {
         Swal.fire('Warning', 'No changes were made.', 'info');
@@ -71,6 +85,8 @@ const ManageOrder = () => {
     }
   };
 
+  const orderFlow = ['pending', 'confirmed', 'shipping', 'delivered'];
+
   if (isLoading) return <p>Loading orders...</p>;
   if (isError) return <p>Failed to load orders.</p>;
 
@@ -80,7 +96,7 @@ const ManageOrder = () => {
 
       <div className="mb-6">
         <h4 className="font-semibold mb-2">Filter by Status:</h4>
-        {['pending', 'confirmed', 'shipping', 'delivered'].map((status) => (
+        {orderFlow.map((status) => (
           <label key={status} className="mr-4 inline-flex items-center space-x-1">
             <input
               type="checkbox"
@@ -100,10 +116,7 @@ const ManageOrder = () => {
       ) : (
         <div className="space-y-6">
           {filteredOrders.map((order) => (
-            <div
-              key={order._id}
-              className="border rounded-lg p-4 shadow-sm bg-white"
-            >
+            <div key={order._id} className="border rounded-lg p-4 shadow-sm bg-white">
               <div className="mb-3">
                 <h3 className="text-lg font-semibold">
                   Customer: {order.customer.name}
@@ -129,18 +142,33 @@ const ManageOrder = () => {
                       {order.status}
                     </span>
                   </p>
-                  <select
-                    className="border px-2 py-1 rounded"
-                    value={order.status}
-                    onChange={(e) =>
-                      handleStatusChange(order._id, e.target.value)
-                    }
-                  >
-                    <option value="pending">Pending</option>
-                    <option value="confirmed">Confirmed</option>
-                    <option value="shipping">Shipping</option>
-                    <option value="delivered">Delivered</option>
-                  </select>
+
+                  {order.status === 'delivered' ? (
+                    <p className="text-green-600 font-semibold">
+                      Delivered (Final)
+                    </p>
+                  ) : (
+                    <select
+                      className="border px-2 py-1 rounded"
+                      value={order.status}
+                      onChange={(e) =>
+                        handleStatusChange(order._id, e.target.value, order)
+                      }
+                    >
+                      {orderFlow
+                        .filter(
+                          (statusOption) =>
+                            orderFlow.indexOf(statusOption) >=
+                            orderFlow.indexOf(order.status)
+                        )
+                        .map((statusOption) => (
+                          <option key={statusOption} value={statusOption}>
+                            {statusOption.charAt(0).toUpperCase() +
+                              statusOption.slice(1)}
+                          </option>
+                        ))}
+                    </select>
+                  )}
                 </div>
               </div>
 

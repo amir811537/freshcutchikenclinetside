@@ -19,13 +19,15 @@ const UserHome = () => {
   const totalOrders = orders.length;
   const pendingOrders = orders.filter(order => order.status === 'pending').length;
   const confirmedOrders = orders.filter(order => order.status === 'confirmed').length;
+  const shippingOrders = orders.filter(order => order.status === 'shipping').length;
+  const deliveredOrders = orders.filter(order => order.status === 'delivered').length;
   const recentOrders = orders.slice(0, 2); // Show latest 2
 
   return (
     <div className="p-6 space-y-6">
       <h2 className="text-2xl font-bold">Welcome, {user?.displayName || user?.email}</h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <div className="bg-white shadow p-4 rounded text-center">
           <h3 className="text-lg font-semibold">Total Orders</h3>
           <p className="text-2xl text-blue-600">{totalOrders}</p>
@@ -36,7 +38,15 @@ const UserHome = () => {
         </div>
         <div className="bg-white shadow p-4 rounded text-center">
           <h3 className="text-lg font-semibold">Confirmed</h3>
-          <p className="text-2xl text-green-600">{confirmedOrders}</p>
+          <p className="text-2xl text-blue-500">{confirmedOrders}</p>
+        </div>
+        <div className="bg-white shadow p-4 rounded text-center">
+          <h3 className="text-lg font-semibold">Shipping</h3>
+          <p className="text-2xl text-purple-500">{shippingOrders}</p>
+        </div>
+        <div className="bg-white shadow p-4 rounded text-center">
+          <h3 className="text-lg font-semibold">Delivered</h3>
+          <p className="text-2xl text-green-600">{deliveredOrders}</p>
         </div>
       </div>
 
