@@ -64,10 +64,10 @@ const Cart = () => {
     navigate("/checkout");
   };
 
-  if (isLoading) return <p className="text-center mt-10">Loading cart...</p>;
+  if (isLoading) return <p className="text-center mt-10 dark:text-gray-100">Loading cart...</p>;
 
   return (
-    <div className="px-4 lg:px-0 my-10 max-w-5xl mx-auto">
+    <div className="px-4 lg:px-0 my-10 max-w-5xl mx-auto dark:bg-gray-900 dark:text-gray-100 min-h-screen">
       <h2 className="text-xl font-semibold font-inter mb-6">
         Cart Items ({cartData.length})
       </h2>
@@ -75,26 +75,27 @@ const Cart = () => {
       {cartData.length === 0 ? (
         <div className="w-2/3 flex items-center flex-col my-20 mx-auto text-center">
           <img src={image} className="w-32" alt="Empty Cart" />
-          <h1 className="text-xl font-semibold mb-2 font-inter">
-            Your Cart is Empty
-          </h1>
+          <h1 className="text-xl font-semibold mb-2 font-inter">Your Cart is Empty</h1>
         </div>
       ) : (
         <>
           <div className="space-y-6">
             {cartData.map((item) => (
-              <div key={item._id} className="flex flex-col gap-3 border rounded-lg p-4 shadow-sm">
+              <div
+                key={item._id}
+                className="flex flex-col gap-3 border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-800 dark:border-gray-700"
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <img src={item.image} alt={item.name} className="w-16 h-16 rounded object-cover" />
                     <div>
                       <h3 className="font-semibold text-base">{item.name}</h3>
-                      <p className="text-sm text-gray-500">৳{item.price} per kg</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">৳{item.price} per kg</p>
                     </div>
                   </div>
                   <div className="text-right flex justify-center items-center gap-6">
-                    <p className="text-sm font-medium text-gray-700 mb-1">
-                      Total: <span className="font-semibold text-black">৳{(item.price * (localQuantities[item._id] || 0)).toFixed(2)}</span>
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Total: <span className="font-semibold text-black dark:text-white">৳{(item.price * (localQuantities[item._id] || 0)).toFixed(2)}</span>
                     </p>
                     <button
                       className="text-red-500 hover:text-red-700 text-xl"
@@ -107,14 +108,14 @@ const Cart = () => {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <label className="text-sm text-gray-600">Quantity (kg):</label>
+                  <label className="text-sm text-gray-600 dark:text-gray-300">Quantity (kg):</label>
                   <input
                     type="number"
                     min="0"
                     step="0.5"
                     value={localQuantities[item._id] || 0}
                     onChange={(e) => handleLocalQuantityChange(item._id, e.target.value)}
-                    className="border rounded px-2 py-1 w-24 text-sm"
+                    className="border rounded px-2 py-1 w-24 text-sm bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   />
                 </div>
               </div>
@@ -135,12 +136,12 @@ const Cart = () => {
       {/* Delete Confirmation Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-md">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Are you sure?</h2>
-            <p className="text-gray-600 mb-6">You won't be able to revert this action.</p>
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 w-full max-w-md">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Are you sure?</h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">You won't be able to revert this action.</p>
             <div className="flex justify-end gap-4">
               <button
-                className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm"
+                className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white text-sm"
                 onClick={() => setShowModal(false)}
               >
                 Cancel

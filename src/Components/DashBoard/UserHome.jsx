@@ -24,27 +24,27 @@ const UserHome = () => {
   const recentOrders = orders.slice(0, 2); // Show latest 2
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 dark:bg-gray-900 dark:text-gray-100 min-h-screen">
       <h2 className="text-2xl font-bold">Welcome, {user?.displayName || user?.email}</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        <div className="bg-white shadow p-4 rounded text-center">
+        <div className="bg-white dark:bg-gray-800 shadow p-4 rounded text-center">
           <h3 className="text-lg font-semibold">Total Orders</h3>
-          <p className="text-2xl text-blue-600">{totalOrders}</p>
+          <p className="text-2xl text-blue-600 dark:text-blue-400">{totalOrders}</p>
         </div>
-        <div className="bg-white shadow p-4 rounded text-center">
+        <div className="bg-white dark:bg-gray-800 shadow p-4 rounded text-center">
           <h3 className="text-lg font-semibold">Pending</h3>
           <p className="text-2xl text-yellow-500">{pendingOrders}</p>
         </div>
-        <div className="bg-white shadow p-4 rounded text-center">
+        <div className="bg-white dark:bg-gray-800 shadow p-4 rounded text-center">
           <h3 className="text-lg font-semibold">Confirmed</h3>
           <p className="text-2xl text-blue-500">{confirmedOrders}</p>
         </div>
-        <div className="bg-white shadow p-4 rounded text-center">
+        <div className="bg-white dark:bg-gray-800 shadow p-4 rounded text-center">
           <h3 className="text-lg font-semibold">Shipping</h3>
           <p className="text-2xl text-purple-500">{shippingOrders}</p>
         </div>
-        <div className="bg-white shadow p-4 rounded text-center">
+        <div className="bg-white dark:bg-gray-800 shadow p-4 rounded text-center">
           <h3 className="text-lg font-semibold">Delivered</h3>
           <p className="text-2xl text-green-600">{deliveredOrders}</p>
         </div>
@@ -57,7 +57,7 @@ const UserHome = () => {
         ) : (
           <ul className="space-y-3">
             {recentOrders.map((order) => (
-              <li key={order._id} className="border rounded p-3 shadow-sm bg-white">
+              <li key={order._id} className="border dark:border-gray-700 rounded p-3 shadow-sm bg-white dark:bg-gray-800">
                 <p><strong>Date:</strong> {new Date(order.orderDate).toLocaleDateString()}</p>
                 <p>
                   <strong>Status:</strong>
@@ -80,7 +80,12 @@ const UserHome = () => {
             ))}
           </ul>
         )}
-        <Link to="/dashboard/myOrders" className="text-blue-600 mt-2 inline-block">View All Orders →</Link>
+        <Link
+          to="/dashboard/myOrders"
+          className="text-blue-600 dark:text-blue-400 mt-2 inline-block"
+        >
+          View All Orders →
+        </Link>
       </div>
     </div>
   );

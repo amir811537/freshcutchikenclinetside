@@ -4,7 +4,7 @@ import { AuthContext } from '../../../AuthProvider/AuthProvider';
 import { MdDelete } from "react-icons/md";
 import useCart from '../../../hooks/useCart';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
   const { user } = useContext(AuthContext);
@@ -90,28 +90,28 @@ const Checkout = () => {
 
   return (
     <div className='px-5 lg:px-0 my-10 max-w-7xl mx-auto'>
-      <h1 className='text-2xl font-semibold font-inter mb-6'>Billing Details</h1>
+      <h1 className='text-2xl font-semibold font-inter mb-6 '>Billing Details</h1>
       <form className='flex flex-col lg:flex-row justify-between gap-10' onSubmit={handleSubmit}>
         {/* Billing Info */}
         <div className='flex-1 space-y-6'>
           <div>
-            <label className='text-[#00000090]'>Name<sup className='text-red-500'>*</sup></label>
-            <input type="text" required className="input w-full bg-[#F5F5F5] mt-2" value={name} onChange={(e) => setName(e.target.value)} />
+            <label className='text-[#00000090] dark:text-white'>Name<sup className='text-red-500'>*</sup></label>
+            <input type="text" required className="input w-full bg-[#F5F5F5] dark:text-yellow-300 mt-2" value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div>
-            <label className='text-[#00000090]'>Address<sup className='text-red-500'>*</sup></label>
-            <input type="text" required className="input w-full bg-[#F5F5F5] mt-2" value={address} onChange={(e) => setAddress(e.target.value)} />
+            <label className='text-[#00000090] dark:text-white'>Address<sup className='text-red-500'>*</sup></label>
+            <input type="text" required className="input w-full bg-[#F5F5F5] dark:text-yellow-300 mt-2" value={address} onChange={(e) => setAddress(e.target.value)} />
           </div>
           <div>
-            <label className='text-[#00000090]'>Apartment, Road, Floor (Optional)</label>
-            <input type="text" className="input w-full bg-[#F5F5F5] mt-2" value={apartment} onChange={(e) => setApartment(e.target.value)} />
+            <label className='text-[#00000090] dark:text-white'>Apartment, Road, Floor (Optional)</label>
+            <input type="text" className="input w-full bg-[#F5F5F5] dark:text-yellow-300 mt-2" value={apartment} onChange={(e) => setApartment(e.target.value)} />
           </div>
           <div>
-            <label className='text-[#00000090]'>Phone Number<sup className='text-red-500'>*</sup></label>
-            <input type="tel" required className="input w-full bg-[#F5F5F5] mt-2" value={phone} onChange={(e) => setPhone(e.target.value)} />
+            <label className='text-[#00000090] dark:text-white'>Phone Number<sup className='text-red-500'>*</sup></label>
+            <input type="tel" required className="input w-full bg-[#F5F5F5] dark:text-yellow-300 mt-2" value={phone} onChange={(e) => setPhone(e.target.value)} />
           </div>
           <div>
-            <label className='text-[#00000090]'>Email<sup className='text-red-500'>*</sup></label>
+            <label className='text-[#00000090] dark:text-white'>Email<sup className='text-red-500'>*</sup></label>
             <input type="email" value={user?.email} disabled className="input w-full bg-[#F5F5F5] mt-2" />
           </div>
         </div>
