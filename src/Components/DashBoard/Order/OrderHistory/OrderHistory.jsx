@@ -26,7 +26,7 @@ const OrderHistory = () => {
       ) : (
         <div className="space-y-6">
           {history.map((order) => (
-            <div key={order._id} className="border rounded-lg p-4 shadow-sm bg-white">
+            <div key={order._id} className="border rounded-lg p-4 shadow-sm bg-white dark:bg-black dark:text-white">
               <div className="mb-3">
                 <h3 className="text-lg font-semibold">
                   Customer: {order.customer.name}
@@ -45,7 +45,7 @@ const OrderHistory = () => {
 
               <table className="w-full text-sm border">
                 <thead>
-                  <tr className="bg-gray-100">
+                  <tr className="bg-gray-100 dark:bg-black dark:text-white">
                     <th className="border px-2 py-1">Product</th>
                     <th className="border px-2 py-1">Image</th>
                     <th className="border px-2 py-1">Price</th>

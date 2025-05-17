@@ -122,7 +122,7 @@ const UpdateProduct = () => {
       type="text"
       placeholder="Product Title"
       {...register("name", { required: true })}
-      className="input focus:outline-none rounded-sm w-full mb-5 bg-[#F5F5F5]"
+      className="input focus:outline-none rounded-sm w-full mb-5 bg-[#F5F5F5] dark:bg-black dark:text-white"
     />
 
     <label className="block mb-1">Description</label>
@@ -133,7 +133,7 @@ const UpdateProduct = () => {
       type="text"
       placeholder="$ Price"
       {...register("price", { required: true })}
-      className="input focus:outline-none rounded-sm w-full bg-[#F5F5F5]"
+      className="input focus:outline-none rounded-sm w-full bg-[#F5F5F5]  dark:bg-black dark:text-white"
     />
 
     <label className="block mt-5 mb-1">Old Price</label>
@@ -141,7 +141,7 @@ const UpdateProduct = () => {
       type="text"
       placeholder="Old Price"
       {...register("oldPrice")}
-      className="input focus:outline-none rounded-sm w-full bg-[#F5F5F5]"
+      className="input focus:outline-none rounded-sm w-full bg-[#F5F5F5]  dark:bg-black dark:text-white"
     />
 
     <label className="block mt-5 mb-1">Quantity</label>
@@ -149,7 +149,7 @@ const UpdateProduct = () => {
       type="number"
       placeholder="Quantity"
       {...register("quantity", { required: true })}
-      className="input focus:outline-none rounded-sm w-full bg-[#F5F5F5]"
+      className="input focus:outline-none rounded-sm w-full bg-[#F5F5F5]  dark:bg-black dark:text-white"
     />
 
     <label className="block mt-5 mb-1">Category</label>
@@ -205,7 +205,7 @@ const UpdateProduct = () => {
 
         <button
           type="submit"
-          className="w-full btn mt-6 btn-error bg-primary text-white rounded-sm"
+          className="w-full btn mt-6 btn-error bg-primary text-white rounded-sm "
           disabled={uploading}
         >
           {uploading ? "Uploading Image..." : buttonText}

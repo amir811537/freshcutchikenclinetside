@@ -104,7 +104,7 @@ const ManageOrder = () => {
               onChange={() => toggleStatusFilter(status)}
               className="mr-1"
             />
-            <span className={`px-2 py-1 rounded text-white text-sm ${statusColor(status)}`}>
+            <span className={`px-2 py-1 rounded text-white  text-sm ${statusColor(status)}`}>
               {status}
             </span>
           </label>
@@ -116,7 +116,7 @@ const ManageOrder = () => {
       ) : (
         <div className="space-y-6">
           {filteredOrders.map((order) => (
-            <div key={order._id} className="border rounded-lg p-4 shadow-sm bg-white">
+            <div key={order._id} className="border rounded-lg p-4 shadow-sm bg-white dark:bg-black dark:text-white">
               <div className="mb-3">
                 <h3 className="text-lg font-semibold">
                   Customer: {order.customer.name}
@@ -174,7 +174,7 @@ const ManageOrder = () => {
 
               <table className="w-full text-sm border">
                 <thead>
-                  <tr className="bg-gray-100">
+                  <tr className="bg-gray-100 dark:bg-black dark:text-white">
                     <th className="border px-2 py-1">Product</th>
                     <th className="border px-2 py-1">Image</th>
                     <th className="border px-2 py-1">Price</th>

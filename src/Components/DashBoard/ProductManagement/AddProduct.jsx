@@ -74,7 +74,7 @@ const AddProduct = () => {
               placeholder="Product Title"
               required
               {...register("name", { required: true })}
-              className="input focus:border-none focus:outline-none rounded-sm w-full mb-8 bg-[#F5F5F5]"
+              className="input focus:border-none focus:outline-none rounded-sm w-full mb-8 bg-[#F5F5F5] dark:bg-black dark:text-white"
             />
 
             <RichTextEditor value={description} onChange={setDescription} />
@@ -84,14 +84,14 @@ const AddProduct = () => {
               placeholder="$ Price"
               required
               {...register("price", { required: true })}
-              className="input mt-28 md:mt-20 focus:border-none focus:outline-none rounded-sm w-full bg-[#F5F5F5]"
+              className="input mt-28 md:mt-20 focus:border-none focus:outline-none rounded-sm w-full bg-[#F5F5F5] dark:bg-black dark:text-white"
             />
 
             <input
               type="text"
               placeholder="Old Price"
               {...register("oldPrice")}
-              className="input mt-5 focus:border-none focus:outline-none rounded-sm w-full bg-[#F5F5F5]"
+              className="input mt-5 focus:border-none focus:outline-none rounded-sm w-full bg-[#F5F5F5] dark:bg-black dark:text-white"
             />
 
             <input
@@ -99,7 +99,7 @@ const AddProduct = () => {
               placeholder="Quantity"
               required
               {...register("quantity", { required: true })}
-              className="input mt-5 focus:border-none focus:outline-none rounded-sm w-full bg-[#F5F5F5]"
+              className="input mt-5 focus:border-none focus:outline-none rounded-sm w-full bg-[#F5F5F5] dark:bg-black dark:text-white"
             />
 
             <select
@@ -128,7 +128,7 @@ const AddProduct = () => {
             />
             <div
               onClick={() => document.getElementById("file-upload").click()}
-              className="cursor-pointer w-full md:w-[200px] h-[200px] flex justify-center items-center bg-base-200"
+              className="cursor-pointer w-full md:w-[200px] h-[200px] flex justify-center items-center bg-base-200 dark:bg-white"
             >
               <img
                 src={imageUrl || imageUpload}

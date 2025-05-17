@@ -16,7 +16,7 @@ const Usermanagement = () => {
     <div className="px-4 py-6">
       <h2 className="text-2xl font-semibold mb-4">User Management</h2>
       <div className="overflow-x-auto">
-        <table className="table w-full bg-white">
+        <table className="table w-full bg-white dark:bg-black dark:text-white">
           <thead className="bg-base-200">
             <tr>
               <th>#</th>
