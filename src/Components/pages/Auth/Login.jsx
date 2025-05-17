@@ -5,7 +5,7 @@ import { IoEyeOutline } from "react-icons/io5";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { FcGoogle } from "react-icons/fc";
 import signupImage from "../../../assets/icon/Sign Up.webp";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
@@ -15,7 +15,6 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { signuprg, googleSignin } = useContext(AuthContext);
   const navigate = useNavigate();
-  const location = useLocation();
 
   const {
     register,
@@ -35,7 +34,7 @@ const Login = () => {
           timer: 3000,
           showConfirmButton: false,
         });
-        navigate(location?.state || "/");
+        navigate("/");
       })
       .catch(() => {
         Swal.fire({
@@ -70,7 +69,7 @@ const Login = () => {
           timer: 3000,
           showConfirmButton: false,
         });
-        navigate(location?.state || "/");
+        navigate("/");
       })
       .catch((error) => {
         Swal.fire({
