@@ -20,11 +20,16 @@ import ManageOrder from "../Components/DashBoard/Order/ManageOrder/ManageOrder";
 import UpdateProduct from "../Components/DashBoard/ProductManagement/UpdateProduct";
 import Usermanagement from "../Components/DashBoard/Usermanagement/Usermangemet";
 import OrderHistory from "../Components/DashBoard/Order/OrderHistory/OrderHistory";
+import UpdateBanner from "../Components/DashBoard/BannerManagement/UpdateBanner";
+import AddBanner from "../Components/DashBoard/BannerManagement/AddBanner";
+import Login from "../Components/pages/Auth/Login";
+import Signup from "../Components/pages/Auth/Signup";
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Mainlayout />,
+    errorElement:<NotLoginRegisterUser></NotLoginRegisterUser>,
     children: [
       {
         index: true,
@@ -38,6 +43,7 @@ const router = createBrowserRouter([
         path: "/contact",
         element: <Contact />
       },
+
       {
         path: "/service",
         element: <PrivateRoute><Service /></PrivateRoute>
@@ -91,6 +97,15 @@ element:<OrderHistory></OrderHistory>
       element:<AdminHome></AdminHome>
     },
     {
+      path: "addBanner",
+      element:<AddBanner></AddBanner>
+
+    },
+    {
+path: "updateBanner",
+element:<UpdateBanner></UpdateBanner>
+    },
+    {
       path: 'addProduct',
       element: <AddProduct></AddProduct>
     },
@@ -108,7 +123,15 @@ element:<OrderHistory></OrderHistory>
       element:<Usermanagement></Usermanagement>
     }
     ]
-  }
+  },      {
+path: "login",
+element:<Login></Login>
+      },
+      {
+        path: "signUp",
+        element:<Signup></Signup>
+      }
+  
 ]);
 
 export default router;

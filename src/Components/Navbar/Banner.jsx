@@ -3,9 +3,9 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import Banner1 from '../../assets/Delicious Food Menu Banner Design (2).png'
-import Banner2 from '../../assets/Red Yellow Creative Modern Delicious Chicken Promotion Banner (1).png'
-import Banner3 from '../../assets/Yellow Creative Noodle Food Promotion Banner .png'
+import Banner1 from '../../assets/new1.png'
+import Banner2 from '../../assets/new2.png'
+import Banner3 from '../../assets/new3.png'
 
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 

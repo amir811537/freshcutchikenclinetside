@@ -1,4 +1,3 @@
-// import { useState } from "react";
 import { useForm } from "react-hook-form";
 import imageUpload from "../../../assets/icon/image-bg-remove.svg";
 import { useState } from "react";

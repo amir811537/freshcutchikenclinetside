@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
 import axios from "axios";
+import { FcGoogle } from "react-icons/fc";
+
 
 const LoginRegister = ({ showModal, setShowModal }) => {
   const { signuprg, createUser, googleSignin } = useContext(AuthContext);
@@ -211,12 +213,14 @@ const LoginRegister = ({ showModal, setShowModal }) => {
           </button>
         </form>
 
-        <button
-          onClick={handleGoogle}
-          className="w-full bg-red-500 text-white py-2 rounded mt-4 hover:bg-red-600"
-        >
-          Sign in with Google
-        </button>
+      <button
+              type="button"
+              onClick={handleGoogle}
+              className="btn btn-outline border  border-gray-400 text-gray-700 w-full py-2 my-2 rounded-md flex items-center justify-center gap-2"
+            >
+              <FcGoogle className="text-xl" />
+              Sign in with Google
+            </button>
 
         <div className="text-sm mt-4 text-center">
           {isSignUp ? (

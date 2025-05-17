@@ -11,6 +11,7 @@ import { useState, useContext } from "react";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 import { FaUser } from "react-icons/fa6";
 import { FaHistory } from "react-icons/fa";
+import { TfiLayoutSliderAlt } from "react-icons/tfi";
 
 
 const Dashboard = () => {
@@ -96,6 +97,28 @@ const Dashboard = () => {
                     <FaList /> All Products
                   </NavLink>
                 </li>
+                {/* <li>
+                  <NavLink
+                    to="/dashboard/addBanner"
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                    <TfiLayoutSliderAlt /> Add Banner
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/dashboard/UpdateBanner"
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                    <TfiLayoutSliderAlt /> Manage Banner
+                  </NavLink>
+                </li> */}
                 <li>
                   <NavLink
                     to="/dashboard/manageUser"
