@@ -83,11 +83,11 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100 px-4">
-      <div className="flex flex-col lg:flex-row gap-10 items-center bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-6xl">
+    <div className="min-h-screen flex justify-center items-center bg-gray-100 dark:bg-black dark:text-white px-4">
+      <div className="flex flex-col lg:flex-row gap-10 items-center bg-white dark:bg-black dark:text-white shadow-lg rounded-lg overflow-hidden w-full max-w-6xl">
         <div className="lg:w-1/2">
           <img
-            className="w-full h-full object-cover max-h-[600px]"
+            className="w-full h-full dark:bg-black dark:text-white object-cover max-h-[600px]"
             src={signupImage}
             alt="Login"
           />
@@ -97,7 +97,7 @@ const Login = () => {
           <h1 className="font-semibold text-2xl lg:text-3xl mb-4">
             Log in to Fresh Cut Chicken Service
           </h1>
-          <p className="text-gray-600 mb-8">Enter your details below</p>
+          <p className="text-gray-600 dark:bg-black dark:text-white mb-8">Enter your details below</p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Email */}
@@ -131,7 +131,7 @@ const Login = () => {
             {/* Login Button */}
             <button
               type="submit"
-              className="btn btn-primary bg-primary text-white w-full py-2 rounded-md"
+              className="btn btn-primary bg-primary text-white  w-full py-2 rounded-md"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -148,14 +148,14 @@ const Login = () => {
             <button
               type="button"
               onClick={handleGoogle}
-              className="btn btn-outline border border-gray-400 text-gray-700 w-full py-2 rounded-md flex items-center justify-center gap-2"
+              className="btn btn-outline border border-gray-400 text-gray-700 dark:bg-black dark:text-white w-full py-2 rounded-md flex items-center justify-center gap-2"
             >
               <FcGoogle className="text-xl" />
               Sign in with Google
             </button>
           </form>
 
-          <p className="text-center mt-6 text-gray-600">
+          <p className="text-center dark:bg-black dark:text-white mt-6 text-gray-600">
             Don't have an account?{" "}
             <Link
               to="/signUp"

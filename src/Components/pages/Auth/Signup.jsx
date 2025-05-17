@@ -94,8 +94,8 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100 px-4">
-      <div className="flex flex-col lg:flex-row gap-10 items-center bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-6xl">
+    <div className="min-h-screen flex justify-center items-center bg-gray-100 dark:bg-black dark:text-white px-4">
+      <div className="flex flex-col lg:flex-row gap-10 items-center bg-white dark:bg-black dark:text-white shadow-lg rounded-lg overflow-hidden w-full max-w-6xl">
         <div className="lg:w-1/2">
           <img
             className="w-full h-full object-cover max-h-[600px]"
@@ -106,7 +106,7 @@ const Signup = () => {
 
         <div className="lg:w-1/2 w-full p-8">
           <h1 className="font-semibold text-2xl lg:text-3xl mb-2">Create an Account</h1>
-          <p className="text-gray-600 mb-6">Enter your details below</p>
+          <p className="text-gray-600 dark:bg-black dark:text-white mb-6">Enter your details below</p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Name */}
@@ -157,7 +157,7 @@ const Signup = () => {
             {/* Submit */}
             <button
               type="submit"
-              className="btn mt-4 btn-primary border-none bg-primary text-white w-full rounded-md py-2"
+              className="btn mt-4 btn-primary border-none bg-primary dark:bg-black dark:text-white text-white w-full rounded-md py-2"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -174,14 +174,14 @@ const Signup = () => {
             <button
               type="button"
               onClick={handleGoogle}
-              className="btn mt-2 btn-outline border border-gray-400 w-full rounded-md flex items-center justify-center gap-2 py-2"
+              className="btn mt-2 btn-outline border dark:bg-black dark:text-white border-gray-400 w-full rounded-md flex items-center justify-center gap-2 py-2"
             >
               <FcGoogle className="text-xl" />
               Sign in with Google
             </button>
           </form>
 
-          <p className="text-center mt-6 text-gray-600">
+          <p className="text-center mt-6 text-gray-600 dark:bg-black dark:text-white">
             Already have an account?{" "}
             <Link to="/login" className="text-primary font-medium border-b border-primary hover:opacity-80">
               Log in
