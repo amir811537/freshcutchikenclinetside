@@ -24,6 +24,8 @@ import UpdateBanner from "../Components/DashBoard/BannerManagement/UpdateBanner"
 import AddBanner from "../Components/DashBoard/BannerManagement/AddBanner";
 import Login from "../Components/pages/Auth/Login";
 import Signup from "../Components/pages/Auth/Signup";
+import CmsHome from "../Components/DashBoard/Cms/CmsHome";
+import CmsDetail from "../Components/DashBoard/Cms/CmsDetail";
 
 const router = createBrowserRouter([
   {
@@ -121,6 +123,14 @@ element:<UpdateBanner></UpdateBanner>
     {
       path:"manageUser",
       element:<Usermanagement></Usermanagement>
+    },
+    {
+      path:"cms",
+      element:<CmsHome></CmsHome>
+    },
+    {
+path:"cmsDetails",
+element:<CmsDetail></CmsDetail>
     }
     ]
   },      {

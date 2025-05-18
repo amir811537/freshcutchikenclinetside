@@ -12,6 +12,8 @@ import { AuthContext } from "../AuthProvider/AuthProvider";
 import { FaUser } from "react-icons/fa6";
 import { FaHistory } from "react-icons/fa";
 import { TfiLayoutSliderAlt } from "react-icons/tfi";
+import { SiCraftcms } from "react-icons/si";
+import { FcViewDetails } from "react-icons/fc";
 
 
 const Dashboard = () => {
@@ -97,6 +99,7 @@ const Dashboard = () => {
                     <FaList /> All Products
                   </NavLink>
                 </li>
+        
                 {/* <li>
                   <NavLink
                     to="/dashboard/addBanner"
@@ -139,6 +142,28 @@ const Dashboard = () => {
                     onClick={() => setIsSidebarOpen(false)}
                   >
                     <FaHistory/> Delivered Order
+                  </NavLink>
+                </li>
+                        <li>
+                  <NavLink
+                    to="/dashboard/cms"
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                    <SiCraftcms />CMS
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/dashboard/cmsDetails"
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                   <FcViewDetails />CMS Details
                   </NavLink>
                 </li>
               </>
