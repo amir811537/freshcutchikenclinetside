@@ -38,7 +38,7 @@ const OfferAds = () => {
                <Countdown className="text-xl" date={Date.now() + 458895000} renderer={renderer} />
 
                <div className="flex justify-center md:justify-start">
-                   <Link to="/" className='btn btn-success bg-green-400 rounded-sm px-6 md:px-8 text-white'>
+                   <Link to="/products" className='btn btn-success bg-green-400 rounded-sm px-6 md:px-8 text-white'>
                        Buy Now
                    </Link>
                </div>
