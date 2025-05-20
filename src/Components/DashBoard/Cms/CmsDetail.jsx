@@ -19,7 +19,7 @@ Font.register({
   family: "NotoSerifBengali",
   fonts: [
     {
-      src: "../../../../public/fonts/NotoSerifBengali-VariableFont_wdth,wght.ttf",
+      src: "/fonts/NotoSerifBengali-VariableFont_wdth,wght.ttf",
       fontStyle: "normal",
       fontWeight: "normal",
     },
@@ -96,7 +96,6 @@ const PDFDocument = ({ data }) => (
       <View style={[styles.tableRow, styles.tableHeader]}>
         <Text style={styles.tableCell}>Date</Text>
         <Text style={styles.tableCell}>Name</Text>
-        <Text style={styles.tableCell}>Location</Text>
         <Text style={styles.tableCell}>Phone</Text>
         <Text style={styles.tableCell}>Order</Text>
         <Text style={styles.tableCell}>Sale</Text>
@@ -108,12 +107,9 @@ const PDFDocument = ({ data }) => (
           <Text style={isBangla(item.name) ? styles.tableCellBangla : styles.tableCell}>
             {item.name}
           </Text>
-          <Text style={isBangla(item.location) ? styles.tableCellBangla : styles.tableCell}>
-            {truncateWords(item.location)}
-          </Text>
           <Text style={styles.tableCell}>{item.phone}</Text>
           <Text style={isBangla(item.orderHistory) ? styles.tableCellBangla : styles.tableCell}>
-            {item.orderHistory}
+              {truncateWords(item.orderHistory)}
           </Text>
           <Text style={styles.tableCell}>{item.sale}</Text>
         </View>
