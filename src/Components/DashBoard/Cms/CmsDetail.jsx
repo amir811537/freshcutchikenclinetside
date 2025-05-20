@@ -14,13 +14,19 @@ import {
 import { saveAs } from "file-saver";
 import logo from "../../../assets/logo-removebg-preview.png";
 
-// ✅ Register Bangla Font
+// ✅ Register Bangla Font from public folder
 Font.register({
   family: "NotoSerifBengali",
-  src: "/fonts/NotoSerifBengali-Regular.ttf",
+  fonts: [
+    {
+      src: "../../../../public/fonts/NotoSerifBengali-VariableFont_wdth,wght.ttf",
+      fontStyle: "normal",
+      fontWeight: "normal",
+    },
+  ],
 });
 
-// ✅ PDF Styles
+// ✅ Styles
 const styles = StyleSheet.create({
   page: {
     fontFamily: "Helvetica",
@@ -69,10 +75,16 @@ const styles = StyleSheet.create({
   },
 });
 
-// ✅ Utility to detect Bangla
+// ✅ Utility functions
 const isBangla = (text = "") => /[\u0980-\u09FF]/.test(text);
 
-// ✅ PDF Document Component
+const truncateWords = (text, maxWords = 5) => {
+  if (!text) return "";
+  const words = text.split(" ");
+  return words.length > maxWords ? words.slice(0, maxWords).join(" ") + "..." : text;
+};
+
+// ✅ PDF Document
 const PDFDocument = ({ data }) => (
   <Document>
     <Page size="A4" style={styles.page}>
@@ -97,16 +109,10 @@ const PDFDocument = ({ data }) => (
             {item.name}
           </Text>
           <Text style={isBangla(item.location) ? styles.tableCellBangla : styles.tableCell}>
-            {item.location}
+            {truncateWords(item.location)}
           </Text>
           <Text style={styles.tableCell}>{item.phone}</Text>
-          <Text
-            style={
-              isBangla(item.orderHistory)
-                ? styles.tableCellBangla
-                : styles.tableCell
-            }
-          >
+          <Text style={isBangla(item.orderHistory) ? styles.tableCellBangla : styles.tableCell}>
             {item.orderHistory}
           </Text>
           <Text style={styles.tableCell}>{item.sale}</Text>
@@ -176,7 +182,6 @@ const CmsDetail = () => {
     <div className="max-w-7xl mx-auto p-4">
       <div className="mb-4">
         <h1 className="text-xl font-bold mb-2">Filter by Month and Date</h1>
-
         <div className="flex flex-wrap gap-4">
           <div>
             <label className="block mb-1">Select Month</label>
