@@ -78,11 +78,6 @@ const styles = StyleSheet.create({
 // ✅ Utility functions
 const isBangla = (text = "") => /[\u0980-\u09FF]/.test(text);
 
-const truncateWords = (text, maxWords = 5) => {
-  if (!text) return "";
-  const words = text.split(" ");
-  return words.length > maxWords ? words.slice(0, maxWords).join(" ") + "..." : text;
-};
 
 // ✅ PDF Document
 const PDFDocument = ({ data }) => (
@@ -97,7 +92,6 @@ const PDFDocument = ({ data }) => (
         <Text style={styles.tableCell}>Date</Text>
         <Text style={styles.tableCell}>Name</Text>
         <Text style={styles.tableCell}>Phone</Text>
-        <Text style={styles.tableCell}>Order</Text>
         <Text style={styles.tableCell}>Sale</Text>
       </View>
 
@@ -108,9 +102,6 @@ const PDFDocument = ({ data }) => (
             {item.name}
           </Text>
           <Text style={styles.tableCell}>{item.phone}</Text>
-          <Text style={isBangla(item.orderHistory) ? styles.tableCellBangla : styles.tableCell}>
-              {truncateWords(item.orderHistory)}
-          </Text>
           <Text style={styles.tableCell}>{item.sale}</Text>
         </View>
       ))}
