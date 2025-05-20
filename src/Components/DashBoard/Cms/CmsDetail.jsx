@@ -19,7 +19,7 @@ Font.register({
   family: "NotoSerifBengali",
   fonts: [
     {
-      src: "/fonts/NotoSerifBengali-VariableFont_wdth,wght.ttf",
+      src: "/public/fonts/NotoSerifBengali-VariableFont_wdth,wght.ttf",
       fontStyle: "normal",
       fontWeight: "normal",
     },
