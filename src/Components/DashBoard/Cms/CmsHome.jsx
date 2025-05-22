@@ -60,7 +60,7 @@ const CmsHome = () => {
 
   return (
     <div className="flex flex-col items-center gap-6 p-4">
-      <div className="w-full max-w-4xl bg-white p-6 rounded shadow">
+      <div className="w-full  bg-white dark:bg-black dark:text-white p-6 ">
         <h2 className="text-2xl font-bold mb-4">Add Customer Information</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
