@@ -15,7 +15,7 @@ const ProductCard = ({ item, isLoading }) => {
 
   const handleAddToCart = async () => {
     if (!user) {
-      navigate("/notloginRegister");
+      navigate("/login");
       return;
     }
 
@@ -49,7 +49,7 @@ const ProductCard = ({ item, isLoading }) => {
 
   const handleBuyNow = async () => {
     if (!user) {
-      navigate("/notloginRegister");
+      navigate("/login");
       return;
     }
 
