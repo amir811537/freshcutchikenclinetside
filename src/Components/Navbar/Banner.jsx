@@ -6,6 +6,7 @@ import "swiper/css/navigation";
 import Banner1 from '../../assets/new1.png'
 import Banner2 from '../../assets/new2.png'
 import Banner3 from '../../assets/chicken banner.png'
+import Banner4 from '../../assets/Food Facebook Cover.png'
 
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
@@ -14,7 +15,8 @@ const Banner = () => {
   const data = {
     image1: Banner1,
     image2: Banner2,
-    image3: Banner3
+    image3: Banner3,
+    image4: Banner4
   };
 
   return (
