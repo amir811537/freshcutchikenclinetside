@@ -13,10 +13,10 @@ import { Link } from "react-router-dom";
 
 const Banner = () => {
   const data = {
-    image1: Banner1,
+    image1: Banner4,
     image2: Banner2,
     image3: Banner3,
-    image4: Banner4
+    image4: Banner1
   };
 
   return (
