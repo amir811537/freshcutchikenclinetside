@@ -15,7 +15,7 @@ const ProductDetail = () => {
 
   const handleAddToCart = async () => {
     if (!user) {
-      navigate("/notloginRegister");
+      navigate("/login");
       return;
     }
 
@@ -49,7 +49,7 @@ const ProductDetail = () => {
 
   const handleBuyNow = async () => {
     if (!user) {
-      navigate("/notloginRegister");
+    navigate("/login");
       return;
     }
 
@@ -99,7 +99,7 @@ const ProductDetail = () => {
         <div className="w-full lg:w-[40%] space-y-4">
           <h1 className="text-2xl font-semibold text-[#FC8934]">{product.name}</h1>
           <p className="text-3xl font-bold text-red-500">
-            BDT {product.price}
+            BDT {product.price} kg 
             <span className="text-gray-500 dark:text-white line-through text-xl ml-4">
               BDT {product.oldPrice}
             </span>

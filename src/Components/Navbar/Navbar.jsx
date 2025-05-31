@@ -98,7 +98,9 @@ const Navbar = () => {
           </div>
           {/* text for only mobile nav */}
           <div className="lg:hidden block mr-9">
-            <p className="font-extrabold text-red-700 text-2xl">Fresh Cut</p>
+           <a href="/">
+             <p className="font-extrabold text-red-700 text-2xl">Fresh Cut</p>
+           </a>
           </div>
           {/* cart icon for mobile nav */}
           <div className="lg:hidden block">

@@ -1,10 +1,15 @@
 // src/components/BestSelling/BestSelling.jsx
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import ProductCard from "./ProductCard";
 import useProducts from "../../../hooks/useProducts";
 
 const BestSelling = () => {
-  const { data: bestSellingProduct = [], isPending } = useProducts();
+  const { data: products = [], isPending } = useProducts();
+  const [showAll, setShowAll] = useState(false);
+
+  // Show only the first 8 initially
+  const visibleProducts = showAll ? products : products.slice(0, 8);
 
   return (
     <div className="lg:my-20 max-w-7xl mx-auto my-10 px-5 lg:px-0">
@@ -17,7 +22,7 @@ const BestSelling = () => {
             </h1>
           </div>
           <h1 className="text-2xl lg:text-4xl mt-4 lg:mt-10 font-medium font-inter">
-            Best Selling Products
+            Our Products
           </h1>
         </div>
         <Link
@@ -40,13 +45,22 @@ const BestSelling = () => {
               </div>
             ))
           ) : (
-            bestSellingProduct
-              .filter(item => item.sellCount >= 5)
-              .map((item, index) => (
-                <ProductCard key={index} item={item} />
-              ))
+            visibleProducts.map((item, index) => (
+              <ProductCard key={index} item={item} />
+            ))
           )}
         </div>
+
+        {!isPending && !showAll && products.length > 8 && (
+          <div className="flex justify-center mt-10">
+            <button
+              onClick={() => setShowAll(true)}
+              className="btn px-8 text-white bg-[#F5BC3B] hover:bg-yellow-400 rounded-sm"
+            >
+              Show All Products
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

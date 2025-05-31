@@ -124,7 +124,7 @@ const ProductCard = ({ item, isLoading }) => {
         </Link>
         <div className="flex justify-between items-center">
           <div className="space-x-2">
-            <span className="text-xl font-bold text-red-600">৳{item.price}</span>
+            <span className="text-xl font-bold text-red-600">৳{item.price} kg</span>
             <span className="line-through text-gray-500 dark:text-white text-sm">৳{item.oldPrice}</span>
           </div>
         </div>
