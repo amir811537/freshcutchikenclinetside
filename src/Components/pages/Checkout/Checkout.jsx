@@ -4,7 +4,7 @@ import { AuthContext } from '../../../AuthProvider/AuthProvider';
 import { MdDelete } from "react-icons/md";
 import useCart from '../../../hooks/useCart';
 import axios from 'axios';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
   const { user } = useContext(AuthContext);
@@ -60,16 +60,14 @@ const Checkout = () => {
           quantity: item.quantity || 1,
           image: item.image,
         })),
-        status:"pending",
+        status: "pending",
         totalAmount: discountedCartTotal,
         paymentMethod,
         orderDate: new Date().toISOString()
       };
 
       await axios.post("https://freshcutserverside.vercel.app/order", fullOrder);
-
       await axios.delete(`https://freshcutserverside.vercel.app/cart?email=${user.email}`);
-
       navigate("/dashboard/order-success");
     } catch (error) {
       console.error("Order failed:", error);
@@ -82,7 +80,8 @@ const Checkout = () => {
     return acc + parseFloat(item.price) * qty;
   }, 0);
 
-  const shipping = 0;
+  const totalQuantity = cartData.reduce((acc, item) => acc + (item.quantity || 1), 0);
+const shipping = totalQuantity >= 5 ? 0 : 60;
   const discount = 0;
   const discountedCartTotal = Math.round((cartTotal + shipping) * (1 - discount / 100));
 
@@ -128,7 +127,7 @@ const Checkout = () => {
                     <p className='text-sm text-gray-500'>৳{item.price} per kg</p>
                   </div>
                 </div>
-                <div className="flex justify-center  items-end">
+                <div className="flex justify-center items-end">
                   <p className='font-semibold'>
                     ৳{item.price} × {item.quantity || 1} kg = ৳{(item.price * (item.quantity || 1)).toFixed(2)}
                   </p>
@@ -153,6 +152,9 @@ const Checkout = () => {
               <span>Shipping:</span>
               <span>৳{shipping}</span>
             </div>
+            {shipping === 0 && (
+              <p className="text-green-600 text-sm">You got free shipping for ordering more than 5 kg!</p>
+            )}
             <div className="flex justify-between">
               <span>Discount:</span>
               <span>{discount}%</span>
