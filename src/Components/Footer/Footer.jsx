@@ -1,4 +1,5 @@
 import { IoMdSend } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
 	return (
@@ -24,33 +25,28 @@ const Footer = () => {
 					<h4 className="font-bold text-lg">Support</h4>
 					<p>Mirpur 1,Dhaka,Bangladesh.</p>
 					<p>freshcutchickenservice@gamil.com</p>
-					<p>+88013361-00835</p>
+					<p>+8801336-100836</p>
 				</div>
 				<div className="space-y-4">
 					<h4 className="font-bold text-lg">Account</h4>
 					<ul className="space-y-4">
 						<li>
-							<a href="#" className="hover:underline">
+							<Link to="/dashboard/userHome" className="hover:underline">
 								My Account
-							</a>
+							</Link>
 						</li>
 						<li>
-							<a href="/login" className="hover:underline">
+							<Link to="/login" className="hover:underline">
 								Login / Register
-							</a>
+							</Link>
 						</li>
 						<li>
-							<a href="#" className="hover:underline">
+							<Link to="/dashboard/cart" className="hover:underline">
 								Cart
-							</a>
+							</Link>
 						</li>
 						<li>
-							<a href="#" className="hover:underline">
-								Wishlist
-							</a>
-						</li>
-						<li>
-							<a href="#" className="hover:underline">
+							<a href="/" className="hover:underline">
 								Shop
 							</a>
 						</li>
@@ -83,7 +79,7 @@ const Footer = () => {
 				</div>
 			</div>
 			<div className="text-center mt-16 text-gray-500 text-sm ">
-				© Copyrightfreshcutchickenservice 2025. <br />All rights reserved
+				© Copyright freshcutchickenservice 2025. <br />All rights reserved
 			</div>
 		</footer>
 	);

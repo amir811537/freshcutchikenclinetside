@@ -16,7 +16,7 @@ const Freedelevery = () => {
                 FREE DELIVERY
             </h1>
             <p className="text-base">
-                Enjoy free delivery on all orders over $140. No extra charges!
+               You got free shipping for ordering more than 5 kg!
             </p>
         </div>
         <div className="space-y-4 text-center">

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import axiosSecure from "../../hooks/axiosSecure";
@@ -15,6 +15,11 @@ const UserHome = () => {
       return res.data;
     },
   });
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
 
   const totalOrders = orders.length;
   const pendingOrders = orders.filter(order => order.status === 'pending').length;

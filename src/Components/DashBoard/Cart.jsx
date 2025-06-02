@@ -64,6 +64,11 @@ const Cart = () => {
     navigate("/checkout");
   };
 
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   if (isLoading) return <p className="text-center mt-10 dark:text-gray-100">Loading cart...</p>;
 
   return (

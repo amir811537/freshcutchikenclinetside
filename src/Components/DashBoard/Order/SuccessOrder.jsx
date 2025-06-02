@@ -2,46 +2,41 @@ import { Link } from "react-router-dom";
 
 const SuccessOrder = () => {
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-        <div
-            className="w-full max-w-2xl p-12 mx-4 text-center transition-all transform bg-white shadow-lg rounded-xl hover:shadow-xl">
-            {/* <!-- Success Icon --> */}
-            <div className="flex items-center justify-center w-24 h-24 mx-auto mb-8 bg-green-100 rounded-full">
-                <svg className="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-            </div>
-    
-            {/* <!-- Main Content --> */}
-            <h1 className="mb-6 text-4xl font-extrabold text-green-600">
-                Order Successful!
-            </h1>
-    
-            <p className="mb-8 text-xl text-gray-700">
-                Thank you for your purchase.
-            </p>
+        <div className="min-h-screen flex items-center justify-center px-4 py-10 bg-gradient-to-b from-green-50 to-green-100">
+            <div className="w-full max-w-lg bg-white rounded-2xl shadow-md p-6 sm:p-10 text-center">
+                {/* Success Icon */}
+                <div className="flex items-center justify-center w-20 h-20 mx-auto mb-6 bg-green-100 rounded-full">
+                    <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
 
+                {/* Heading */}
+                <h1 className="text-3xl sm:text-4xl font-bold text-green-600 mb-4">Order Successful!</h1>
+                <p className="text-base sm:text-lg text-gray-700 mb-6">Thank you for your purchase.</p>
 
-            {/* <!-- Contact Information --> */}
-            <div className="pt-8 mt-8 border-t border-gray-100">
-                <p className="text-lg text-gray-700">
-                    Have questions? Contact us at:
-                </p>
-                <a href="mailto:admin@freshcutservice.com"
-                    className="inline-block mt-2 text-xl font-medium text-blue-600 transition-colors duration-200 hover:text-blue-800">
-                    admin@freshcutservice.com
-                </a>
-            </div>
-    
-            {/* <!-- Back to Home Button --> */}
-            <div className="mt-12">
-                <Link to="/dashboard/userHome"
-                    className="inline-block px-8 py-4 text-lg font-semibold text-white transition-colors duration-200 bg-green-600 rounded-lg hover:bg-green-700">
-                    Return to Dashboard
-                </Link>
+                {/* Contact Info */}
+                <div className="mt-6 pt-4 border-t border-gray-200">
+                    <p className="text-sm sm:text-base text-gray-700">Have questions? Contact us at:</p>
+                    <a
+                        href="mailto:admin@freshcutservice.com"
+                        className="block mt-1 text-base font-medium text-blue-600 hover:text-blue-800 transition"
+                    >
+                       freshcutchickenservice@gamil.com
+                    </a>
+                </div>
+
+                {/* Return to Dashboard Button */}
+                <div className="mt-8">
+                    <Link
+                        to="/dashboard/userHome"
+                        className="inline-block w-full sm:w-auto px-6 py-3 bg-green-600 text-white text-base sm:text-lg font-semibold rounded-lg hover:bg-green-700 transition"
+                    >
+                        Return to Dashboard
+                    </Link>
+                </div>
             </div>
         </div>
-    </div>
     );
 };
 
