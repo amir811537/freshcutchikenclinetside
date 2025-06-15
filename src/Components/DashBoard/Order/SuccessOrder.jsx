@@ -1,43 +1,109 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import { useLocation } from "react-router-dom";
+import { pdf } from "@react-pdf/renderer";
+import { saveAs } from "file-saver";
+import InvoicePdf from "./invoice/InvoicePdf";
+import { v4 as uuidv4 } from "uuid";
+import { FaCheckCircle } from "react-icons/fa";
 
-const SuccessOrder = () => {
+const OrderSuccess = () => {
+  const { state } = useLocation();
+  const order = state?.fullOrder;
+  const [pdfBlob, setPdfBlob] = useState(null);
+
+  const fallbackIdRef = useRef(uuidv4().split("-")[0]);
+  const orderId = order?._id || fallbackIdRef.current;
+
+  useEffect(() => {
+    if (order) {
+      const generatePDF = async () => {
+        const blob = await pdf(
+          <InvoicePdf data={{ ...order, _id: orderId }} />
+        ).toBlob();
+        setPdfBlob(blob);
+      };
+      generatePDF();
+    }
+  }, [order, orderId]);
+
+  const downloadInvoice = () => {
+    if (pdfBlob) {
+      const fileName = `invoice-${orderId}.pdf`;
+      saveAs(pdfBlob, fileName);
+    }
+  };
+
+  if (!order) {
     return (
-        <div className="min-h-screen flex items-center justify-center px-4 py-10 bg-gradient-to-b from-green-50 to-green-100">
-            <div className="w-full max-w-lg bg-white rounded-2xl shadow-md p-6 sm:p-10 text-center">
-                {/* Success Icon */}
-                <div className="flex items-center justify-center w-20 h-20 mx-auto mb-6 bg-green-100 rounded-full">
-                    <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                </div>
-
-                {/* Heading */}
-                <h1 className="text-3xl sm:text-4xl font-bold text-green-600 mb-4">Order Successful!</h1>
-                <p className="text-base sm:text-lg text-gray-700 mb-6">Thank you for your purchase.</p>
-
-                {/* Contact Info */}
-                <div className="mt-6 pt-4 border-t border-gray-200">
-                    <p className="text-sm sm:text-base text-gray-700">Have questions? Contact us at:</p>
-                    <a
-                        href="mailto:admin@freshcutservice.com"
-                        className="block mt-1 text-base font-medium text-blue-600 hover:text-blue-800 transition"
-                    >
-                       freshcutchickenservice@gamil.com
-                    </a>
-                </div>
-
-                {/* Return to Dashboard Button */}
-                <div className="mt-8">
-                    <Link
-                        to="/dashboard/userHome"
-                        className="inline-block w-full sm:w-auto px-6 py-3 bg-green-600 text-white text-base sm:text-lg font-semibold rounded-lg hover:bg-green-700 transition"
-                    >
-                        Return to Dashboard
-                    </Link>
-                </div>
-            </div>
-        </div>
+      <div className="text-center mt-20">
+        <h2 className="text-2xl font-bold mb-4">No order data found.</h2>
+        <a href="/" className="btn btn-primary">
+          Go Back to Home
+        </a>
+      </div>
     );
+  }
+
+  const {
+    customer: { name, phone },
+    totalAmount,
+    status,
+    paymentMethod,
+  } = order;
+
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-green-50 to-green-100 px-4">
+      <div className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full text-center">
+        <FaCheckCircle className="text-green-500 text-5xl mx-auto mb-4" />
+        <h2 className="text-2xl font-bold text-green-700 mb-2">
+          Order Successful!
+        </h2>
+        <p className="text-gray-700 mb-6">
+          Thank you <span className="font-semibold">{name}</span>, your order
+          has been placed.
+        </p>
+
+        <div className="bg-gray-100 p-4 rounded-md text-left text-sm mb-6">
+          <p>
+            <span className="font-medium">Order ID:</span> #{orderId}
+          </p>
+          <p>
+            <span className="font-medium">Phone:</span> {phone}
+          </p>
+          <p>
+            <span className="font-medium">Total:</span> ৳
+            {parseFloat(totalAmount).toFixed(2)}
+          </p>
+          <p>
+            <span className="font-medium">Payment:</span> {paymentMethod}
+          </p>
+          <p>
+            <span className="font-medium">Status:</span>{" "}
+            <span className="text-green-600 font-semibold">{status}</span>
+          </p>
+        </div>
+
+        <button
+          onClick={downloadInvoice}
+          disabled={!pdfBlob}
+          className={`w-full py-3 rounded-md font-medium text-white ${
+            pdfBlob
+              ? "bg-green-600 hover:bg-green-700 transition"
+              : "bg-gray-400 cursor-not-allowed"
+          }`}
+        >
+          Download Invoice PDF
+        </button>
+
+        <a
+          href="/"
+          className="inline-block mt-4 text-sm text-green-600 hover:underline"
+        >
+          Back to Homepage
+        </a>
+      </div>
+    </div>
+  );
 };
 
-export default SuccessOrder;
+export default OrderSuccess;

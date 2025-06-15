@@ -68,7 +68,10 @@ const Checkout = () => {
 
       await axios.post("https://freshcutserverside.vercel.app/order", fullOrder);
       await axios.delete(`https://freshcutserverside.vercel.app/cart?email=${user.email}`);
-      navigate("/dashboard/order-success");
+      
+      navigate("/dashboard/order-success", { state: { fullOrder } });
+
+     
     } catch (error) {
       console.error("Order failed:", error);
       alert("Failed to place order.");
@@ -86,7 +89,6 @@ const shipping = totalQuantity >= 5 ? 0 : 60;
   const discountedCartTotal = Math.round((cartTotal + shipping) * (1 - discount / 100));
 
   if (isLoading) return <p className="text-center mt-10">Loading cart...</p>;
-
   return (
     <div className='px-5 lg:px-0 my-10 max-w-7xl mx-auto'>
       <h1 className='text-2xl font-semibold font-inter mb-6 '>Billing Details</h1>

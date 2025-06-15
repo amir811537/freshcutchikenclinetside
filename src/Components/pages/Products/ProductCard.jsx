@@ -33,7 +33,7 @@ const ProductCard = ({ item, isLoading }) => {
       Swal.fire({
         icon: "success",
         title: "Product is added to cart",
-        timer: 3000,
+        timer: 2000,
         showConfirmButton: false,
       });
     } catch (error) {
@@ -41,7 +41,7 @@ const ProductCard = ({ item, isLoading }) => {
         icon: "error",
         title: "Product add failed",
         text: error.message,
-        timer: 3000,
+        timer: 2000,
         showConfirmButton: false,
       });
     }
@@ -70,7 +70,7 @@ const ProductCard = ({ item, isLoading }) => {
         icon: "error",
         title: "Product add failed",
         text: error.message,
-        timer: 3000,
+        timer: 2000,
         showConfirmButton: false,
       });
     }
