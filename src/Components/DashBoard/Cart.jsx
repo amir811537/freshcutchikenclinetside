@@ -6,6 +6,7 @@ import { MdDelete } from "react-icons/md";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import image from "../../assets/icon/cart.svg";
+import Loader from "../Loader/Loader";
 
 const Cart = () => {
   const { user } = useContext(AuthContext);
@@ -69,7 +70,9 @@ const Cart = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (isLoading) return <p className="text-center mt-10 dark:text-gray-100">Loading cart...</p>;
+  if (isLoading) return <div className="flex justify-center items-center">
+    <Loader></Loader>
+  </div>;
 
   return (
     <div className="px-4 lg:px-0 my-10 max-w-5xl mx-auto dark:bg-gray-900 dark:text-gray-100 min-h-screen">

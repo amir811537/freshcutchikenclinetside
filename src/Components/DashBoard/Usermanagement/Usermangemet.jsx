@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import Loader from "../../Loader/Loader";
 
 const Usermanagement = () => {
   const { data: users = [], isLoading, refetch } = useQuery({
@@ -10,7 +11,9 @@ const Usermanagement = () => {
     },
   });
 
-  if (isLoading) return <p>Loading users...</p>;
+  if (isLoading) return <div className="flex justify-center items-center">
+    <Loader></Loader>
+  </div>;
 
   return (
     <div className="px-4 py-6">

@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useProducts from "../../../hooks/useProducts";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../Loader/Loader";
 
 const ProductList = () => {
   const { data: products = [], isLoading, isError } = useProducts();
@@ -43,7 +44,10 @@ const ProductList = () => {
     });
   };
 
-  if (isLoading) return <p>Loading products...</p>;
+  if (isLoading) return <div>
+    <div className="flex justify-center items-center">
+    <Loader></Loader>
+  </div> </div> ;
   if (isError) return <p>Failed to load products.</p>;
 
   return (

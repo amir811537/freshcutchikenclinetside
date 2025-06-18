@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts';
+import Loader from '../Loader/Loader';
 
 const AdminHome = () => {
   // Fetch products
@@ -47,7 +48,9 @@ const AdminHome = () => {
       }));
   };
 
-  if (productsLoading || usersLoading) return <p>Loading dashboard...</p>;
+  if (productsLoading || usersLoading) return <div className="flex justify-center items-center">
+    <Loader></Loader>
+  </div>;
   if (productsError || usersError) return <p>Failed to load dashboard data.</p>;
 
   const topSelling = getTopSelling(products);

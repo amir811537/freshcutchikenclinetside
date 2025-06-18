@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AuthContext } from "../../../../AuthProvider/AuthProvider";
 import axiosSecure from "../../../../hooks/axiosSecure";
+import Loader from "../../../Loader/Loader";
 
 const MyOrder = () => {
   const { user } = useContext(AuthContext);
@@ -20,7 +21,14 @@ const MyOrder = () => {
     },
   });
 
-  if (isLoading) return <p className="p-4 dark:text-gray-100">Loading orders...</p>;
+  if (isLoading) return 
+  <div>
+  <div className="flex justify-center items-center">
+    <Loader></Loader>
+  </div>
+  <p className="p-4 dark:text-gray-100">Loading orders...</p> 
+  </div>
+  ;
   if (isError) return <p className="p-4 text-red-500 dark:text-red-400">Failed to load orders.</p>;
 
   return (

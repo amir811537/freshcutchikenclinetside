@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import Loader from '../../../Loader/Loader';
 
 const OrderHistory = () => {
   const {
@@ -14,7 +15,9 @@ const OrderHistory = () => {
     },
   });
 
-  if (isLoading) return <p>Loading order history...</p>;
+  if (isLoading) return <div className="flex justify-center items-center">
+    <Loader></Loader>
+  </div>;
   if (isError) return <p>Failed to load order history.</p>;
 
   return (

@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
+import Loader from '../../../Loader/Loader';
 
 const ManageOrder = () => {
   const [selectedStatuses, setSelectedStatuses] = useState([
@@ -87,7 +88,9 @@ const ManageOrder = () => {
 
   const orderFlow = ['pending', 'confirmed', 'shipping', 'delivered'];
 
-  if (isLoading) return <p>Loading orders...</p>;
+  if (isLoading) return <div className="flex justify-center items-center">
+    <Loader></Loader>
+  </div>;
   if (isError) return <p>Failed to load orders.</p>;
 
   return (

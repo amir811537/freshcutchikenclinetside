@@ -6,10 +6,9 @@ import "swiper/css/navigation";
 import Banner1 from '../../assets/new1.png'
 import Banner2 from '../../assets/new2.png'
 import Banner3 from '../../assets/chicken banner.png'
-import Banner4 from '../../assets/Food Facebook Cover.png'
+import Banner4 from '../../assets/icon/offer.png'
 
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
-import { Link } from "react-router-dom";
 
 const Banner = () => {
   const data = {
@@ -37,13 +36,13 @@ const Banner = () => {
       >
         {Object.values(data).map((image, index) => (
           <SwiperSlide key={index}>
-    <Link to='/products'>
+    
             <img
               src={image}
               alt={`Banner ${index + 1}`}
               className="w-full h-[220px] md:h-[330px] lg:h-[450px] 2xl:h-[500px]"
             />
-    </Link>
+   
           </SwiperSlide>
         ))}
       </Swiper>

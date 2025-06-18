@@ -7,6 +7,7 @@ import { app } from "../../../firebase/firebase.config";
 import Swal from "sweetalert2";
 import RichTextEditor from "./RichTextEditor";
 import imageUpload from "../../../assets/icon/image-bg-remove.svg";
+import Loader from "../../Loader/Loader";
 
 const categoryMap = {
   "Chicken & Poultry": "https://i.ibb.co.com/zHtLXC6b/icon-chicken-removebg-preview-1.png",
@@ -105,7 +106,9 @@ const UpdateProduct = () => {
     updateMutation.mutate(updatedData);
   };
 
-  if (isLoading) return <p className="p-4">Loading product...</p>;
+  if (isLoading) return <div className="flex justify-center items-center">
+    <Loader></Loader>
+  </div>;
 
   return (
     <div className="px-4">
