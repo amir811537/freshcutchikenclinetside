@@ -130,6 +130,7 @@ const ManageOrder = () => {
                   Address: {order.customer.address}, {order.customer.apartment}
                 </p>
                 <p>Payment: {order.paymentMethod}</p>
+                <p>transactionId: {order.transactionId}</p>
                 <p>
                   Order Date:{' '}
                   {new Date(order.orderDate).toLocaleString('en-BD')}

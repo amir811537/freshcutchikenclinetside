@@ -23,7 +23,7 @@ const ProductDetail = () => {
       name: product.name,
       image: product.image,
       price: product.price,
-      quantity: 1,
+      quantity: 0,
       email: user.email,
     };
 
@@ -58,7 +58,7 @@ const ProductDetail = () => {
       image: product.image,
       price: product.price,
       email: user.email,
-      quantity: 1,
+      quantity: 0,
     };
 
     try {

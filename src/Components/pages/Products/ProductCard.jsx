@@ -24,7 +24,7 @@ const ProductCard = ({ item, isLoading }) => {
       image: item.image,
       price: item.price,
       email: user.email,
-      quantity: 1,
+      quantity: 0,
     };
 
     try {
@@ -58,7 +58,7 @@ const ProductCard = ({ item, isLoading }) => {
       image: item.image,
       price: item.price,
       email: user.email,
-      quantity: 1,
+      quantity: 0,
     };
 
     try {

@@ -5,6 +5,8 @@ import { MdDelete } from "react-icons/md";
 import useCart from '../../../hooks/useCart';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../../Loader/Loader';
+import Swal from 'sweetalert2';
 
 const Checkout = () => {
   const { user } = useContext(AuthContext);
@@ -12,6 +14,7 @@ const Checkout = () => {
   const { data: cartData = [], refetchCart, isLoading } = useCart(user?.email);
 
   const [paymentMethod, setPaymentMethod] = useState("COD");
+  const [transactionId, setTransactionId] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
@@ -44,6 +47,16 @@ const Checkout = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (paymentMethod === "Bkash" && !transactionId.trim()) {
+      Swal.fire({
+  title: "Please enter the Bkash Transaction ID.!",
+  icon: "error",
+    timer: 1500,
+  draggable: true
+});
+      return;
+    }
+
     try {
       const fullOrder = {
         customer: {
@@ -63,6 +76,7 @@ const Checkout = () => {
         status: "pending",
         totalAmount: discountedCartTotal,
         paymentMethod,
+        transactionId: paymentMethod === "Bkash" ? transactionId : null,
         orderDate: new Date().toISOString()
       };
 
@@ -71,7 +85,6 @@ const Checkout = () => {
       
       navigate("/dashboard/order-success", { state: { fullOrder } });
 
-     
     } catch (error) {
       console.error("Order failed:", error);
       alert("Failed to place order.");
@@ -83,12 +96,16 @@ const Checkout = () => {
     return acc + parseFloat(item.price) * qty;
   }, 0);
 
-  const totalQuantity = cartData.reduce((acc, item) => acc + (item.quantity || 1), 0);
-const shipping = totalQuantity >= 5 ? 0 : 60;
+  const shipping = 70;
   const discount = 0;
   const discountedCartTotal = Math.round((cartTotal + shipping) * (1 - discount / 100));
 
-  if (isLoading) return <p className="text-center mt-10">Loading cart...</p>;
+  if (isLoading) return (
+    <div className="flex justify-center items-center">
+      <Loader />
+    </div>
+  );
+
   return (
     <div className='px-5 lg:px-0 my-10 max-w-7xl mx-auto'>
       <h1 className='text-2xl font-semibold font-inter mb-6 '>Billing Details</h1>
@@ -154,9 +171,6 @@ const shipping = totalQuantity >= 5 ? 0 : 60;
               <span>Shipping:</span>
               <span>৳{shipping}</span>
             </div>
-            {shipping === 0 && (
-              <p className="text-green-600 text-sm">You got free shipping for ordering more than 5 kg!</p>
-            )}
             <div className="flex justify-between">
               <span>Discount:</span>
               <span>{discount}%</span>
@@ -184,13 +198,23 @@ const shipping = totalQuantity >= 5 ? 0 : 60;
                 type="radio"
                 name="payment"
                 value="Bkash"
+                checked={paymentMethod === "Bkash"}
                 onChange={() => setPaymentMethod("Bkash")}
               />
               Online Payment (Send money)
             </label>
+
             {paymentMethod === "Bkash" && (
-              <div className="mt-2 text-sm text-gray-600">
-                <p>Bkash/Nagad: 01336100836</p>
+              <div className="mt-4 space-y-2">
+                <p className="text-sm text-gray-600">Bkash Personal: <span className=" text-lg text-green-600 font-bold">01795-044545</span></p>
+                <label className='block text-sm font-medium text-gray-700'>Transaction ID<sup className='text-red-500'>*</sup></label>
+                <input
+                  type="text"
+                  className="input w-full bg-[#F5F5F5] mt-1"
+                  value={transactionId}
+                  onChange={(e) => setTransactionId(e.target.value)}
+                  placeholder="Enter Your TrxID"
+                />
               </div>
             )}
           </div>

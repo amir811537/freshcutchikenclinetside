@@ -16,6 +16,7 @@ const Cart = () => {
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [localQuantities, setLocalQuantities] = useState({});
+const [showWarningModal, setShowWarningModal] = useState(false);
 
   useEffect(() => {
     const initialQuantities = {};
@@ -56,14 +57,16 @@ const Cart = () => {
       });
   };
 
-  const handleCheckout = () => {
-    const validItems = cartData.filter(item => localQuantities[item._id] > 0);
-    if (validItems.length === 0) {
-      alert("Please add at least one kg.");
-      return;
-    }
-    navigate("/checkout");
-  };
+const handleCheckout = () => {
+  const allItemsValid = cartData.every(item => (localQuantities[item._id] ?? 0) > 0);
+
+  if (!allItemsValid) {
+    setShowWarningModal(true);
+    return;
+  }
+
+  navigate("/checkout");
+};
 
 
   useEffect(() => {
@@ -75,7 +78,7 @@ const Cart = () => {
   </div>;
 
   return (
-    <div className="px-4 lg:px-0 my-10 max-w-5xl mx-auto dark:bg-gray-900 dark:text-gray-100 min-h-screen">
+    <div className="px-4 lg:px-0 my-10 max-w-full mx-auto dark:bg-gray-900 dark:text-gray-100 min-h-screen">
       <h2 className="text-xl font-semibold font-inter mb-6">
         Cart Items ({cartData.length})
       </h2>
@@ -140,6 +143,26 @@ const Cart = () => {
           </div>
         </>
       )}
+
+{/* Warning Modal for minimum quantity */}
+{showWarningModal && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 w-full max-w-md">
+      <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Oops!</h2>
+      <p className="text-gray-600 dark:text-gray-300 mb-6">
+        Please add at least <span className="font-bold">1 kg</span> of any product to proceed to checkout.
+      </p>
+      <div className="flex justify-end">
+        <button
+          className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white text-sm"
+          onClick={() => setShowWarningModal(false)}
+        >
+          Okay
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
       {/* Delete Confirmation Modal */}
       {showModal && (
