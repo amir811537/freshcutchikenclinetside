@@ -10,6 +10,8 @@ const OrderSuccess = () => {
   const { state } = useLocation();
   const order = state?.fullOrder;
   const [pdfBlob, setPdfBlob] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const fallbackIdRef = useRef(uuidv4().split("-")[0]);
   const orderId = order?._id || fallbackIdRef.current;
@@ -17,11 +19,30 @@ const OrderSuccess = () => {
   useEffect(() => {
     if (order) {
       const generatePDF = async () => {
+        setLoading(true);
+        setProgress(0);
+
+        // Simulate progress update (visual only)
+        const progressInterval = setInterval(() => {
+          setProgress((prev) => {
+            if (prev < 90) return prev + 10;
+            return prev;
+          });
+        }, 200);
+
         const blob = await pdf(
           <InvoicePdf data={{ ...order, _id: orderId }} />
         ).toBlob();
+
+        clearInterval(progressInterval);
+        setProgress(100);
         setPdfBlob(blob);
+
+        setTimeout(() => {
+          setLoading(false);
+        }, 500); // short delay to finish UX
       };
+
       generatePDF();
     }
   }, [order, orderId]);
@@ -85,14 +106,16 @@ const OrderSuccess = () => {
 
         <button
           onClick={downloadInvoice}
-          disabled={!pdfBlob}
+          disabled={!pdfBlob || loading}
           className={`w-full py-3 rounded-md font-medium text-white ${
-            pdfBlob
+            pdfBlob && !loading
               ? "bg-green-600 hover:bg-green-700 transition"
               : "bg-gray-400 cursor-not-allowed"
           }`}
         >
-          Download Invoice PDF
+          {loading
+            ? `Preparing Invoice... ${progress}%`
+            : "Download Invoice PDF"}
         </button>
 
         <a
