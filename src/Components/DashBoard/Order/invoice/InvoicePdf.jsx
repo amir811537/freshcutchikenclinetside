@@ -183,6 +183,9 @@ const InvoicePdf = ({ data }) => {
             );
           })}
         </View>
+        <View>
+          <Text>delivery charge : 70 taka</Text>
+        </View>
 
         {/* Summary */}
         <View style={styles.summaryRow}>
