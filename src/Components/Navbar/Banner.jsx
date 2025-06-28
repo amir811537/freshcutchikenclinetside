@@ -6,7 +6,7 @@ import "swiper/css/navigation";
 import Banner1 from '../../assets/new1.png'
 import Banner2 from '../../assets/new2.png'
 import Banner3 from '../../assets/chicken banner.png'
-import Banner4 from '../../assets/icon/offer.png'
+import Banner4 from '../../assets/freshcutorginal.png'
 
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 
