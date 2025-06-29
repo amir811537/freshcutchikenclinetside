@@ -255,7 +255,7 @@ const InvoiceComponent = () => {
           <View style={{ alignItems: "center", marginTop: 30 }}>
             <Image src={QR} style={{ width: 100, height: 100 }} />
             <Text style={{ marginTop: 5, fontSize: 10 }}>
-              আমাদের ওয়েবসাইট ভিজিট করুন: https://freshcutchikenclinetside.vercel.app
+              আমাদের ওয়েবসাইট ভিজিট করুন: https://freshcutchicken.vercel.app
             </Text>
           </View>
         </Page>
