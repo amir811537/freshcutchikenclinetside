@@ -26,6 +26,7 @@ import Login from "../Components/pages/Auth/Login";
 import Signup from "../Components/pages/Auth/Signup";
 import CmsHome from "../Components/DashBoard/Cms/CmsHome";
 import CmsDetail from "../Components/DashBoard/Cms/CmsDetail";
+import InvoiceComponent from "../Components/DashBoard/Order/invoice/InvoiceGenerator";
 
 const router = createBrowserRouter([
   {
@@ -127,6 +128,10 @@ element:<UpdateBanner></UpdateBanner>
     {
       path:"cms",
       element:<CmsHome></CmsHome>
+    },
+    {
+      path:"InvoiceGenerator",
+      element:<InvoiceComponent></InvoiceComponent>
     },
     {
 path:"cmsDetails",

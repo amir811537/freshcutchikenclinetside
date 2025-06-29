@@ -4,6 +4,7 @@ import {
   FaList,
   FaBars,
   FaSignOutAlt,
+  FaFileInvoiceDollar,
 } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
@@ -144,6 +145,21 @@ const Dashboard = () => {
                       <FcViewDetails /> CMS Details
                     </NavLink>
                   </li>
+
+
+   <li>
+                    <NavLink
+                      to="/dashboard/InvoiceGenerator"
+                      className={({ isActive }) =>
+                        isActive ? activeLink : normalLink
+                      }
+                      onClick={() => setIsSidebarOpen(false)}
+                    >
+                      <FaFileInvoiceDollar />Invoice Generator
+                    </NavLink>
+                  </li>
+
+
                 </>
               ) : (
                 <>
