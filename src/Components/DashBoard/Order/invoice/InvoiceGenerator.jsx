@@ -109,10 +109,10 @@ const productList = [
   { name: "চামড়া (বয়লার)", price: 100 },
   { name: "ডামিস্টিক(চামড়া সহ)", price: 299 },
   { name: "ডামিস্টিক(চামড়া ছাড়া)", price: 325 },
-  { name: "সোনালী মুরগি", price: 300 },
+  { name: "সোনালী মুরগি(৪৫০/৫০০)গ্রাম", price: 300 },
   { name: "লায়ার মুরগি (লাল/সাদা খাসি)", price: 449 },
   { name: "লেয়ার মুরগি (চামড়া)", price: 300 },
-  {name: "সোনালী কক ", price : 325},
+  {name: "সোনালী কক(৪৫০/৫০০)গ্রাম", price : 325},
   {name: "শুধু কলিজা ", price : 290},
   {
     name: "কম্বো অফার-বেস্ট,লেগ বনলেস,ডামিস্টিক(চামড়া সহ),চিকেন উইংস",
@@ -296,7 +296,7 @@ const InvoiceComponent = () => {
           <thead className="bg-gray-100 border-b">
             <tr>
               <th className="p-1">Product</th>
-              <th className="p-1">Qty (kg)</th>
+              <th className="p-1">কেজি/পিচ</th>
               <th className="p-1 text-right">Price</th>
               <th className="p-1 text-right">Total</th>
             </tr>
@@ -305,7 +305,7 @@ const InvoiceComponent = () => {
             {items.map((item, i) => (
               <tr key={i} className="border-b">
                 <td className="p-1">{item.name}</td>
-                <td className="p-1">{item.quantity} kg</td>
+                <td className="p-1">{item.quantity}</td>
                 <td className="p-1 text-right">৳{item.price.toFixed(2)}</td>
                 <td className="p-1 text-right">
                   ৳{(item.quantity * item.price).toFixed(2)}
