@@ -11,7 +11,7 @@ import {
 } from "@react-pdf/renderer";
 import { useState } from "react";
 import logo from "../../../../assets/logo-removebg-preview.png";
-import QR from "../../../../assets/QR/frame.png";
+import QR from "../../../../../src/assets/QR/newQR.png";
 
 Font.register({
   family: "NotoSerifBengali",
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     padding: 6,
     borderBottom: "1px solid #eee",
   },
-  cell: { flex: 1, textAlign: "left" },
+  cell: { flex: 1, textAlign: "center" },
   rightCell: { textAlign: "right" },
   summaryRow: {
     flexDirection: "row",
