@@ -224,14 +224,14 @@ const InvoiceComponent = () => {
           <View style={styles.table}>
             <View style={styles.tableHeader}>
               <Text style={styles.cell}>Product</Text>
-              <Text style={styles.cell}>Quantity</Text>
+              <Text style={styles.cell}>কেজি/পিচ</Text>
               <Text style={[styles.cell, styles.rightCell]}>Price</Text>
               <Text style={[styles.cell, styles.rightCell]}>Total</Text>
             </View>
             {items.map((item, i) => (
               <View key={i} style={styles.tableRow}>
                 <Text style={styles.cell}>{item.name}</Text>
-                <Text style={styles.cell}>{item.quantity}kg</Text>
+                <Text style={styles.cell}>{item.quantity}</Text>
                 <Text style={[styles.cell, styles.rightCell]}>৳{item.price.toFixed(2)}</Text>
                 <Text style={[styles.cell, styles.rightCell]}>
                   ৳{(item.quantity * item.price).toFixed(2)}
