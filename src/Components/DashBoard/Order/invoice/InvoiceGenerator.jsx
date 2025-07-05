@@ -106,14 +106,16 @@ const productList = [
   { name: "মুরগীর পা", price: 190 },
   { name: "মুরগির মাথা", price: 500 },
   { name: "মুরগির হাড়", price: 500 },
-  { name: "চামড়া (বয়লার)", price: 100 },
+  { name: "বয়লার(চামড়া)", price: 100 },
+  { name: "লেয়ার(চামড়া)", price: 300 },
   { name: "ডামিস্টিক(চামড়া সহ)", price: 299 },
   { name: "ডামিস্টিক(চামড়া ছাড়া)", price: 325 },
-  { name: "সোনালী মুরগি(৪৫০/৫০০)গ্রাম", price: 300 },
-  { name: "লায়ার মুরগি (লাল/সাদা খাসি)", price: 449 },
+  { name: "লেয়ার মুরগি(লাল)", price: 449 },
+  { name: "লেয়ার মুরগি(সাদা)", price: 449 },
   { name: "লেয়ার মুরগি (চামড়া)", price: 300 },
-  {name: "সোনালী কক(৪৫০/৫০০)গ্রাম", price : 325},
-  {name: "শুধু কলিজা ", price : 290},
+  {name: "সোনালী কক(৪৫০–৫০০গ্রাম)", price : 325},
+  {name: "শুধু কলিজা", price : 290},
+  {name: "শুধু গিলা", price : 290},
   {
     name: "কম্বো অফার-বেস্ট,লেগ বনলেস,ডামিস্টিক(চামড়া সহ),চিকেন উইংস",
     price: 1199,
@@ -343,25 +345,55 @@ const InvoiceComponent = () => {
             </select>
           </div>
 
-          <div>
-            <h3 className="text-lg font-semibold mb-2">Product Items</h3>
-            {form.items.map((item, index) => (
-              <div key={index} className="grid grid-cols-5 gap-2 items-center mb-2">
-                <select className="border p-1 col-span-2" value={item.name} onChange={(e) => handleProductSelect(index, e.target.value)}>
-                  <option value="">-- পণ্য নির্বাচন করুন --</option>
-                  {productList.map((p, i) => (
-                    <option key={i} value={p.name}>{p.name} – ৳{p.price}</option>
-                  ))}
-                </select>
-                <input className="border p-1" type="number" placeholder="Qty" value={item.quantity} onChange={(e) => handleChange(index, "quantity", e.target.value)} />
-                <input className="border p-1" type="number" value={item.price} readOnly />
-                {form.items.length > 1 && (
-                  <button type="button" onClick={() => removeItem(index)} className="text-red-600">❌</button>
-                )}
-              </div>
-            ))}
-            <button type="button" onClick={addItem} className="text-blue-600 mt-2">+ Add Item</button>
-          </div>
+        <div>
+  <h3 className="text-lg font-semibold mb-2">Product Items</h3>
+  {form.items.map((item, index) => (
+    <div key={index} className="grid grid-cols-5 gap-2 items-center mb-2">
+      <select
+        className="border p-1 col-span-2"
+        value={item.name}
+        onChange={(e) => handleProductSelect(index, e.target.value)}
+      >
+        <option value="">-- পণ্য নির্বাচন করুন --</option>
+        {productList.map((p, i) => (
+          <option key={i} value={p.name}>
+            {p.name} – ৳{p.price}
+          </option>
+        ))}
+      </select>
+      <input
+        className="border p-1"
+        type="number"
+        placeholder="Qty"
+        value={item.quantity}
+        onChange={(e) => handleChange(index, "quantity", e.target.value)}
+      />
+      <input
+        className="border p-1"
+        type="number"
+        value={item.price}
+        onChange={(e) => handleChange(index, "price", e.target.value)}
+      />
+      {form.items.length > 1 && (
+        <button
+          type="button"
+          onClick={() => removeItem(index)}
+          className="text-red-600"
+        >
+          ❌
+        </button>
+      )}
+    </div>
+  ))}
+  <button
+    type="button"
+    onClick={addItem}
+    className="text-blue-600 mt-2"
+  >
+    + Add Item
+  </button>
+</div>
+
 
           <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">Generate Invoice</button>
         </form>
