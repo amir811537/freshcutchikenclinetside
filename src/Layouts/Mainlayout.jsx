@@ -6,7 +6,7 @@ const Mainlayout = () => {
     return (
         <div>
             <Navbar></Navbar>
-            <div className="pt-20"> {/* Add top padding here to push content below the navbar */}
+            <div className="pt-20 max-w-7xl mx-auto"> {/* Add top padding here to push content below the navbar */}
                 <Outlet />
             </div>
             <Footer></Footer>

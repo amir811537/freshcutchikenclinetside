@@ -51,7 +51,7 @@ const ProductList = () => {
   if (isError) return <p>Failed to load products.</p>;
 
   return (
-    <div className="mt-6">
+    <div className="mt-6 p-4">
       <h2 className="text-2xl font-bold mb-4">Product List</h2>
       <table className="table table-zebra w-full">
         <thead className="bg-orange-400 text-white">

@@ -14,7 +14,7 @@ const CmsDetail = () => {
   const [selectedName, setSelectedName] = useState("");
   const [editingItem, setEditingItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 14;
 
   const [editForm, setEditForm] = useState({
     name: "",
@@ -150,9 +150,9 @@ const CmsDetail = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4">
+    <div className="p-4">
       <div className="mb-4">
-        <h1 className="text-xl font-bold mb-2">Filter by Month, Date and Name</h1>
+        <h1 className="text-xl font-bold">Filter by Month, Date and Name</h1>
         <div className="flex flex-wrap gap-4">
           <div>
             <label className="block mb-1">Select Month</label>

@@ -35,7 +35,8 @@ const Dashboard = () => {
     "flex items-center gap-2 text-white px-3 py-2 hover:bg-orange-500 rounded";
 
   return (
-    <div className="flex min-h-screen relative">
+    <div className="flex h-screen overflow-hidden">
+      {/* Mobile overlay */}
       {isSidebarOpen && (
         <div
           onClick={() => setIsSidebarOpen(false)}
@@ -45,7 +46,8 @@ const Dashboard = () => {
 
       {/* Sidebar */}
       <div
-        className={`bg-orange-400 w-64 h-screen flex flex-col justify-between fixed md:relative z-40 transition-transform duration-300 ease-in-out
+        className={`bg-orange-400 w-64 h-screen flex flex-col justify-between
+        fixed md:relative z-40 transition-transform duration-300 ease-in-out
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
         md:translate-x-0`}
       >
@@ -145,9 +147,7 @@ const Dashboard = () => {
                       <FcViewDetails /> CMS Details
                     </NavLink>
                   </li>
-
-
-   <li>
+                  <li>
                     <NavLink
                       to="/dashboard/InvoiceGenerator"
                       className={({ isActive }) =>
@@ -155,11 +155,9 @@ const Dashboard = () => {
                       }
                       onClick={() => setIsSidebarOpen(false)}
                     >
-                      <FaFileInvoiceDollar />Invoice Generator
+                      <FaFileInvoiceDollar /> Invoice Generator
                     </NavLink>
                   </li>
-
-
                 </>
               ) : (
                 <>
@@ -226,7 +224,7 @@ const Dashboard = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1">
+      <div className="flex-1 overflow-y-auto ">
         {/* Top bar for mobile */}
         <div className="md:hidden bg-orange-300 p-2 shadow flex justify-between items-center z-20 relative">
           <button
@@ -239,7 +237,7 @@ const Dashboard = () => {
         </div>
 
         {/* Main page content */}
-        <div className="p-4">
+        <div className="">
           <Outlet />
         </div>
       </div>

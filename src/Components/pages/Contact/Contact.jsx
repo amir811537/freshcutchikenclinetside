@@ -35,8 +35,7 @@ const Contact = () => {
             you within 24 hours.
           </p>
           <p>Emails:</p>
-          <p>customer@freshcutchickenservice.com</p>
-          <p>support@freshcutchickenservice.com</p>
+          <p>freshcutchickenservice@gmail.com</p>
         </div>
       </div>
 
