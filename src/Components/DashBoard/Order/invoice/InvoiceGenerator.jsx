@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 import logo from "../../../../assets/logo-removebg-preview.png";
 import QR from "../../../../../src/assets/QR/newQR.png";
+import axios from "axios";
 
 Font.register({
   family: "NotoSerifBengali",
@@ -165,30 +166,56 @@ const InvoiceComponent = () => {
     setForm({ ...form, items: updatedItems });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const subtotal = form.items.reduce(
-      (acc, item) => acc + item.quantity * item.price,
-      0
-    );
-    const totalAmount = subtotal + form.deliveryCharge;
-    const invoiceData = {
-      _id: Math.random().toString(36).substring(2, 10).toUpperCase(),
-      orderDate: new Date(form.customDate),
-      paymentMethod: form.paymentMethod,
-      customer: {
-        name: form.name,
-        address: form.address,
-        apartment: form.apartment,
-        phone: form.phone,
-        email: form.email,
-      },
-      items: form.items,
-      deliveryCharge: form.deliveryCharge,
-      totalAmount,
-    };
-    setData(invoiceData);
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const subtotal = form.items.reduce(
+    (acc, item) => acc + item.quantity * item.price,
+    0
+  );
+  const totalAmount = subtotal + form.deliveryCharge;
+
+  const invoiceData = {
+    _id: Math.random().toString(36).substring(2, 10).toUpperCase(),
+    orderDate: new Date(form.customDate),
+    paymentMethod: form.paymentMethod,
+    customer: {
+      name: form.name,
+      address: form.address,
+      apartment: form.apartment,
+      phone: form.phone,
+      email: form.email,
+    },
+    items: form.items,
+    deliveryCharge: form.deliveryCharge,
+    totalAmount,
   };
+
+  setData(invoiceData);
+
+  // ✅ Format for CMS
+  const cmsEntry = {
+    name: form.name,
+    location: form.address,
+    phone: form.phone,
+    orderHistory: form.items.map(item => `${item.name} (${item.quantity} × ৳${item.price})`).join(", "),
+    sale: totalAmount,
+    date: new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "2-digit",
+    }),
+  };
+
+  // ✅ Send to CMS
+  try {
+    await axios.post("https://freshcutserverside.vercel.app/cms", cmsEntry);
+    console.log("CMS entry saved successfully.");
+  } catch (err) {
+    console.error("Failed to send CMS data:", err);
+  }
+};
+
 
   const InvoicePdf = ({ data }) => {
     const { _id, orderDate, customer, items, deliveryCharge, totalAmount, paymentMethod } = data;
