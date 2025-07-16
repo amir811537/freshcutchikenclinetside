@@ -158,6 +158,17 @@ const Dashboard = () => {
                       <FaFileInvoiceDollar /> Invoice Generator
                     </NavLink>
                   </li>
+                  <li>
+                    <NavLink
+                      to="/dashboard/CashMemoFreshcut"
+                      className={({ isActive }) =>
+                        isActive ? activeLink : normalLink
+                      }
+                      onClick={() => setIsSidebarOpen(false)}
+                    >
+                      <FaFileInvoiceDollar /> cash memo Generator
+                    </NavLink>
+                  </li>
                 </>
               ) : (
                 <>

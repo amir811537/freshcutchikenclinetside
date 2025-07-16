@@ -27,6 +27,7 @@ import Signup from "../Components/pages/Auth/Signup";
 import CmsHome from "../Components/DashBoard/Cms/CmsHome";
 import CmsDetail from "../Components/DashBoard/Cms/CmsDetail";
 import InvoiceComponent from "../Components/DashBoard/Order/invoice/InvoiceGenerator";
+import CashMemoFreshcut from "../Components/DashBoard/Cashmemo/CashMemoFreshcut";
 
 const router = createBrowserRouter([
   {
@@ -132,6 +133,10 @@ element:<UpdateBanner></UpdateBanner>
     {
       path:"InvoiceGenerator",
       element:<InvoiceComponent></InvoiceComponent>
+    },
+    {
+      path:"CashMemoFreshcut",
+      element:<CashMemoFreshcut></CashMemoFreshcut>
     },
     {
 path:"cmsDetails",
