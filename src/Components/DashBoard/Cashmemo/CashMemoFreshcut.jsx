@@ -7,10 +7,8 @@ import {
   PDFDownloadLink,
 } from "@react-pdf/renderer";
 const productList = [
-  { name: "ব্রয়লার", price: 180 },
-  { name: "মুরগি (চামড়া ছাড়া)", price: 220 },
-  { name: "মুরগি (চামড়া সহ)", price: 190 },
-  { name: "মুরগী ব্রেস্ট", price: 300 },
+  { name: "ব্রয়লার (B)", price: 180 },
+  { name: "ব্রয়লার (M)", price: 180 },
 ];
 
 const Cashmemopreview = ({ data }) => {
@@ -29,7 +27,7 @@ const Cashmemopreview = ({ data }) => {
     0
   );
   const total = subtotal;
-  const due = total - paidAmount;
+  const due = total + paidAmount;
 
   return (
     <div className="text-sm space-y-4 font-[NotoSerifBengali] border p-4">
@@ -95,18 +93,36 @@ const Cashmemopreview = ({ data }) => {
           </tr>
           <tr>
             <td colSpan="5" className="text-right border p-1 text-green-700">
-              জমা
+              ইজা
             </td>
             <td className="border p-1 text-right text-green-700">
               ৳{paidAmount.toFixed(2)}
             </td>
-          </tr>
+          </tr> 
+          <br />
           <tr>
             <td colSpan="5" className="text-right border p-1 text-red-700">
-              বাকি
+              সর্বমোট  
             </td>
             <td className="border p-1 text-right text-red-700">
               ৳{due.toFixed(2)}
+            </td>
+          </tr>
+          <tr>
+            <td colSpan="5" className="text-right border p-1 text-green-600">
+              জমা   
+            </td>
+            <td className="border p-1 text-right text-green-600">
+
+
+            </td>
+          </tr>
+          <tr>
+            <td colSpan="5" className="text-right border p-1 text-red-700">
+              বাকি   
+            </td>
+            <td className="border p-1 text-right text-red-700">
+
             </td>
           </tr>
         </tfoot>
@@ -139,7 +155,7 @@ const [submittedData, setSubmittedData] = useState(null);
     paymentMethod: "COD",
     paidAmount: 0,
     
-    items: [{ name: "", quantity: 1, price: 0, piece: "" }],
+    items: [{ name: "", quantity: 0, price: 0, piece: "" }],
   });
 
   const handleChange = (index, field, value) => {
@@ -179,7 +195,7 @@ const [submittedData, setSubmittedData] = useState(null);
       0
     );
     const total = subtotal;
-    const due = total - form.paidAmount;
+    const due = total + form.paidAmount;
 
     const invoiceData = {
       ...form,
@@ -188,7 +204,7 @@ const [submittedData, setSubmittedData] = useState(null);
     };
 
     console.log("Submitted Invoice Data:", invoiceData);
-    // setSubmittedData(invoiceData);
+    setSubmittedData(invoiceData);
   };
 
   return (
@@ -253,27 +269,11 @@ const [submittedData, setSubmittedData] = useState(null);
                 }
               />
             </div>
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Payment Method
-              </label>
-              <select
-                className="border p-2 w-full"
-                value={form.paymentMethod}
-                onChange={(e) =>
-                  setForm({ ...form, paymentMethod: e.target.value })
-                }
-              >
-                <option value="Cash">COD   </option>
-                <option value="Bkash">Bkash</option>
-                <option value="Rocket">Rocket</option>
-              </select>
-            </div>
+    
 
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                জমা টাকা
-              </label>
+                        ইজা</label>
               <input
                 type="number"
                 className="border p-2 w-full"

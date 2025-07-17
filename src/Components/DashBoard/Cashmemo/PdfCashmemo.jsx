@@ -5,13 +5,11 @@ import {
   Text,
   View,
   StyleSheet,
-  Image,
   Font,
+  Image
 } from "@react-pdf/renderer";
-import logo from "../../../assets/QR/logo-removebg-preview.png";
-
-
-// ✅ Register Bangla Font
+import logo from '../../../assets/QR/logo-removebg-preview.png';
+// Register Bangla Font
 Font.register({
   family: "NotoSerifBengali",
   fonts: [
@@ -27,18 +25,21 @@ const styles = StyleSheet.create({
   page: {
     fontFamily: "NotoSerifBengali",
     padding: 30,
-    fontSize: 12,
+    fontSize: 10,
     backgroundColor: "#fff",
     color: "#000",
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 20,
+    marginBottom: 10,
+    borderBottom: "1px solid #999",
+    paddingBottom: 6,
   },
-  companyInfo: {
-    flexDirection: "row",
-    alignItems: "center",
+  title: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "red",
   },
   logo: { width: 32, height: 32, marginRight: 8 },
   companyName: {
@@ -46,69 +47,52 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#4a4a4a",
   },
-  invoiceInfo: {
-    textAlign: "right",
-  },
-  invoiceTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 4,
-  },
   section: {
-    borderBottom: "2px solid #ccc",
-    paddingBottom: 10,
-    marginBottom: 20,
+    marginVertical: 10,
   },
-  billToTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 6,
-  },
-  billToText: {
-    color: "#4a4a4a",
+  infoText: {
     marginBottom: 2,
   },
   table: {
+    border: "1px solid black",
     width: "100%",
-    marginBottom: 20,
   },
-  tableHeader: {
+  row: {
     flexDirection: "row",
-    borderBottom: "1px solid #ccc",
-    backgroundColor: "#f3f3f3",
-    padding: 6,
-  },
-  tableRow: {
-    flexDirection: "row",
-    padding: 6,
-    borderBottom: "1px solid #eee",
+    borderBottom: "1px solid black",
   },
   cell: {
-    flex: 1,
-    textAlign: "left",
+    borderRight: "1px solid black",
+    padding: 4,
+    textAlign: "center",
   },
-  rightCell: {
-    textAlign: "right",
+  headerRow: {
+    backgroundColor: "#e6ffea",
+    fontWeight: "bold",
   },
-  summaryRow: {
+  noBorderRight: {
+    borderRight: "none",
+  },
+  totalRow: {
     flexDirection: "row",
     justifyContent: "flex-end",
-    marginBottom: 6,
+    paddingVertical: 4,
+    paddingRight: 10,
   },
-  summaryText: {
-    marginRight: 10,
-    color: "#4a4a4a",
+  green: {
+    color: "green",
   },
-  totalText: {
-    fontWeight: "bold",
-    fontSize: 16,
+  red: {
+    color: "red",
   },
-  notes: {
-    borderTop: "2px solid #ccc",
-    paddingTop: 10,
+  signRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 20,
-    color: "#4a4a4a",
-    fontSize: 11,
+  },
+  disclaimer: {
+    color: "red",
+    marginTop: 10,
   },
 });
 
@@ -116,86 +100,160 @@ const PdfCashmemo = ({ data }) => {
   if (!data) return null;
 
   const {
-    _id: invoiceNo,
-    orderDate,
-    customer,
+    name,
+    address,
+    phone,
+    email,
+    customDate,
     items,
-    totalAmount,
-    paymentMethod,
+    paidAmount = 0,
+    total,
+    due,
   } = data;
-
-  const formattedDate = new Date(orderDate).toLocaleDateString("bn-BD", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         {/* Header */}
         <View style={styles.header}>
-          <View style={styles.companyInfo}>
+          <View>
             <Image style={styles.logo} src={logo} />
-            <Text style={{fontSize:20 , color: "red"}} > Fresh Cut Chicken Service </Text>
+            <Text>Mobile : 01726-104475</Text>
           </View>
-          <View style={styles.invoiceInfo}>
-            <Text style={styles.invoiceTitle}>INVOICE</Text>
-            <Text>Date: {formattedDate}</Text>
-            <Text>Invoice ID#: {invoiceNo}</Text>
-            <Text>Payment: {paymentMethod}</Text>
+          <View>
+            <Text style={styles.title}>ফ্রেশ কাট চিকেন সার্ভিস</Text>
+   <View
+  style={{
+    width: "100%",
+    backgroundColor: "red",
+    paddingTop: 4,
+    paddingBottom: 4,
+    alignItems: "center",
+  }}
+>
+  <Text
+    style={{
+      fontWeight:'bold',
+      fontSize: 16,
+      color: "white",
+    }}
+  >
+    বিল/চালান
+  </Text>
+</View>
+
+          </View>
+          <View>
+            <Text>তারিখ: {customDate}</Text>
           </View>
         </View>
 
-        {/* Bill To */}
+        {/* Customer Info */}
         <View style={styles.section}>
-          <Text style={styles.billToTitle}>Bill To:</Text>
-          <Text style={styles.billToText}>{customer.name}</Text>
-          <Text style={styles.billToText}>{customer.address}</Text>
-          <Text style={styles.billToText}>{customer.apartment}</Text>
-          <Text style={styles.billToText}>Phone: {customer.phone}</Text>
-          <Text style={styles.billToText}>{customer.email}</Text>
+          <Text style={styles.infoText}>নাম: {name}</Text>
+          <Text style={styles.infoText}>ঠিকানা: {address}</Text>
+          <Text style={styles.infoText}>ফোন: {phone}</Text>
+          {email && <Text style={styles.infoText}>{email}</Text>}
         </View>
 
         {/* Table */}
         <View style={styles.table}>
-          <View style={styles.tableHeader}>
-            <Text style={styles.cell}>Product</Text>
-            <Text style={styles.cell}>Quantity</Text>
-            <Text style={[styles.cell, styles.rightCell]}>Price</Text>
-            <Text style={[styles.cell, styles.rightCell]}>Total</Text>
+          {/* Table Header */}
+          <View style={[styles.row, styles.headerRow]}>
+            <Text style={[styles.cell, { width: "8%" }]}>নং</Text>
+            <Text style={[styles.cell, { width: "32%" }]}>বিবরণ</Text>
+            <Text style={[styles.cell, { width: "15%" }]}>পিচ</Text>
+            <Text style={[styles.cell, { width: "15%" }]}>কেজি</Text>
+            <Text style={[styles.cell, { width: "15%" }]}>দর</Text>
+            <Text style={[styles.cell, { width: "15%" }, styles.noBorderRight]}>
+              টাকা
+            </Text>
           </View>
 
-          {items.map((item, i) => {
-            const price = parseFloat(item.price);
-            const total = item.quantity * price;
-            return (
-              <View key={i} style={styles.tableRow}>
-                <Text style={styles.cell}>{item.name}</Text>
-                <Text style={styles.cell}>{item.quantity} kg </Text>
-                <Text style={[styles.cell, styles.rightCell]}>
-                  ৳{price.toFixed(2)}
-                </Text>
-                <Text style={[styles.cell, styles.rightCell]}>
-                  ৳{total.toFixed(2)}
-                </Text>
-              </View>
-            );
-          })}
-        </View>
-        <View>
-          <Text>delivery charge : 70 taka</Text>
-        </View>
+          {/* Table Rows */}
+          {items.map((item, i) => (
+            <View style={styles.row} key={i}>
+              <Text style={[styles.cell, { width: "8%" }]}>{i + 1}</Text>
+              <Text style={[styles.cell, { width: "32%", textAlign: "left" }]}>
+                {item.name}
+              </Text>
+              <Text style={[styles.cell, { width: "15%" }]}>
+                {item.piece || "-"}
+              </Text>
+              <Text style={[styles.cell, { width: "15%" }]}>
+                {item.quantity}
+              </Text>
+              <Text style={[styles.cell, { width: "15%" }]}>
+                ৳{item.price.toFixed(2)}
+              </Text>
+              <Text
+                style={[
+                  styles.cell,
+                  { width: "15%" },
+                  styles.noBorderRight,
+                ]}
+              >
+                ৳{(item.quantity * item.price).toFixed(2)}
+              </Text>
+            </View>
+          ))}
 
-        {/* Summary */}
-        <View style={styles.summaryRow}>
-          <Text style={styles.summaryText}>Total Amount:</Text>
-          <Text style={styles.totalText}>৳{parseFloat(totalAmount).toFixed(2)}</Text>
+          {/* Total Rows */}
+          <View style={styles.row}>
+            <Text style={[styles.cell, { width: "85%", textAlign: "right" }]}>
+              মোট
+            </Text>
+            <Text style={[styles.cell, { width: "15%" }, styles.noBorderRight]}>
+              ৳{total.toFixed(2)}
+            </Text>
+          </View>
+          <View style={styles.row}>
+            <Text
+              style={[
+                styles.cell,
+                { width: "85%", textAlign: "right", color: "green" },
+              ]}
+            >
+              জমা
+            </Text>
+            <Text
+              style={[
+                styles.cell,
+                { width: "15%", color: "green" },
+                styles.noBorderRight,
+              ]}
+            >
+              ৳{paidAmount.toFixed(2)}
+            </Text>
+          </View>
+          <View style={styles.row}>
+            <Text
+              style={[
+                styles.cell,
+                { width: "85%", textAlign: "right", color: "red" },
+              ]}
+            >
+              বাকি
+            </Text>
+            <Text
+              style={[
+                styles.cell,
+                { width: "15%", color: "red" },
+                styles.noBorderRight,
+              ]}
+            >
+              ৳{due.toFixed(2)}
+            </Text>
+          </View>
         </View>
 
         {/* Notes */}
-        <View style={styles.notes}>
-          <Text>Thanks for your order. We hope to serve you again soon.</Text>
+        <Text style={styles.disclaimer}>বিক্রিত মাল ফেরত নেওয়া হয় না।</Text>
+
+        {/* Signatures */}
+        <View style={styles.signRow}>
+          <Text>ক্রেতার স্বাক্ষর: _____________________</Text>
+          <Text>বিক্রেতার স্বাক্ষর: _____________________</Text>
         </View>
       </Page>
     </Document>
