@@ -14,6 +14,7 @@ import { FaUser } from "react-icons/fa6";
 import { FaHistory } from "react-icons/fa";
 import { SiCraftcms } from "react-icons/si";
 import { FcViewDetails } from "react-icons/fc";
+import { CiMemoPad } from "react-icons/ci";
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -166,7 +167,7 @@ const Dashboard = () => {
                       }
                       onClick={() => setIsSidebarOpen(false)}
                     >
-                      <FaFileInvoiceDollar /> cash memo Generator
+                      <CiMemoPad />Cash Memo Generator
                     </NavLink>
                   </li>
                 </>

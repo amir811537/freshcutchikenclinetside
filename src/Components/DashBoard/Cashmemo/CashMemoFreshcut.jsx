@@ -17,7 +17,6 @@ const Cashmemopreview = ({ data }) => {
     address,
     phone,
     email,
-    paymentMethod,
     items,
     paidAmount = 0,
   } = data;
@@ -40,7 +39,6 @@ const Cashmemopreview = ({ data }) => {
         </div>
         <div className="text-right text-xs">
           <p>তারিখ: {new Date().toLocaleDateString("bn-BD")}</p>
-          <p>পেমেন্ট: {paymentMethod}</p>
         </div>
       </div>
 

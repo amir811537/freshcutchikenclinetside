@@ -114,39 +114,94 @@ const PdfCashmemo = ({ data }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {/* Header */}
-        <View style={styles.header}>
-          <View>
-            <Image style={styles.logo} src={logo} />
-            <Text>Mobile : 01726-104475</Text>
-          </View>
-          <View>
-            <Text style={styles.title}>ফ্রেশ কাট চিকেন সার্ভিস</Text>
-   <View
-  style={{
-    width: "100%",
-    backgroundColor: "red",
-    paddingTop: 4,
-    paddingBottom: 4,
-    alignItems: "center",
-  }}
->
-  <Text
-    style={{
-      fontWeight:'bold',
-      fontSize: 16,
-      color: "white",
-    }}
-  >
-    বিল/চালান
-  </Text>
-</View>
+     
+     <View style={styles.header}>
+  {/* Left section */}
+  <View>
+    <Image style={styles.logo} src={logo} />
+    <Text>Mobile : 01726-104475</Text>
+  </View>
 
-          </View>
-          <View>
-            <Text>তারিখ: {customDate}</Text>
-          </View>
-        </View>
+  {/* Center section */}
+  <View style={{ flex: 1, alignItems: "center" }}>
+    <View
+      style={{
+        backgroundColor: "red",
+        paddingVertical: 4,
+        paddingHorizontal: 12,
+        marginVertical: 4,
+        borderRadius: 4,
+      }}
+    >
+      <Text
+        style={{
+          fontWeight: "bold",
+          fontSize: 16,
+          color: "white",
+          textAlign: "center",
+        }}
+      >
+        বিল/চালান
+      </Text>
+    </View>
+    <Text style={styles.title}>ফ্রেশ কাট চিকেন সার্ভিস</Text>
+
+    
+
+    {/* Name Tag */}
+    <View
+      style={{
+        borderWidth: 1,
+        borderColor: "green",
+        backgroundColor: "pink",
+        paddingVertical: 4,
+        paddingHorizontal: 14,
+        borderRadius: 20,
+        marginBottom: 4,
+      }}
+    >
+      <Text
+        style={{
+          color: "green",
+          fontWeight: "bold",
+          fontSize: 10,
+          textAlign: "center",
+        }}
+        wrap={false}
+      >
+        প্রোঃ মোঃ শরিফ সরদার..
+      </Text>
+    </View>
+
+    {/* Slogan & Address */}
+    <Text
+      style={{
+        textAlign: "center",
+        color: "green",
+        fontSize: 10,
+        fontWeight: "bold",
+        marginBottom: 2,
+      }}
+    >
+      এখানে পাইকারি ও খুচরা মুরগী সূলভমূল্যে পাওয়া যায় এবং যে কোন অর্ডার নেওয়া হয়.
+    </Text>
+    <Text
+      style={{
+        textAlign: "center",
+        color: "green",
+        fontSize: 10,
+        fontWeight: "bold",
+      }}
+    >
+      অফিস :(৪র্থ তালা), ফেয়ার প্লাজা, মিরপুর -১, ঢাকা -১২১৬
+    </Text>
+  </View>
+
+  {/* Right section */}
+  <View style={{ justifyContent: "flex-start" }}>
+    <Text>তারিখ: {customDate}</Text>
+  </View>
+</View>
 
         {/* Customer Info */}
         <View style={styles.section}>
@@ -214,7 +269,7 @@ const PdfCashmemo = ({ data }) => {
                 { width: "85%", textAlign: "right", color: "green" },
               ]}
             >
-              জমা
+              ইজা
             </Text>
             <Text
               style={[
@@ -224,6 +279,46 @@ const PdfCashmemo = ({ data }) => {
               ]}
             >
               ৳{paidAmount.toFixed(2)}
+            </Text>
+          </View>
+
+          
+          <View style={styles.row}>
+            <Text
+              style={[
+                styles.cell,
+                { width: "85%", textAlign: "right", color: "red" },
+              ]}
+            >
+              সর্বমোট.
+            </Text>
+            <Text
+              style={[
+                styles.cell,
+                { width: "15%", color: "red" },
+                styles.noBorderRight,
+              ]}
+            >
+              ৳{due.toFixed(2)}
+            </Text>
+          </View>
+          <View style={styles.row}>
+            <Text
+              style={[
+                styles.cell,
+                { width: "85%", textAlign: "right", color: "green" },
+              ]}
+            >
+              জমা
+            </Text>
+            <Text
+              style={[
+                styles.cell,
+                { width: "15%", color: "red" },
+                styles.noBorderRight,
+              ]}
+            >
+              {}
             </Text>
           </View>
           <View style={styles.row}>
@@ -242,7 +337,7 @@ const PdfCashmemo = ({ data }) => {
                 styles.noBorderRight,
               ]}
             >
-              ৳{due.toFixed(2)}
+              {}
             </Text>
           </View>
         </View>
