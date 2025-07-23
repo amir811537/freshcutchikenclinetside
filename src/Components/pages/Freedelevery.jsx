@@ -15,8 +15,8 @@ const Freedelevery = () => {
             <h1 className="font-bold text-2xl">
                 FREE DELIVERY
             </h1>
-            <p className="text-base">
-               You got free shipping for ordering more than 5 kg!
+            <p className="text-base ">
+               You got free shipping for ordering more than <span className="text-red-500">10 kg!</span>
             </p>
         </div>
         <div className="space-y-4 text-center">

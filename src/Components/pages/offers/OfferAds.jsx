@@ -32,10 +32,10 @@ const OfferAds = () => {
         <div className="flex flex-col-reverse md:flex-row text-white px-5 lg:px-0 lg:justify-around items-center w-full bg-[#F5BC3B] py-10 md:h-[500px] rounded">
            <div className='space-y-6 md:space-y-10 text-center md:text-left'>
                <h1 className='text-lg md:text-2xl lg:text-4xl font-medium leading-7 md:leading-9'>
-               enhance your<br /> <span className='pt-2 block'>meat eating experience</span> 
+               Enhance Your<br /> <span className='pt-2 block'>Shopping Experience</span> 
                </h1>
                
-               <Countdown className="text-xl" date={Date.now() + 458895000} renderer={renderer} />
+               <Countdown className="text-xl" date={Date.now() + 944995000} renderer={renderer} />
 
                <div className="flex justify-center md:justify-start">
                    <Link to="/products" className='btn btn-success bg-green-400 rounded-sm px-6 md:px-8 text-white'>

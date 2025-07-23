@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
   cell: {
     borderRight: "1px solid black",
     padding: 4,
+   fontSize: 13,
     textAlign: "center",
   },
   headerRow: {
@@ -89,10 +90,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 20,
+  fontSize: 16,
+
   },
   disclaimer: {
     color: "red",
     marginTop: 10,
+    fontSize: 16,
+
   },
 });
 
@@ -164,7 +169,7 @@ const PdfCashmemo = ({ data }) => {
         style={{
           color: "green",
           fontWeight: "bold",
-          fontSize: 10,
+          fontSize: 16,
           textAlign: "center",
         }}
         wrap={false}
@@ -178,7 +183,7 @@ const PdfCashmemo = ({ data }) => {
       style={{
         textAlign: "center",
         color: "green",
-        fontSize: 10,
+          fontSize: 11,
         fontWeight: "bold",
         marginBottom: 2,
       }}
@@ -189,7 +194,7 @@ const PdfCashmemo = ({ data }) => {
       style={{
         textAlign: "center",
         color: "green",
-        fontSize: 10,
+          fontSize: 12,
         fontWeight: "bold",
       }}
     >
@@ -343,7 +348,7 @@ const PdfCashmemo = ({ data }) => {
         </View>
 
         {/* Notes */}
-        <Text style={styles.disclaimer}>বিক্রিত মাল ফেরত নেওয়া হয় না।</Text>
+        <Text style={styles.disclaimer}>বিক্রিত মাল ফেরত নেওয়া হয়।</Text>
 
         {/* Signatures */}
         <View style={styles.signRow}>

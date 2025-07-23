@@ -108,47 +108,53 @@ const ProductCard = ({ item, isLoading }) => {
   }
 
   return (
-    <div className="card bg-base-100 w-auto border shadow-sm">
-      <Link to={`/productdetail/${item._id}`}>
-        <figure>
-          <img
-            className="lg:w-[303px] lg:h-[227px] w-40 h-40 object-cover"
-            src={item.image}
-            alt={item.title || "Product Image"}
-          />
-        </figure>
-      </Link>
-      <div className="card-body">
-        <Link to={`/productdetail/${item._id}`}>
-          <h2 className="card-title">{item.name}</h2>
-        </Link>
-        <div className="flex justify-between items-center">
-          <div className="space-x-2">
-            <span className="text-xl font-bold text-red-600">৳{item.price} kg</span>
-            <span className="line-through text-gray-500 dark:text-white text-sm">৳{item.oldPrice}</span>
-          </div>
-        </div>
-        <div
-  className="hidden lg:block text-sm text-gray-600 dark:text-white"
-  dangerouslySetInnerHTML={{ __html: shortDescription }}
-></div>
+   <div className="card bg-base-100 w-auto border shadow-sm transform transition-all duration-300 hover:shadow-xl hover:scale-105">
+  <Link to={`/productdetail/${item._id}`}>
+    <figure>
+      <img
+        className="lg:w-[303px] lg:h-[227px] w-40 h-40 object-cover"
+        src={item.image}
+        alt={item.title || "Product Image"}
+      />
+    </figure>
+  </Link>
 
-        <div className="flex lg:flex-row flex-col gap-5 justify-between items-center w-full">
-          <button
-            onClick={handleAddToCart}
-            className="btn bg-[#F5BC3B] hover:bg-green-400 text-white w-full lg:w-auto"
-          >
-            Add to cart
-          </button>
-          <button
-            onClick={handleBuyNow}
-            className="btn bg-[#F5BC3B] hover:bg-green-400 text-white w-full lg:w-auto"
-          >
-            Buy Now
-          </button>
-        </div>
+  <div className="card-body">
+    <Link to={`/productdetail/${item._id}`}>
+      <h2 className="card-title">{item.name}</h2>
+    </Link>
+
+    <div className="flex justify-between items-center">
+      <div className="space-x-2">
+        <span className="text-xl font-bold text-red-600">৳{item.price}/kg</span>
+        <span className="line-through text-gray-500 dark:text-white text-sm">
+          ৳{item.oldPrice}
+        </span>
       </div>
     </div>
+
+    <div
+      className="hidden lg:block text-sm text-gray-600 dark:text-white"
+      dangerouslySetInnerHTML={{ __html: shortDescription }}
+    ></div>
+
+    <div className="flex lg:flex-row flex-col gap-5 justify-between items-center w-full">
+      <button
+        onClick={handleAddToCart}
+        className="btn bg-[#F5BC3B] hover:bg-green-400 text-white w-full lg:w-auto"
+      >
+        Add to cart
+      </button>
+      <button
+        onClick={handleBuyNow}
+        className="btn bg-[#F5BC3B] hover:bg-green-400 text-white w-full lg:w-auto"
+      >
+        Buy Now
+      </button>
+    </div>
+  </div>
+</div>
+
   );
 };
 

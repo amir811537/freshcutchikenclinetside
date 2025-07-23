@@ -9,7 +9,7 @@ const BestSelling = () => {
   const [showAll, setShowAll] = useState(false);
 
   // Show only the first 8 initially
-  const visibleProducts = showAll ? products : products.slice(0, 8);
+  const visibleProducts = showAll ? products : products.slice(0, 12);
 
   return (
     <div className="lg:my-20 max-w-7xl mx-auto my-10 px-5 lg:px-0">
@@ -51,7 +51,7 @@ const BestSelling = () => {
           )}
         </div>
 
-        {!isPending && !showAll && products.length > 8 && (
+        {!isPending && !showAll && products.length > 12 && (
           <div className="flex justify-center mt-10">
             <button
               onClick={() => setShowAll(true)}
