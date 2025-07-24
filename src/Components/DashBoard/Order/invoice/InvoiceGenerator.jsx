@@ -103,6 +103,7 @@ const productList = [
   { name: "থাই চামড়া সহ ", price: 325 },
   { name: "থাই চামড়া ছাড়া ", price: 350},
   { name: "উইংস", price: 240 },
+  { name: "chicken curry cut (mix)", price: 325 },
   { name: "কিমা", price: 420 },
   { name: "গিলা-কলিজা", price: 310 },
   { name: "মুরগীর পা", price: 190 },
