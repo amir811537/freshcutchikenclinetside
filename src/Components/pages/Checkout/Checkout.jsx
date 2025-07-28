@@ -206,7 +206,7 @@ const Checkout = () => {
 
             {paymentMethod === "Bkash" && (
               <div className="mt-4 space-y-2">
-                <p className="text-sm text-gray-600">Bkash Personal: <span className=" text-lg text-green-600 font-bold">01795-044545</span></p>
+                <p className="text-sm text-gray-600">Bkash Personal: <span className=" text-lg text-green-600 font-bold">01612-381604</span></p>
                 <label className='block text-sm font-medium text-gray-700'>Transaction ID<sup className='text-red-500'>*</sup></label>
                 <input
                   type="text"
