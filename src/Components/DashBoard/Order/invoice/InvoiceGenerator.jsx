@@ -119,6 +119,8 @@ const productList = [
   {name: "সোনালী কক(৪৫০–৫০০গ্রাম)", price : 325},
   {name: "শুধু কলিজা", price : 290},
   {name: "শুধু গিলা", price : 290},
+  {name: "মুরগির পিছনের অংশ", price :250 },
+  {name: "মুরগির heart ", price :300 },
   {
     name: "কম্বো অফার-বেস্ট,লেগ বনলেস,ডামিস্টিক(চামড়া সহ),চিকেন উইংস",
     price: 1199,
@@ -135,7 +137,7 @@ const InvoiceComponent = () => {
     customDate: new Date().toISOString().split("T")[0],
     paymentMethod: "Cash",
     deliveryCharge: 0,
-    items: [{ name: "", quantity: 1, price: 0 }],
+    items: [{ name: "", quantity: 0, price: 0 }],
   });
 
   const [data, setData] = useState(null);
