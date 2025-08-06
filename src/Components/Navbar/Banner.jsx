@@ -7,6 +7,7 @@ import Banner1 from '../../assets/new1.png'
 import Banner2 from '../../assets/new2.png'
 import Banner3 from '../../assets/chicken banner.png'
 import Banner4 from '../../assets/freshcutorginal.png'
+import Banner5 from '../../assets/QR/blackfriday.jpg'
 
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 
@@ -15,7 +16,8 @@ const Banner = () => {
     image1: Banner4,
     image2: Banner2,
     image3: Banner3,
-    image4: Banner1
+    image4: Banner1,
+    image5: Banner5
   };
 
   return (
