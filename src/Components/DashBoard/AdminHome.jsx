@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+/* eslint-disable react/prop-types */
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import {
   BarChart,
   Bar,
@@ -8,8 +9,49 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
-} from 'recharts';
-import Loader from '../Loader/Loader';
+} from "recharts";
+import Loader from "../Loader/Loader";
+
+// Helper: parse English month from date string like "21 May 25"
+const parseEnglishDate = (dateStr) => {
+  if (!dateStr) return { month: "" };
+  const parts = dateStr.split(" ");
+  const month = parts[1]?.replace(",", "");
+  return { month };
+};
+
+// Group sales by month
+const getMonthlySalesData = (data) => {
+  const monthSalesMap = {};
+
+  data.forEach((item) => {
+    const { month } = parseEnglishDate(item.date);
+    if (!month) return;
+    const saleAmount = parseFloat(item.sale || 0);
+    if (!monthSalesMap[month]) {
+      monthSalesMap[month] = 0;
+    }
+    monthSalesMap[month] += saleAmount;
+  });
+
+  return Object.keys(monthSalesMap).map((month) => ({
+    month,
+    totalSale: monthSalesMap[month],
+  }));
+};
+
+const getTopSelling = (products) => {
+  return [...products]
+    .sort((a, b) => b.sellCount - a.sellCount)
+    .slice(0, 5)
+    .map((product) => ({
+      name:
+        product.name.length > 20
+          ? product.name.slice(0, 20) + "..."
+          : product.name,
+      sellCount: product.sellCount,
+    }));
+};
 
 const AdminHome = () => {
   // Fetch products
@@ -18,9 +60,11 @@ const AdminHome = () => {
     isLoading: productsLoading,
     isError: productsError,
   } = useQuery({
-    queryKey: ['products'],
+    queryKey: ["products"],
     queryFn: async () => {
-      const res = await axios.get('https://freshcutserverside.vercel.app/products');
+      const res = await axios.get(
+        "https://freshcutserverside.vercel.app/products"
+      );
       return res.data;
     },
   });
@@ -31,31 +75,43 @@ const AdminHome = () => {
     isLoading: usersLoading,
     isError: usersError,
   } = useQuery({
-    queryKey: ['users'],
+    queryKey: ["users"],
     queryFn: async () => {
-      const res = await axios.get('https://freshcutserverside.vercel.app/users');
+      const res = await axios.get(
+        "https://freshcutserverside.vercel.app/users"
+      );
       return res.data;
     },
   });
 
-  const getTopSelling = (products) => {
-    return [...products]
-      .sort((a, b) => b.sellCount - a.sellCount)
-      .slice(0, 5)
-      .map((product) => ({
-        name: product.name.length > 20 ? product.name.slice(0, 20) + '...' : product.name,
-        sellCount: product.sellCount,
-      }));
-  };
+  // Fetch CMS sales data
+  const {
+    data: cmsData = [],
+    isLoading: cmsLoading,
+    isError: cmsError,
+  } = useQuery({
+    queryKey: ["cmsData"],
+    queryFn: async () => {
+      const res = await axios.get(
+        "https://freshcutserverside.vercel.app/cms"
+      );
+      return res.data;
+    },
+  });
 
-  if (productsLoading || usersLoading) return <div className="flex justify-center items-center">
-    <Loader></Loader>
-  </div>;
-  if (productsError || usersError) return <p>Failed to load dashboard data.</p>;
+  if (productsLoading || usersLoading || cmsLoading)
+    return (
+      <div className="flex justify-center items-center">
+        <Loader />
+      </div>
+    );
+  if (productsError || usersError || cmsError)
+    return <p>Failed to load dashboard data.</p>;
 
   const topSelling = getTopSelling(products);
   const totalUsers = users.length;
   const totalProducts = products.length;
+  const monthlySalesData = getMonthlySalesData(cmsData);
 
   return (
     <div className="p-6 space-y-6 dark:bg-gray-900 dark:text-gray-100 min-h-screen">
@@ -65,11 +121,15 @@ const AdminHome = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         <div className="bg-blue-100 dark:bg-blue-800 dark:text-white p-4 rounded shadow text-center">
           <h4 className="text-lg font-semibold">Total Users</h4>
-          <p className="text-3xl font-bold text-blue-600 dark:text-blue-300">{totalUsers}</p>
+          <p className="text-3xl font-bold text-blue-600 dark:text-blue-300">
+            {totalUsers}
+          </p>
         </div>
         <div className="bg-green-100 dark:bg-green-800 dark:text-white p-4 rounded shadow text-center">
           <h4 className="text-lg font-semibold">Total Products</h4>
-          <p className="text-3xl font-bold text-green-600 dark:text-green-300">{totalProducts}</p>
+          <p className="text-3xl font-bold text-green-600 dark:text-green-300">
+            {totalProducts}
+          </p>
         </div>
         <div className="bg-purple-100 dark:bg-purple-800 dark:text-white p-4 rounded shadow text-center">
           <h4 className="text-lg font-semibold">Top Products Count</h4>
@@ -79,20 +139,61 @@ const AdminHome = () => {
         </div>
       </div>
 
-      {/* Bar Chart */}
+      {/* Monthly Sales Chart */}
+      <div className="bg-white dark:bg-gray-800 p-4 rounded shadow">
+        <h3 className="text-xl font-semibold mb-4">
+          Monthly Sales Overview (CMS Data)
+        </h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart
+            data={monthlySalesData}
+            margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
+            <XAxis
+              dataKey="month"
+              tick={{ fontSize: 12, fill: "#8884d8" }}
+            />
+            <YAxis tick={{ fill: "#8884d8" }} />
+            <Tooltip
+              contentStyle={{ backgroundColor: "#2d3748", border: "none" }}
+              labelStyle={{ color: "#f7fafc" }}
+              itemStyle={{ color: "#f7fafc" }}
+              formatter={(value) => [`৳${value}`, "Total Sale"]}
+            />
+            <Bar
+              dataKey="totalSale"
+              fill="#4ade80"
+              radius={[6, 6, 0, 0]}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Top Selling Products Chart */}
       <div className="bg-white dark:bg-gray-800 p-4 rounded shadow">
         <h3 className="text-xl font-semibold mb-4">Top Selling Products</h3>
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={topSelling} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+          <BarChart
+            data={topSelling}
+            margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+          >
             <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
-            <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#8884d8' }} />
-            <YAxis tick={{ fill: '#8884d8' }} />
-            <Tooltip
-              contentStyle={{ backgroundColor: '#2d3748', border: 'none' }}
-              labelStyle={{ color: '#f7fafc' }}
-              itemStyle={{ color: '#f7fafc' }}
+            <XAxis
+              dataKey="name"
+              tick={{ fontSize: 12, fill: "#8884d8" }}
             />
-            <Bar dataKey="sellCount" fill="#4ade80" radius={[6, 6, 0, 0]} />
+            <YAxis tick={{ fill: "#8884d8" }} />
+            <Tooltip
+              contentStyle={{ backgroundColor: "#2d3748", border: "none" }}
+              labelStyle={{ color: "#f7fafc" }}
+              itemStyle={{ color: "#f7fafc" }}
+            />
+            <Bar
+              dataKey="sellCount"
+              fill="#4ade80"
+              radius={[6, 6, 0, 0]}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>
