@@ -4,10 +4,10 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 import Banner1 from '../../assets/new1.png'
-import Banner2 from '../../assets/new2.png'
 import Banner3 from '../../assets/chicken banner.png'
 import Banner4 from '../../assets/freshcutorginal.png'
 import Banner5 from '../../assets/QR/blackfriday.jpg'
+import Banner2 from '../../assets/QR//green-cover-photo.jpg'
 
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 

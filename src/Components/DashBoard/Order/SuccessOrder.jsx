@@ -119,11 +119,10 @@ const OrderSuccess = () => {
         </button>
 
         <a
-          href="/"
+          href="/dashboard/myOrders"
           className="inline-block mt-4 text-sm text-green-600 hover:underline"
         >
-          Back to Homepage
-        </a>
+View my order status        </a>
       </div>
     </div>
   );
