@@ -5,6 +5,8 @@ import { pdf } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
 import PDFDocument from "./PDFDocument"; // Assume you're using this
 import Swal from "sweetalert2";
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
 
 const CmsDetail = () => {
   const [allData, setAllData] = useState([]);
@@ -13,6 +15,7 @@ const CmsDetail = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedName, setSelectedName] = useState("");
   const [editingItem, setEditingItem] = useState(null);
+  const [deleteItemId, setDeleteItemId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 14;
 
@@ -88,9 +91,7 @@ const CmsDetail = () => {
     });
   };
 
-  const closeModal = () => {
-    setEditingItem(null);
-  };
+  const closeModal = () => setEditingItem(null);
 
   const handleUpdate = async () => {
     const isValidDateFormat = /^\d{1,2} [A-Za-z]+ \d{2}$/.test(editForm.date);
@@ -109,10 +110,13 @@ const CmsDetail = () => {
           item._id === editingItem._id ? { ...item, ...editForm } : item
         );
         setAllData(updated);
-        Swal.fire({
-          title: "Update done",
-          icon: "success",
-        });
+      Swal.fire({
+        position: "top-center",
+        icon: "success",
+        title: "data update successfully",
+        showConfirmButton: false,
+        timer: 1000
+      });
         closeModal();
       }
     } catch (err) {
@@ -124,33 +128,32 @@ const CmsDetail = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const res = await axios.delete(`https://freshcutserverside.vercel.app/cms/${id}`);
-          if (res.data.deletedCount > 0) {
-            const updated = allData.filter((item) => item._id !== id);
-            setAllData(updated);
-            Swal.fire("Deleted!", "Your file has been deleted.", "success");
-          }
-        } catch (err) {
-          Swal.fire("Delete failed", err.message, "error");
-        }
-      }
-    });
-  };
+  // Custom delete modal functions
+  const confirmDelete = (id) => setDeleteItemId(id);
+  const cancelDelete = () => setDeleteItemId(null);
+
+const handleDelete = async () => {
+  try {
+    const res = await axios.delete(`https://freshcutserverside.vercel.app/cms/${deleteItemId}`);
+    if (res.data.deletedCount > 0) {
+      setAllData(allData.filter((item) => item._id !== deleteItemId));
+      setDeleteItemId(null);
+      Swal.fire({
+        position: "top-center",
+        icon: "success",
+        title: "data deleted successfully",
+        showConfirmButton: false,
+        timer: 1000
+      });
+    }
+  } catch (err) {
+    alert("Delete failed: " + err.message);
+  }
+};
 
   return (
     <div className="p-4">
+      {/* Filters */}
       <div className="mb-4">
         <h1 className="text-xl font-bold">Filter by Month, Date and Name</h1>
         <div className="flex flex-wrap gap-4">
@@ -208,10 +211,12 @@ const CmsDetail = () => {
         </div>
       </div>
 
+      {/* Table */}
       <div className="overflow-x-auto mt-6">
         <table className="min-w-full border border-gray-300 text-sm text-center">
           <thead className="bg-gray-100 dark:bg-black dark:text-white">
             <tr>
+              <th className="border px-2 py-1">#</th>
               <th className="border px-2 py-1">Date</th>
               <th className="border px-2 py-1">Name</th>
               <th className="border px-2 py-1">Location</th>
@@ -222,8 +227,9 @@ const CmsDetail = () => {
             </tr>
           </thead>
           <tbody>
-            {currentItems.map((item, index) => (
-              <tr key={index} className="border-t">
+            {currentItems.map((item, idx) => (
+              <tr key={item._id} className="border-t">
+                <td className="border px-2 py-1">{indexOfFirstItem + idx + 1}</td>
                 <td className="border px-2 py-1">{item.date || "—"}</td>
                 <td className="border px-2 py-1">{item.name}</td>
                 <td className="border px-2 py-1">{item.location}</td>
@@ -235,19 +241,21 @@ const CmsDetail = () => {
                     onClick={() => openEditModal(item)}
                     className="px-2 py-1 bg-blue-500 text-white rounded"
                   >
-                    Edit
+                    <FaEdit className="text-xl font-bold" />
                   </button>
                   <button
-                    onClick={() => handleDelete(item._id)}
+                    onClick={() => confirmDelete(item._id)} // <-- FIXED HERE
                     className="px-2 py-1 bg-red-500 text-white rounded"
                   >
-                    Delete
+                    <MdDelete className="text-xl font-bold" />
                   </button>
                 </td>
               </tr>
             ))}
             <tr className="bg-blue-700 text-white font-bold">
-              <td colSpan="5" className="px-2 py-2 text-right">Total Sale:</td>
+              <td colSpan="6" className="px-2 py-2 text-right">
+                Total Sale:
+              </td>
               <td className="px-2 py-2">
                 ৳{filteredData.reduce((acc, cur) => acc + parseFloat(cur.sale || 0), 0)}
               </td>
@@ -256,6 +264,7 @@ const CmsDetail = () => {
           </tbody>
         </table>
 
+        {/* Pagination */}
         {filteredData.length > itemsPerPage && (
           <div className="flex justify-center mt-4 gap-2">
             <button
@@ -269,9 +278,9 @@ const CmsDetail = () => {
               <button
                 key={i}
                 onClick={() => setCurrentPage(i + 1)}
-                className={`px-3 py-1 rounded ${currentPage === i + 1
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200 hover:bg-gray-300"}`}
+                className={`px-3 py-1 rounded ${
+                  currentPage === i + 1 ? "bg-blue-600 text-white" : "bg-gray-200 hover:bg-gray-300"
+                }`}
               >
                 {i + 1}
               </button>
@@ -287,6 +296,7 @@ const CmsDetail = () => {
         )}
       </div>
 
+      {/* Download PDF */}
       {selectedMonth && (
         <div className="p-4 text-right">
           <button
@@ -299,6 +309,7 @@ const CmsDetail = () => {
         </div>
       )}
 
+      {/* Edit Modal */}
       {editingItem && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
@@ -328,6 +339,30 @@ const CmsDetail = () => {
                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
               >
                 Update
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteItemId && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm text-center">
+            <h2 className="text-lg font-bold mb-4">Confirm Delete</h2>
+            <p className="mb-6">Are you sure you want to delete this entry?</p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={cancelDelete}
+                className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+              >
+                Delete
               </button>
             </div>
           </div>

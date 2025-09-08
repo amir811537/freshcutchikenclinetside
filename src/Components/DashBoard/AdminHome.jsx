@@ -1,16 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-} from "recharts";
 import Loader from "../Loader/Loader";
+import CartOverview from "./CartOverview";
 
 // Helper: parse English month from date string like "21 May 25"
 const parseEnglishDate = (dateStr) => {
@@ -137,65 +129,10 @@ const AdminHome = () => {
             {topSelling.length}
           </p>
         </div>
-      </div>
 
-      {/* Monthly Sales Chart */}
-      <div className="bg-white dark:bg-gray-800 p-4 rounded shadow">
-        <h3 className="text-xl font-semibold mb-4">
-          Monthly Sales Overview (CMS Data)
-        </h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart
-            data={monthlySalesData}
-            margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
-            <XAxis
-              dataKey="month"
-              tick={{ fontSize: 12, fill: "#8884d8" }}
-            />
-            <YAxis tick={{ fill: "#8884d8" }} />
-            <Tooltip
-              contentStyle={{ backgroundColor: "#2d3748", border: "none" }}
-              labelStyle={{ color: "#f7fafc" }}
-              itemStyle={{ color: "#f7fafc" }}
-              formatter={(value) => [`৳${value}`, "Total Sale"]}
-            />
-            <Bar
-              dataKey="totalSale"
-              fill="#4ade80"
-              radius={[6, 6, 0, 0]}
-            />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+<CartOverview topSelling={topSelling} monthlySalesData={monthlySalesData}  />
 
-      {/* Top Selling Products Chart */}
-      <div className="bg-white dark:bg-gray-800 p-4 rounded shadow">
-        <h3 className="text-xl font-semibold mb-4">Top Selling Products</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart
-            data={topSelling}
-            margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
-            <XAxis
-              dataKey="name"
-              tick={{ fontSize: 12, fill: "#8884d8" }}
-            />
-            <YAxis tick={{ fill: "#8884d8" }} />
-            <Tooltip
-              contentStyle={{ backgroundColor: "#2d3748", border: "none" }}
-              labelStyle={{ color: "#f7fafc" }}
-              itemStyle={{ color: "#f7fafc" }}
-            />
-            <Bar
-              dataKey="sellCount"
-              fill="#4ade80"
-              radius={[6, 6, 0, 0]}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+
       </div>
     </div>
   );

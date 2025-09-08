@@ -134,7 +134,7 @@ const Dashboard = () => {
                       }
                       onClick={() => setIsSidebarOpen(false)}
                     >
-                      <SiCraftcms /> CMS
+                      <SiCraftcms /> Customer Entry 
                     </NavLink>
                   </li>
                   <li>
@@ -145,7 +145,7 @@ const Dashboard = () => {
                       }
                       onClick={() => setIsSidebarOpen(false)}
                     >
-                      <FcViewDetails /> CMS Details
+                      <FcViewDetails /> Customer Details 
                     </NavLink>
                   </li>
                   <li>

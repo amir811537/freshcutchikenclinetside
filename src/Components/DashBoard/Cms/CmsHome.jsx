@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"; // Import styles
 
 const CmsHome = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +11,7 @@ const CmsHome = () => {
     phone: "",
     orderHistory: "",
     sale: "",
+    date: null, // Use null for DatePicker
   });
 
   const handleChange = (e) => {
@@ -19,11 +22,28 @@ const CmsHome = () => {
     }));
   };
 
+  const handleDateChange = (date) => {
+    setFormData((prev) => ({
+      ...prev,
+      date: date,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const now = new Date();
-    const formattedDate = now.toLocaleDateString("en-GB", {
+    if (!formData.date) {
+      Swal.fire({
+        title: "Error!",
+        text: "Please select a date.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      return;
+    }
+
+    // Format date as "01 September 25"
+    const formattedDate = formData.date.toLocaleDateString("en-GB", {
       day: "2-digit",
       month: "long",
       year: "2-digit",
@@ -33,19 +53,22 @@ const CmsHome = () => {
 
     try {
       await axios.post("https://freshcutserverside.vercel.app/cms", newEntry);
-      Swal.fire({
-        title: "Success!",
-        text: "Customer data has been added.",
+ 
+Swal.fire({
+        position: "top-center",
         icon: "success",
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "OK",
+        title: "data post successfully",
+        showConfirmButton: false,
+        timer: 1000
       });
+
       setFormData({
         name: "",
         location: "",
         phone: "",
         orderHistory: "",
         sale: "",
+        date: null,
       });
     } catch (err) {
       console.error("Error submitting data:", err);
@@ -60,9 +83,19 @@ const CmsHome = () => {
 
   return (
     <div className="flex flex-col items-center gap-6 p-4">
-      <div className="w-full  bg-white dark:bg-black dark:text-white p-6 ">
+      <div className="w-full bg-white dark:bg-black dark:text-white p-6">
         <h2 className="text-2xl font-bold mb-4">Add Customer Information</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* React DatePicker */}
+          <DatePicker
+            selected={formData.date}
+            onChange={handleDateChange}
+            dateFormat="dd MMMM yy"
+            placeholderText="Select a date"
+            className="w-full border p-2 rounded"
+            required
+          />
+
           <input
             type="text"
             name="name"
@@ -82,7 +115,7 @@ const CmsHome = () => {
             required
           />
           <input
-            type="tel"
+            type="number"
             name="phone"
             value={formData.phone}
             onChange={handleChange}
