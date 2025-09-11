@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Loader from "../../Loader/Loader";
@@ -11,9 +12,22 @@ const Usermanagement = () => {
     },
   });
 
-  if (isLoading) return <div className="flex justify-center items-center">
-    <Loader></Loader>
-  </div>;
+  // pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 14;
+
+  // calculate pagination
+  const totalPages = Math.ceil(users.length / usersPerPage);
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center">
+        <Loader />
+      </div>
+    );
 
   return (
     <div className="px-4 py-6">
@@ -31,9 +45,9 @@ const Usermanagement = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user, index) => (
+            {currentUsers.map((user, index) => (
               <tr key={user._id}>
-                <td>{index + 1}</td>
+                <td>{indexOfFirstUser + index + 1}</td>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>{user.method}</td>
@@ -42,29 +56,66 @@ const Usermanagement = () => {
                   <button
                     className="btn btn-sm btn-error"
                     onClick={async () => {
-                      await axios.delete(`https://freshcutserverside.vercel.app/users/${user._id}`);
+                      await axios.delete(
+                        `https://freshcutserverside.vercel.app/users/${user._id}`
+                      );
                       refetch();
                     }}
                   >
                     Delete
                   </button>
                   <button
-  className="btn btn-sm btn-info ml-2"
-  onClick={async () => {
-    await axios.patch(`https://freshcutserverside.vercel.app/users/${user._id}`, {
-      role: user.role === "admin" ? "user" : "admin",
-    });
-    refetch();
-  }}
->
-  {user.role === "admin" ? "Demote" : "Promote"}
-</button>
-
+                    className="btn btn-sm btn-info ml-2"
+                    onClick={async () => {
+                      await axios.patch(
+                        `https://freshcutserverside.vercel.app/users/${user._id}`,
+                        {
+                          role: user.role === "admin" ? "user" : "admin",
+                        }
+                      );
+                      refetch();
+                    }}
+                  >
+                    {user.role === "admin" ? "Demote" : "Promote"}
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-center mt-6 space-x-2">
+        <button
+          className="btn btn-sm btn-outline"
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage((prev) => prev - 1)}
+        >
+          Prev
+        </button>
+
+        {[...Array(totalPages).keys()].map((num) => (
+          <button
+            key={num}
+            className={`btn btn-sm ${
+              currentPage === num + 1
+                ? "btn-primary"
+                : "btn-outline"
+            }`}
+            onClick={() => setCurrentPage(num + 1)}
+          >
+            {num + 1}
+          </button>
+        ))}
+
+        <button
+          className="btn btn-sm btn-outline"
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage((prev) => prev + 1)}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
