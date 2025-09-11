@@ -11,6 +11,8 @@ const ManageOrder = () => {
     'shipping',
     'delivered',
   ]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const {
     data: orders = [],
@@ -36,7 +38,10 @@ const ManageOrder = () => {
       if (res.data.success) {
         if (newStatus === 'delivered') {
           try {
-            await axios.post('https://freshcutserverside.vercel.app/orderhistory', fullOrder);
+            await axios.post(
+              'https://freshcutserverside.vercel.app/orderhistory',
+              fullOrder
+            );
             Swal.fire(
               'Delivered',
               'Order marked as delivered and logged in order history.',
@@ -65,10 +70,19 @@ const ManageOrder = () => {
         ? prev.filter((s) => s !== status)
         : [...prev, status]
     );
+    setCurrentPage(1); // reset to first page when filter changes
   };
 
   const filteredOrders = orders.filter((order) =>
     selectedStatuses.includes(order.status)
+  );
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentOrders = filteredOrders.slice(
+    startIndex,
+    startIndex + itemsPerPage
   );
 
   const statusColor = (status) => {
@@ -88,26 +102,37 @@ const ManageOrder = () => {
 
   const orderFlow = ['pending', 'confirmed', 'shipping', 'delivered'];
 
-  if (isLoading) return <div className="flex justify-center items-center">
-    <Loader></Loader>
-  </div>;
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center">
+        <Loader />
+      </div>
+    );
   if (isError) return <p>Failed to load orders.</p>;
 
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Manage Orders</h2>
 
+      {/* Filter */}
       <div className="mb-6">
         <h4 className="font-semibold mb-2">Filter by Status:</h4>
         {orderFlow.map((status) => (
-          <label key={status} className="mr-4 inline-flex items-center space-x-1">
+          <label
+            key={status}
+            className="mr-4 inline-flex items-center space-x-1"
+          >
             <input
               type="checkbox"
               checked={selectedStatuses.includes(status)}
               onChange={() => toggleStatusFilter(status)}
               className="mr-1"
             />
-            <span className={`px-2 py-1 rounded text-white  text-sm ${statusColor(status)}`}>
+            <span
+              className={`px-2 py-1 rounded text-white text-sm ${statusColor(
+                status
+              )}`}
+            >
               {status}
             </span>
           </label>
@@ -118,8 +143,11 @@ const ManageOrder = () => {
         <p>No orders found for selected status.</p>
       ) : (
         <div className="space-y-6">
-          {filteredOrders.map((order) => (
-            <div key={order._id} className="border rounded-lg p-4 shadow-sm bg-white dark:bg-black dark:text-white">
+          {currentOrders.map((order) => (
+            <div
+              key={order._id}
+              className="border rounded-lg p-4 shadow-sm bg-white dark:bg-black dark:text-white"
+            >
               <div className="mb-3">
                 <h3 className="text-lg font-semibold">
                   Customer: {order.customer.name}
@@ -212,6 +240,41 @@ const ManageOrder = () => {
               </div>
             </div>
           ))}
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center space-x-2 mt-6">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 disabled:opacity-50"
+              >
+                Prev
+              </button>
+              {Array.from({ length: totalPages }, (_, idx) => (
+                <button
+                  key={idx + 1}
+                  onClick={() => setCurrentPage(idx + 1)}
+                  className={`px-3 py-1 rounded ${
+                    currentPage === idx + 1
+                      ? 'bg-orange-500 text-white'
+                      : 'bg-gray-200 dark:bg-gray-700'
+                  }`}
+                >
+                  {idx + 1}
+                </button>
+              ))}
+              <button
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(p + 1, totalPages))
+                }
+                disabled={currentPage === totalPages}
+                className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

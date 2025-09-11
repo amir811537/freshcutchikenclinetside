@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowRightLong, FaArrowLeftLong } from "react-icons/fa6";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -12,14 +12,38 @@ const Categories = () => {
   const navigate = useNavigate();
   const { data: products = [], isLoading, isError } = useProducts();
 
-  // Extract unique categories
-  const categoryMap = new Map();
-  products.forEach(({ category, categoryImage }) => {
-    if (!categoryMap.has(category)) {
-      categoryMap.set(category, { category, categoryImage });
+  // ✅ Local state for categories
+  const [categories, setCategories] = useState([]);
+
+  // ✅ Load cached categories from localStorage
+  useEffect(() => {
+    const cached = localStorage.getItem("categories");
+    if (cached) {
+      setCategories(JSON.parse(cached));
     }
-  });
-  const uniqueCategories = Array.from(categoryMap.values());
+  }, []);
+
+  // ✅ Update cache only when products change
+  useEffect(() => {
+    if (products.length > 0) {
+      const categoryMap = new Map();
+      products.forEach(({ category, categoryImage }) => {
+        if (!categoryMap.has(category)) {
+          categoryMap.set(category, { category, categoryImage });
+        }
+      });
+      const uniqueCategories = Array.from(categoryMap.values());
+
+      // Compare with cached categories
+      const cached = localStorage.getItem("categories");
+      const cachedData = cached ? JSON.parse(cached) : [];
+
+      if (JSON.stringify(uniqueCategories) !== JSON.stringify(cachedData)) {
+        localStorage.setItem("categories", JSON.stringify(uniqueCategories));
+        setCategories(uniqueCategories);
+      }
+    }
+  }, [products]);
 
   // Handlers
   const handleSelectCategory = (category) => {
@@ -49,7 +73,7 @@ const Categories = () => {
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-3">
           <span className="block w-4 h-4 rounded-sm bg-[#F5BC3B]" />
-          <h1 className="text-xl font-semibold">Categories</h1>
+          <h1 className="text-xl font-semibold py-2">Categories</h1>
         </div>
 
         {/* Arrows for Desktop */}
@@ -72,7 +96,7 @@ const Categories = () => {
       {/* Content */}
       {isError ? (
         <p className="text-red-500">Failed to load categories.</p>
-      ) : isLoading ? (
+      ) : isLoading && categories.length === 0 ? ( // show skeleton only first time
         renderSkeleton()
       ) : (
         <>
@@ -87,7 +111,7 @@ const Categories = () => {
                 480: { slidesPerView: 4 },
               }}
             >
-              {uniqueCategories.map((item, index) => (
+              {categories.map((item, index) => (
                 <SwiperSlide key={index}>
                   <button
                     onClick={() => handleSelectCategory(item.category)}
@@ -111,7 +135,7 @@ const Categories = () => {
 
           {/* Desktop: Grid */}
           <div className="hidden md:grid grid-cols-4 lg:grid-cols-6 gap-6">
-            {uniqueCategories.map((item, index) => (
+            {categories.map((item, index) => (
               <button
                 key={index}
                 onClick={() => handleSelectCategory(item.category)}

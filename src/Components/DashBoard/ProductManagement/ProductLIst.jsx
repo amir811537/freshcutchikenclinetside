@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useProducts from "../../../hooks/useProducts";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Loader from "../../Loader/Loader";
 
 const ProductList = () => {
@@ -9,11 +10,18 @@ const ProductList = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
+  // ✅ Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 12;
+
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
-      const res = await fetch(`https://freshcutserverside.vercel.app/products/${id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `https://freshcutserverside.vercel.app/products/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (!res.ok) {
         throw new Error("Failed to delete product");
       }
@@ -44,15 +52,27 @@ const ProductList = () => {
     });
   };
 
-  if (isLoading) return <div>
-    <div className="flex justify-center items-center">
-    <Loader></Loader>
-  </div> </div> ;
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center min-h-[200px]">
+        <Loader />
+      </div>
+    );
+
   if (isError) return <p>Failed to load products.</p>;
+
+  // ✅ Pagination logic
+  const totalPages = Math.ceil(products.length / productsPerPage);
+  const startIndex = (currentPage - 1) * productsPerPage;
+  const currentProducts = products.slice(
+    startIndex,
+    startIndex + productsPerPage
+  );
 
   return (
     <div className="mt-6 p-4">
       <h2 className="text-2xl font-bold mb-4">Product List</h2>
+
       <table className="table table-zebra w-full">
         <thead className="bg-orange-400 text-white">
           <tr>
@@ -68,11 +88,15 @@ const ProductList = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product, index) => (
+          {currentProducts.map((product, index) => (
             <tr key={product._id}>
-              <td>{index + 1}</td>
+              <td>{startIndex + index + 1}</td>
               <td>
-                <img src={product.image} alt={product.name} className="w-16 h-16 object-cover rounded" />
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-16 h-16 object-cover rounded"
+                />
               </td>
               <td>{product.name}</td>
               <td>৳{product.price}</td>
@@ -81,12 +105,14 @@ const ProductList = () => {
               <td>{product.category}</td>
               <td>{product.sellCount}</td>
               <td className="space-x-2">
-              <button
-  onClick={() => navigate(`/dashboard/updateProduct/${product._id}`)}
-  className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
->
-  Update
-</button>
+                <button
+                  onClick={() =>
+                    navigate(`/dashboard/updateProduct/${product._id}`)
+                  }
+                  className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                >
+                  Update
+                </button>
                 <button
                   onClick={() => handleDelete(product._id)}
                   className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
@@ -98,6 +124,41 @@ const ProductList = () => {
           ))}
         </tbody>
       </table>
+
+      {/* ✅ Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex justify-center mt-6 space-x-2">
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-3 py-1 border rounded disabled:opacity-50"
+          >
+            Prev
+          </button>
+
+          {[...Array(totalPages)].map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentPage(i + 1)}
+              className={`px-3 py-1 border rounded ${
+                currentPage === i + 1
+                  ? "bg-orange-400 text-white"
+                  : "bg-white hover:bg-gray-100"
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className="px-3 py-1 border rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };

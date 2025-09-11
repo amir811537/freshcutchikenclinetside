@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Loader from '../../../Loader/Loader';
+import { useState } from 'react';
 
 const OrderHistory = () => {
   const {
@@ -10,14 +11,28 @@ const OrderHistory = () => {
   } = useQuery({
     queryKey: ['orderHistory'],
     queryFn: async () => {
-      const res = await axios.get('https://freshcutserverside.vercel.app/orderhistory');
+      const res = await axios.get(
+        'https://freshcutserverside.vercel.app/orderhistory'
+      );
       return res.data;
     },
   });
 
-  if (isLoading) return <div className="flex justify-center items-center">
-    <Loader></Loader>
-  </div>;
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+
+  // Pagination logic
+  const totalPages = Math.ceil(history.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentOrders = history.slice(startIndex, startIndex + itemsPerPage);
+
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center">
+        <Loader />
+      </div>
+    );
+
   if (isError) return <p>Failed to load order history.</p>;
 
   return (
@@ -28,8 +43,11 @@ const OrderHistory = () => {
         <p>No delivered orders found in history.</p>
       ) : (
         <div className="space-y-6">
-          {history.map((order) => (
-            <div key={order._id} className="border rounded-lg p-4 shadow-sm bg-white dark:bg-black dark:text-white">
+          {currentOrders.map((order) => (
+            <div
+              key={order._id}
+              className="border rounded-lg p-4 shadow-sm bg-white dark:bg-black dark:text-white"
+            >
               <div className="mb-3">
                 <h3 className="text-lg font-semibold">
                   Customer: {order.customer.name}
@@ -82,6 +100,41 @@ const OrderHistory = () => {
               </div>
             </div>
           ))}
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center space-x-2 mt-6">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 disabled:opacity-50"
+              >
+                Prev
+              </button>
+              {Array.from({ length: totalPages }, (_, idx) => (
+                <button
+                  key={idx + 1}
+                  onClick={() => setCurrentPage(idx + 1)}
+                  className={`px-3 py-1 rounded ${
+                    currentPage === idx + 1
+                      ? 'bg-orange-500 text-white'
+                      : 'bg-gray-200 dark:bg-gray-700'
+                  }`}
+                >
+                  {idx + 1}
+                </button>
+              ))}
+              <button
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(p + 1, totalPages))
+                }
+                disabled={currentPage === totalPages}
+                className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
