@@ -10,7 +10,7 @@ import { IoMdAddCircle } from "react-icons/io";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../AuthProvider/AuthProvider";
-import { FaUser } from "react-icons/fa6";
+import { FaMessage, FaUser } from "react-icons/fa6";
 import { FaHistory } from "react-icons/fa";
 import { SiCraftcms } from "react-icons/si";
 import { FcViewDetails } from "react-icons/fc";
@@ -146,6 +146,17 @@ const Dashboard = () => {
                       onClick={() => setIsSidebarOpen(false)}
                     >
                       <FcViewDetails /> Customer Details 
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/dashboard/MessageSender"
+                      className={({ isActive }) =>
+                        isActive ? activeLink : normalLink
+                      }
+                      onClick={() => setIsSidebarOpen(false)}
+                    >
+                      <FaMessage /> Message Customer
                     </NavLink>
                   </li>
                   <li>

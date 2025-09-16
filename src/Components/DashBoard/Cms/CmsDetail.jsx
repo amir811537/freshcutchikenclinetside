@@ -7,7 +7,6 @@ import PDFDocument from "./PDFDocument"; // Assume you're using this
 import Swal from "sweetalert2";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
-
 const CmsDetail = () => {
   const [allData, setAllData] = useState([]);
   const [loading, setLoading] = useState(false);
