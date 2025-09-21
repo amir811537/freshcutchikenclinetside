@@ -21,6 +21,9 @@ const Checkout = () => {
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
+  // Shipping state
+  const [shippingArea, setShippingArea] = useState(""); // "north" or "south"
+
   // React Hook Form
   const {
     register,
@@ -61,6 +64,15 @@ const Checkout = () => {
       return;
     }
 
+    if (!shippingArea) {
+      Swal.fire({
+        title: "Please select your shipping area!",
+        icon: "error",
+        timer: 1500,
+      });
+      return;
+    }
+
     try {
       const fullOrder = {
         customer: {
@@ -80,7 +92,9 @@ const Checkout = () => {
         status: "pending",
         totalAmount: discountedCartTotal,
         paymentMethod,
+        shipping,
         transactionId: paymentMethod === "Bkash" ? transactionId : null,
+        shippingArea,
         orderDate: new Date().toISOString(),
       };
 
@@ -100,7 +114,14 @@ const Checkout = () => {
     return acc + parseFloat(item.price) * qty;
   }, 0);
 
-  const shipping = 70;
+  // Shipping charges based on selection
+  const shipping =
+    shippingArea === "south"
+      ? 120
+      : shippingArea === "north"
+      ? 70
+      : 0;
+
   const discount = 0;
   const discountedCartTotal = Math.round(
     (cartTotal + shipping) * (1 - discount / 100)
@@ -193,6 +214,31 @@ const Checkout = () => {
               disabled
               className="input w-full bg-[#F5F5F5] mt-2"
             />
+          </div>
+
+          {/* Shipping area selection */}
+          <div className="mt-6">
+            <h2 className="font-medium mb-2">Select Shipping Area</h2>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={shippingArea === "north"}
+                onChange={() =>
+                  setShippingArea(shippingArea === "north" ? "" : "north")
+                }
+              />
+              ঢাকা উত্তর সিটি কর্পোরেশন (৳70)
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={shippingArea === "south"}
+                onChange={() =>
+                  setShippingArea(shippingArea === "south" ? "" : "south")
+                }
+              />
+              ঢাকা দক্ষিণ সিটি কর্পোরেশন (৳120)
+            </label>
           </div>
         </div>
 

@@ -120,6 +120,8 @@ const InvoicePdf = ({ data }) => {
     orderDate,
     customer,
     items,
+   shipping,
+   shippingArea,
     totalAmount,
     paymentMethod,
   } = data;
@@ -144,6 +146,7 @@ const InvoicePdf = ({ data }) => {
             <Text>Date: {formattedDate}</Text>
             <Text>Invoice ID#: {invoiceNo}</Text>
             <Text>Payment: {paymentMethod}</Text>
+            <Text>Area: {shippingArea}</Text>
           </View>
         </View>
 
@@ -183,10 +186,10 @@ const InvoicePdf = ({ data }) => {
             );
           })}
         </View>
-        <View>
-          <Text>delivery charge : 70 taka</Text>
+        <View style={styles.summaryRow}>
+          <Text>delivery charge :{shipping}</Text>
         </View>
-
+  
         {/* Summary */}
         <View style={styles.summaryRow}>
           <Text style={styles.summaryText}>Total Amount:</Text>

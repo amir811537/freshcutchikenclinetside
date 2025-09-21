@@ -68,6 +68,8 @@ const OrderSuccess = () => {
   const {
     customer: { name, phone },
     totalAmount,
+   shipping,
+   shippingArea,
     status,
     paymentMethod,
   } = order;
@@ -90,6 +92,12 @@ const OrderSuccess = () => {
           </p>
           <p>
             <span className="font-medium">Phone:</span> {phone}
+          </p>
+          <p>
+            <span className="font-medium">Shipping charge :</span> {shipping}
+          </p>
+          <p>
+            <span className="font-medium">Shipping Area :</span> {shippingArea} Dhaka
           </p>
           <p>
             <span className="font-medium">Total:</span> ৳
@@ -122,7 +130,7 @@ const OrderSuccess = () => {
           href="/dashboard/myOrders"
           className="inline-block mt-4 text-sm text-green-600 hover:underline"
         >
-View my order status        </a>
+View my order status </a>
       </div>
     </div>
   );
