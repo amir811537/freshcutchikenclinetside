@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"; // Import styles
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const CmsHome = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +13,7 @@ const CmsHome = () => {
     sale: "",
     date: null, // Use null for DatePicker
   });
-
+const axiosPublic = useAxiosPublic();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -52,7 +52,7 @@ const CmsHome = () => {
     const newEntry = { ...formData, date: formattedDate };
 
     try {
-      await axios.post("https://freshcutserverside.vercel.app/cms", newEntry);
+      await axiosPublic.post("/cms", newEntry);
  
 Swal.fire({
         position: "top-center",

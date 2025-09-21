@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
 import Loader from '../../../Loader/Loader';
+import useAxiosPublic from '../../../../hooks/useAxiosPublic';
 
 const ManageOrder = () => {
   const [selectedStatuses, setSelectedStatuses] = useState([
@@ -11,6 +11,8 @@ const ManageOrder = () => {
     'shipping',
     'delivered',
   ]);
+const axiosPublic = useAxiosPublic();
+  
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -22,15 +24,15 @@ const ManageOrder = () => {
   } = useQuery({
     queryKey: ['orders'],
     queryFn: async () => {
-      const res = await axios.get('https://freshcutserverside.vercel.app/order');
+      const res = await axiosPublic.get('/order');
       return res.data;
     },
   });
 
   const handleStatusChange = async (orderId, newStatus, fullOrder) => {
     try {
-      const res = await axios.patch(
-        `https://freshcutserverside.vercel.app/order/${orderId}`,
+      const res = await axiosPublic.patch(
+        `/order/${orderId}`,
         { status: newStatus },
         { headers: { 'Content-Type': 'application/json' } }
       );
@@ -38,8 +40,8 @@ const ManageOrder = () => {
       if (res.data.success) {
         if (newStatus === 'delivered') {
           try {
-            await axios.post(
-              'https://freshcutserverside.vercel.app/orderhistory',
+            await axiosPublic.post(
+              '/orderhistory',
               fullOrder
             );
             Swal.fire(

@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import Loader from "../Loader/Loader";
 import CartOverview from "./CartOverview";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 // Helper: parse English month from date string like "21 May 25"
 const parseEnglishDate = (dateStr) => {
@@ -32,6 +32,7 @@ const getMonthlySalesData = (data) => {
   }));
 };
 
+
 const getTopSelling = (products) => {
   return [...products]
     .sort((a, b) => b.sellCount - a.sellCount)
@@ -46,6 +47,10 @@ const getTopSelling = (products) => {
 };
 
 const AdminHome = () => {
+
+const axiosPublic = useAxiosPublic();
+
+
   // Fetch products
   const {
     data: products = [],
@@ -54,8 +59,8 @@ const AdminHome = () => {
   } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
-      const res = await axios.get(
-        "https://freshcutserverside.vercel.app/products"
+      const res = await axiosPublic.get(
+        "/products"
       );
       return res.data;
     },
@@ -69,8 +74,8 @@ const AdminHome = () => {
   } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const res = await axios.get(
-        "https://freshcutserverside.vercel.app/users"
+      const res = await axiosPublic.get(
+        "/users"
       );
       return res.data;
     },
@@ -84,8 +89,8 @@ const AdminHome = () => {
   } = useQuery({
     queryKey: ["cmsData"],
     queryFn: async () => {
-      const res = await axios.get(
-        "https://freshcutserverside.vercel.app/cms"
+      const res = await axiosPublic.get(
+        "/cms"
       );
       return res.data;
     },

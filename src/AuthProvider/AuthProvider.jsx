@@ -11,13 +11,17 @@ import {
   signOut,
 } from "firebase/auth";
 import { app } from "../firebase/firebase.config";
-import axios from "axios";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 
 export const AuthContext = createContext(null);
 
 const auth = getAuth(app);
 
 const AuthProvider = ({ children }) => {
+
+const axiosPublic = useAxiosPublic();
+
+
   const [user, setUser] = useState(null);
   const [role, setRole] = useState(() => {
     // ✅ Load cached role on first render
@@ -57,8 +61,8 @@ const AuthProvider = ({ children }) => {
 
       if (currentUser?.email) {
         try {
-          const res = await axios.get(
-            `https://freshcutserverside.vercel.app/users/${currentUser.email}`
+          const res = await axiosPublic.get(
+            `/users/${currentUser.email}`
           );
 
           const newRole = res.data?.role || "user";
@@ -82,7 +86,7 @@ const AuthProvider = ({ children }) => {
     return () => {
       unsubscribe();
     };
-  }, [role]);
+  }, [role, axiosPublic]);
 
   const authinfo = {
     user,

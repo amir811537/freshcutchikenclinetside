@@ -4,14 +4,15 @@ import PropTypes from "prop-types";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
-import axios from "axios";
 import Swal from "sweetalert2";
 import useCart from "../../../hooks/useCart"; // ✅ import the hook
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const ProductCard = ({ item, isLoading }) => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const { refetchCart } = useCart(user?.email); // ✅ use the hook
+const axiosPublic = useAxiosPublic();
 
   const handleAddToCart = async () => {
     if (!user) {
@@ -28,7 +29,7 @@ const ProductCard = ({ item, isLoading }) => {
     };
 
     try {
-      const response = await axios.post("https://freshcutserverside.vercel.app/cart", cartData);
+      const response = await axiosPublic.post("/cart", cartData);
       refetchCart(); // ✅ refetch cart data
       Swal.fire({
         icon: "success",
@@ -62,7 +63,7 @@ const ProductCard = ({ item, isLoading }) => {
     };
 
     try {
-      const response = await axios.post("https://freshcutserverside.vercel.app/cart", cartData);
+      const response = await axiosPublic.post("/cart", cartData);
       refetchCart(); // ✅ refetch cart data
       navigate("/dashboard/cart");
     } catch (error) {

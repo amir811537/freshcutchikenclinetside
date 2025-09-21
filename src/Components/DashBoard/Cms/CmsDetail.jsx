@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { pdf } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
 import PDFDocument from "./PDFDocument"; // Assume you're using this
 import Swal from "sweetalert2";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 const CmsDetail = () => {
   const [allData, setAllData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -17,7 +17,7 @@ const CmsDetail = () => {
   const [deleteItemId, setDeleteItemId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 14;
-
+const axiosPublic = useAxiosPublic();
   const [editForm, setEditForm] = useState({
     name: "",
     location: "",
@@ -35,7 +35,7 @@ const CmsDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("https://freshcutserverside.vercel.app/cms");
+        const res = await axiosPublic.get("/cms");
         setAllData(res.data);
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -100,8 +100,8 @@ const CmsDetail = () => {
     }
 
     try {
-      const res = await axios.patch(
-        `https://freshcutserverside.vercel.app/cms/${editingItem._id}`,
+      const res = await axiosPublic.patch(
+        `/cms/${editingItem._id}`,
         editForm
       );
       if (res.data.modifiedCount > 0) {
@@ -133,7 +133,7 @@ const CmsDetail = () => {
 
 const handleDelete = async () => {
   try {
-    const res = await axios.delete(`https://freshcutserverside.vercel.app/cms/${deleteItemId}`);
+    const res = await axiosPublic.delete(`/cms/${deleteItemId}`);
     if (res.data.deletedCount > 0) {
       setAllData(allData.filter((item) => item._id !== deleteItemId));
       setDeleteItemId(null);

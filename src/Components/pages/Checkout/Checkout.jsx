@@ -1,27 +1,32 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useContext, useState, useEffect } from 'react';
-import { AuthContext } from '../../../AuthProvider/AuthProvider';
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../../AuthProvider/AuthProvider";
 import { MdDelete } from "react-icons/md";
-import useCart from '../../../hooks/useCart';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import Loader from '../../Loader/Loader';
-import Swal from 'sweetalert2';
+import useCart from "../../../hooks/useCart";
+import { useNavigate } from "react-router-dom";
+import Loader from "../../Loader/Loader";
+import Swal from "sweetalert2";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import { useForm } from "react-hook-form";
 
 const Checkout = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const { data: cartData = [], refetchCart, isLoading } = useCart(user?.email);
+  const axiosPublic = useAxiosPublic();
 
+  // Payment states
   const [paymentMethod, setPaymentMethod] = useState("COD");
   const [transactionId, setTransactionId] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
-  const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
-  const [apartment, setApartment] = useState('');
-  const [phone, setPhone] = useState('');
+  // React Hook Form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -33,40 +38,39 @@ const Checkout = () => {
   };
 
   const confirmDelete = () => {
-    axios.delete(`https://freshcutserverside.vercel.app/cart/${deleteId}`)
+    axiosPublic
+      .delete(`/cart/${deleteId}`)
       .then(() => {
         refetchCart();
         setShowModal(false);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Failed to delete item:", err);
         setShowModal(false);
       });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const onSubmit = async (data) => {
     if (paymentMethod === "Bkash" && !transactionId.trim()) {
       Swal.fire({
-  title: "Please enter the Bkash Transaction ID.!",
-  icon: "error",
-    timer: 1500,
-  draggable: true
-});
+        title: "Please enter the Bkash Transaction ID.!",
+        icon: "error",
+        timer: 1500,
+        draggable: true,
+      });
       return;
     }
 
     try {
       const fullOrder = {
         customer: {
-          name,
-          address,
-          apartment,
-          phone,
+          name: data.name,
+          address: data.address,
+          apartment: data.apartment || "",
+          phone: data.phone,
           email: user?.email,
         },
-        items: cartData.map(item => ({
+        items: cartData.map((item) => ({
           productId: item._id,
           name: item.name,
           price: item.price,
@@ -77,20 +81,20 @@ const Checkout = () => {
         totalAmount: discountedCartTotal,
         paymentMethod,
         transactionId: paymentMethod === "Bkash" ? transactionId : null,
-        orderDate: new Date().toISOString()
+        orderDate: new Date().toISOString(),
       };
 
-      await axios.post("https://freshcutserverside.vercel.app/order", fullOrder);
-      await axios.delete(`https://freshcutserverside.vercel.app/cart?email=${user.email}`);
-      
-      navigate("/dashboard/order-success", { state: { fullOrder } });
+      await axiosPublic.post("/order", fullOrder);
+      await axiosPublic.delete(`/cart?email=${user.email}`);
 
+      navigate("/dashboard/order-success", { state: { fullOrder } });
     } catch (error) {
       console.error("Order failed:", error);
       alert("Failed to place order.");
     }
   };
 
+  // Price calculation
   const cartTotal = cartData.reduce((acc, item) => {
     const qty = item.quantity || 1;
     return acc + parseFloat(item.price) * qty;
@@ -98,57 +102,120 @@ const Checkout = () => {
 
   const shipping = 70;
   const discount = 0;
-  const discountedCartTotal = Math.round((cartTotal + shipping) * (1 - discount / 100));
-
-  if (isLoading) return (
-    <div className="flex justify-center items-center">
-      <Loader />
-    </div>
+  const discountedCartTotal = Math.round(
+    (cartTotal + shipping) * (1 - discount / 100)
   );
 
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center">
+        <Loader />
+      </div>
+    );
+
   return (
-    <div className='px-5 lg:px-0 my-10 max-w-7xl mx-auto'>
-      <h1 className='text-2xl font-semibold font-inter mb-6 '>Billing Details</h1>
-      <form className='flex flex-col lg:flex-row justify-between gap-10' onSubmit={handleSubmit}>
+    <div className="px-5 lg:px-0 my-10 max-w-7xl mx-auto">
+      <h1 className="text-2xl font-semibold font-inter mb-6 ">Billing Details</h1>
+
+      <form
+        className="flex flex-col lg:flex-row justify-between gap-10"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         {/* Billing Info */}
-        <div className='flex-1 space-y-6'>
+        <div className="flex-1 space-y-6">
           <div>
-            <label className='text-[#00000090] dark:text-white'>Name<sup className='text-red-500'>*</sup></label>
-            <input type="text" required className="input w-full bg-[#F5F5F5] dark:text-yellow-300 mt-2" value={name} onChange={(e) => setName(e.target.value)} />
+            <label className="text-[#00000090] dark:text-white">
+              Name<sup className="text-red-500">*</sup>
+            </label>
+            <input
+              type="text"
+              {...register("name", { required: "Name is required" })}
+              className="input w-full bg-[#F5F5F5] dark:text-yellow-300 mt-2"
+            />
+            {errors.name && (
+              <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+            )}
           </div>
+
           <div>
-            <label className='text-[#00000090] dark:text-white'>Address<sup className='text-red-500'>*</sup></label>
-            <input type="text" required className="input w-full bg-[#F5F5F5] dark:text-yellow-300 mt-2" value={address} onChange={(e) => setAddress(e.target.value)} />
+            <label className="text-[#00000090] dark:text-white">
+              Address<sup className="text-red-500">*</sup>
+            </label>
+            <input
+              type="text"
+              {...register("address", { required: "Address is required" })}
+              className="input w-full bg-[#F5F5F5] dark:text-yellow-300 mt-2"
+            />
+            {errors.address && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.address.message}
+              </p>
+            )}
           </div>
+
           <div>
-            <label className='text-[#00000090] dark:text-white'>Apartment, Road, Floor (Optional)</label>
-            <input type="text" className="input w-full bg-[#F5F5F5] dark:text-yellow-300 mt-2" value={apartment} onChange={(e) => setApartment(e.target.value)} />
+            <label className="text-[#00000090] dark:text-white">
+              Apartment, Road, Floor (Optional)
+            </label>
+            <input
+              type="text"
+              {...register("apartment")}
+              className="input w-full bg-[#F5F5F5] dark:text-yellow-300 mt-2"
+            />
           </div>
+
           <div>
-            <label className='text-[#00000090] dark:text-white'>Phone Number<sup className='text-red-500'>*</sup></label>
-            <input type="tel" required className="input w-full bg-[#F5F5F5] dark:text-yellow-300 mt-2" value={phone} onChange={(e) => setPhone(e.target.value)} />
+            <label className="text-[#00000090] dark:text-white">
+              Phone Number<sup className="text-red-500">*</sup>
+            </label>
+            <input
+              type="number"
+              {...register("phone", {
+                required: "Phone number is required",
+                minLength: { value: 10, message: "Enter a valid phone number" },
+              })}
+              className="input w-full bg-[#F5F5F5] dark:text-yellow-300 mt-2"
+            />
+            {errors.phone && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.phone.message}
+              </p>
+            )}
           </div>
+
           <div>
-            <label className='text-[#00000090] dark:text-white'>Email<sup className='text-red-500'>*</sup></label>
-            <input type="email" value={user?.email} disabled className="input w-full bg-[#F5F5F5] mt-2" />
+            <label className="text-[#00000090] dark:text-white">
+              Email<sup className="text-red-500">*</sup>
+            </label>
+            <input
+              type="email"
+              value={user?.email}
+              disabled
+              className="input w-full bg-[#F5F5F5] mt-2"
+            />
           </div>
         </div>
 
         {/* Cart & Payment */}
-        <div className='flex-1 space-y-5'>
+        <div className="flex-1 space-y-5">
           {cartData.map((item) => (
-            <div key={item._id} className='flex flex-col gap-2 border-b pb-4'>
-              <div className='flex items-center justify-between'>
-                <div className='flex gap-4 items-center'>
-                  <img src={item.image} alt={item.name} className="w-16 h-16 object-cover" />
+            <div key={item._id} className="flex flex-col gap-2 border-b pb-4">
+              <div className="flex items-center justify-between">
+                <div className="flex gap-4 items-center">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-16 h-16 object-cover"
+                  />
                   <div>
-                    <h2 className='font-medium'>{item.name}</h2>
-                    <p className='text-sm text-gray-500'>৳{item.price} per kg</p>
+                    <h2 className="font-medium">{item.name}</h2>
+                    <p className="text-sm text-gray-500">৳{item.price} per kg</p>
                   </div>
                 </div>
                 <div className="flex justify-center items-end">
-                  <p className='font-semibold'>
-                    ৳{item.price} × {item.quantity || 1} kg = ৳{(item.price * (item.quantity || 1)).toFixed(2)}
+                  <p className="font-semibold">
+                    ৳{item.price} × {item.quantity || 1} kg = ৳
+                    {(item.price * (item.quantity || 1)).toFixed(2)}
                   </p>
                   <button
                     className="text-red-500 text-2xl font-bold hover:text-red-700"
@@ -162,6 +229,7 @@ const Checkout = () => {
             </div>
           ))}
 
+          {/* Summary */}
           <div className="pt-6 space-y-4 border-t">
             <div className="flex justify-between">
               <span>Subtotal:</span>
@@ -181,9 +249,10 @@ const Checkout = () => {
             </div>
           </div>
 
-          <div className='pt-6'>
+          {/* Payment */}
+          <div className="pt-6">
             <h2 className="font-medium mb-2">Payment Method</h2>
-            <label className='flex items-center gap-2'>
+            <label className="flex items-center gap-2">
               <input
                 type="radio"
                 name="payment"
@@ -193,7 +262,7 @@ const Checkout = () => {
               />
               Cash on Delivery
             </label>
-            <label className='flex items-center gap-2'>
+            <label className="flex items-center gap-2">
               <input
                 type="radio"
                 name="payment"
@@ -206,8 +275,15 @@ const Checkout = () => {
 
             {paymentMethod === "Bkash" && (
               <div className="mt-4 space-y-2">
-                <p className="text-sm text-gray-600">Bkash Personal: <span className=" text-lg text-green-600 font-bold">01612-381604</span></p>
-                <label className='block text-sm font-medium text-gray-700'>Transaction ID<sup className='text-red-500'>*</sup></label>
+                <p className="text-sm text-gray-600">
+                  Bkash Personal:{" "}
+                  <span className=" text-lg text-green-600 font-bold">
+                    01612-381604
+                  </span>
+                </p>
+                <label className="block text-sm font-medium text-gray-700">
+                  Transaction ID<sup className="text-red-500">*</sup>
+                </label>
                 <input
                   type="text"
                   className="input w-full bg-[#F5F5F5] mt-1"
@@ -229,8 +305,12 @@ const Checkout = () => {
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-md">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Are you sure?</h2>
-            <p className="text-gray-600 mb-6">You won't be able to revert this action.</p>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              Are you sure?
+            </h2>
+            <p className="text-gray-600 mb-6">
+              You won't be able to revert this action.
+            </p>
             <div className="flex justify-end gap-4">
               <button
                 className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 text-gray-800"

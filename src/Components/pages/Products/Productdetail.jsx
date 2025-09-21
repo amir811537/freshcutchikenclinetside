@@ -4,14 +4,15 @@ import 'react-inner-image-zoom/lib/styles.min.css';
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
 import useCart from "../../../hooks/useCart";
-import axios from "axios";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const ProductDetail = () => {
   const product = useLoaderData();
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const { refetchCart } = useCart(user?.email);
+const axiosPublic = useAxiosPublic();
 
   const handleAddToCart = async () => {
     if (!user) {
@@ -29,7 +30,7 @@ const ProductDetail = () => {
 
     try {
       // eslint-disable-next-line no-unused-vars
-      const response = await axios.post("https://freshcutserverside.vercel.app/cart", cartData);
+      const response = await axiosPublic.post("/cart", cartData);
       refetchCart(); // ✅ Refresh cart count/data
       Swal.fire({
         icon: "success",
@@ -63,7 +64,7 @@ const ProductDetail = () => {
 
     try {
       // eslint-disable-next-line no-unused-vars
-      const response = await axios.post("https://freshcutserverside.vercel.app/cart", cartData);
+      const response = await axiosPublic.post("/cart", cartData);
       refetchCart(); 
       navigate("/dashboard/cart");
     } catch (error) {

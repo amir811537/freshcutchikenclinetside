@@ -6,15 +6,16 @@ import { RiEyeCloseLine } from "react-icons/ri";
 import { FcGoogle } from "react-icons/fc";
 import signupImage from "../../../assets/icon/Sign Up.webp";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const Login = () => {
   const [passView, setPassView] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { signuprg, googleSignin } = useContext(AuthContext);
   const navigate = useNavigate();
+const axiosPublic = useAxiosPublic();
 
   const {
     register,
@@ -60,7 +61,7 @@ const Login = () => {
           role: "user",
         };
 
-        return axios.post("https://freshcutserverside.vercel.app/users", googleUser);
+        return axiosPublic.post("/users", googleUser);
       })
       .then(() => {
         Swal.fire({

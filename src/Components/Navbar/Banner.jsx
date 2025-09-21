@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-
+  import { useMemo } from "react";
 import Banner1 from "../../assets/new1.png";
 import Banner3 from "../../assets/chicken banner.png";
 import Banner4 from "../../assets/freshcutorginal.png";
@@ -14,14 +14,10 @@ import { Autoplay, Pagination, Navigation } from "swiper/modules";
 
 const Banner = () => {
   // ✅ Banner data
-  const initialData = [
-    Banner4,
-    Banner2,
-    Banner3,
-    Banner1,
-    Banner5,
-  ];
-
+  const initialData = useMemo(
+    () => [Banner4, Banner2, Banner3, Banner1, Banner5],
+    []
+  );
   const [banners, setBanners] = useState([]);
 
   // ✅ Load cached banners

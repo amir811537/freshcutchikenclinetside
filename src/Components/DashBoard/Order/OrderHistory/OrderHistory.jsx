@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import Loader from '../../../Loader/Loader';
 import { useState } from 'react';
+import useAxiosPublic from '../../../../hooks/useAxiosPublic';
 
 const OrderHistory = () => {
+  const axiosPublic = useAxiosPublic();
+
   const {
     data: history = [],
     isLoading,
@@ -11,8 +13,8 @@ const OrderHistory = () => {
   } = useQuery({
     queryKey: ['orderHistory'],
     queryFn: async () => {
-      const res = await axios.get(
-        'https://freshcutserverside.vercel.app/orderhistory'
+      const res = await axiosPublic.get(
+        '/orderhistory'
       );
       return res.data;
     },

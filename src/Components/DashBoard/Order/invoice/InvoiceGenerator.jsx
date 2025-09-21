@@ -12,7 +12,8 @@ import {
 import { useState } from "react";
 import logo from "../../../../assets/logo-removebg-preview.png";
 import QR from "../../../../../src/assets/QR/newQR.png";
-import axios from "axios";
+import useAxiosPublic from "../../../../hooks/useAxiosPublic";
+
 
 Font.register({
   family: "NotoSerifBengali",
@@ -141,6 +142,7 @@ const InvoiceComponent = () => {
   });
 
   const [data, setData] = useState(null);
+const axiosPublic = useAxiosPublic();
 
   const handleChange = (index, field, value) => {
     const updatedItems = [...form.items];
@@ -218,7 +220,7 @@ const InvoiceComponent = () => {
 
     // ✅ Send to CMS
     try {
-      await axios.post("https://freshcutserverside.vercel.app/cms", cmsEntry);
+      await axiosPublic.post("/cms", cmsEntry);
       console.log("CMS entry saved successfully.");
     } catch (err) {
       console.error("Failed to send CMS data:", err);

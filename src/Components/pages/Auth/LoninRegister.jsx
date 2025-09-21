@@ -5,14 +5,15 @@ import { FaEye, FaEyeSlash, FaTimes } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
-import axios from "axios";
 import { FcGoogle } from "react-icons/fc";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 
 const LoginRegister = ({ showModal, setShowModal }) => {
   const { signuprg, createUser, googleSignin } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
+const axiosPublic = useAxiosPublic();
 
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -49,7 +50,7 @@ const LoginRegister = ({ showModal, setShowModal }) => {
           role:"user"
         };
 
-        return axios.post("https://freshcutserverside.vercel.app/users", userData);
+        return axiosPublic.post("/users", userData);
       })
       .then(() => {
         Swal.fire({
@@ -111,7 +112,7 @@ const LoginRegister = ({ showModal, setShowModal }) => {
           role:"user"
         };
 
-        return axios.post("https://freshcutserverside.vercel.app/users", googleUser);
+        return axiosPublic.post("/users", googleUser);
       })
       .then(() => {
         Swal.fire({

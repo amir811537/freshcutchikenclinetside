@@ -3,15 +3,16 @@ import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import useCart from "../../hooks/useCart";
 import { MdDelete } from "react-icons/md";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import image from "../../assets/icon/cart.svg";
 import Loader from "../Loader/Loader";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Cart = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const { data: cartData = [], refetchCart, isLoading } = useCart(user?.email);
+const axiosPublic = useAxiosPublic();
 
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
@@ -34,7 +35,7 @@ const Cart = () => {
       [id]: qty,
     }));
     try {
-      await axios.patch(`https://freshcutserverside.vercel.app/cart/${id}`, {
+      await axiosPublic.patch(`/cart/${id}`, {
         quantity: qty,
       });
       refetchCart();
@@ -49,8 +50,8 @@ const Cart = () => {
   };
 
   const confirmDelete = () => {
-    axios
-      .delete(`https://freshcutserverside.vercel.app/cart/${deleteId}`)
+    axiosPublic
+      .delete(`/cart/${deleteId}`)
       .then(() => {
         refetchCart();
         setShowModal(false);

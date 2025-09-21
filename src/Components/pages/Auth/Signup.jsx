@@ -8,12 +8,13 @@ import { IoEyeOutline } from 'react-icons/io5';
 import { RiEyeCloseLine } from 'react-icons/ri';
 import { AuthContext } from '../../../AuthProvider/AuthProvider';
 import Swal from 'sweetalert2';
-import axios from 'axios';
+import useAxiosPublic from '../../../hooks/useAxiosPublic';
 
 const Signup = () => {
   const [passView, setPassView] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+const axiosPublic = useAxiosPublic();
 
   const { createUser, googleSignin } = useContext(AuthContext);
 
@@ -38,7 +39,7 @@ const Signup = () => {
         role: "user",
       };
 
-      await axios.post("https://freshcutserverside.vercel.app/users", userData);
+      await axiosPublic.post("/users", userData);
 
       Swal.fire({
         icon: "success",
@@ -71,7 +72,7 @@ const Signup = () => {
           role: "user",
         };
 
-        return axios.post("https://freshcutserverside.vercel.app/users", googleUser);
+        return axiosPublic.post("/users", googleUser);
       })
       .then(() => {
         Swal.fire({

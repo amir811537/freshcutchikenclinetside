@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import Loader from "../../Loader/Loader";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const Usermanagement = () => {
+  const axiosPublic = useAxiosPublic();
+
   const { data: users = [], isLoading, refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const res = await axios.get("https://freshcutserverside.vercel.app/users");
+      const res = await axiosPublic.get("/users");
       return res.data;
     },
   });
@@ -56,8 +58,8 @@ const Usermanagement = () => {
                   <button
                     className="btn btn-sm btn-error"
                     onClick={async () => {
-                      await axios.delete(
-                        `https://freshcutserverside.vercel.app/users/${user._id}`
+                      await axiosPublic.delete(
+                        `/users/${user._id}`
                       );
                       refetch();
                     }}
@@ -67,8 +69,8 @@ const Usermanagement = () => {
                   <button
                     className="btn btn-sm btn-info ml-2"
                     onClick={async () => {
-                      await axios.patch(
-                        `https://freshcutserverside.vercel.app/users/${user._id}`,
+                      await axiosPublic.patch(
+                        `/users/${user._id}`,
                         {
                           role: user.role === "admin" ? "user" : "admin",
                         }
