@@ -120,6 +120,7 @@ const productList = [
   { name: "সোনালী কক(৪৫০–৫০০গ্রাম)", price: 325 },
   { name: "শুধু কলিজা", price: 290 },
   { name: "শুধু গিলা", price: 290 },
+  { name: "গিলা কলিজা পা মিক্স", price: 290 },
   { name: "মুরগির পিছনের অংশ", price: 250 },
   { name: "মুরগির heart ", price: 300 },
   {
