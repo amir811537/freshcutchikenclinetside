@@ -48,7 +48,7 @@ const MessageSender = () => {
       if (!customer.phone) continue;
 
       // Format number: 01XXXXXXXX → 8801XXXXXXXX
-      const phone = "88" + customer.phone.replace(/^0/, "");
+      const phone = "+880" + customer.phone.replace(/^0/, "");
       const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
       window.open(url, "_blank");
 

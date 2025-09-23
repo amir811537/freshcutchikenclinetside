@@ -79,13 +79,13 @@ const Categories = () => {
         {/* Arrows for Desktop */}
         <div className="hidden md:flex items-center gap-3">
           <button
-            className="bg-gray-100 rounded-full p-2 hover:bg-[#F5BC3B] transition"
+            className="bg-gray-100 dark:bg-black dark:text-white rounded-full p-4 hover:bg-[#F5BC3B] transition"
             onClick={slidePrev}
           >
             <FaArrowLeftLong className="text-lg" />
           </button>
           <button
-            className="bg-gray-100 rounded-full p-2 hover:bg-[#F5BC3B] transition"
+            className="bg-gray-100 dark:bg-black dark:text-white rounded-full p-4 hover:bg-[#F5BC3B] transition"
             onClick={slideNext}
           >
             <FaArrowRightLong className="text-lg" />

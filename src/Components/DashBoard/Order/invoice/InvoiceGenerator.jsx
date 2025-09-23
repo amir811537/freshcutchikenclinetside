@@ -351,13 +351,15 @@ const axiosPublic = useAxiosPublic();
     const total = subtotal + deliveryCharge;
 
     return (
-      <div className="text-sm space-y-4 font-[NotoSerifBengali]">
+
+      
+      <div className="text-sm space-y-4 font-[NotoSerifBengali] ">
         <div className="flex justify-between items-center border-b pb-2">
           <div>
             <h1 className="text-xl font-bold text-red-600">
               Fresh Cut Chicken Service
             </h1>
-            <p className="text-xs text-gray-600">Invoice Preview</p>
+            <p className="text-xs text-gray-600 dark:bg-black dark:text-white">Invoice Preview</p>
           </div>
           <div className="text-right text-xs">
             <p>Date: {new Date().toLocaleDateString("bn-BD")}</p>
@@ -375,7 +377,7 @@ const axiosPublic = useAxiosPublic();
         </div>
 
         <table className="w-full text-left border mt-4 text-xs">
-          <thead className="bg-gray-100 border-b">
+          <thead className="bg-gray-100 dark:bg-black dark:text-white border-b">
             <tr>
               <th className="p-1">SL</th>
               <th className="p-1">Product</th>
@@ -585,7 +587,7 @@ const axiosPublic = useAxiosPublic();
         )}
       </div>
 
-      <div className="w-full md:w-1/2 border p-4 rounded shadow bg-white">
+      <div className="w-full md:w-1/2 border p-4 rounded shadow bg-white dark:bg-black dark:text-white">
         <InvoicePreview data={form} />
       </div>
     </div>
